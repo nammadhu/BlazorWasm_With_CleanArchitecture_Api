@@ -12,7 +12,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace BlazorWebApp.Shared.Services
-{
+    {
     public class AuthService(
         AuthenticationStateProvider authStateProvider, IJSRuntime JSRuntime, ILocalStorageService localStorageService,
         IHttpClientFactory httpClientFactory, NavigationManager navigationManager, ClientConfig clientConfig)
@@ -23,18 +23,25 @@ namespace BlazorWebApp.Shared.Services
         public async Task<bool> IsAuthenticatedAsync()//just makes validation of google login
             {
             var authState = await authStateProvider.GetAuthenticationStateAsync();
+            MyLogger.Log($"Authstate is null:{authState == null}");
             bool result = authState?.User?.Identity?.IsAuthenticated ?? false;
+            MyLogger.Log($"Authstate is result:{result}");
             if (result)
                 {
+                MyLogger.Log($"Authstate email checking in token");
                 var email = authState!.User.Claims?.Single(c => c.Type == "email")?.Value;
                 if (email != null)
                     {
+                    MyLogger.Log($"Setting clientconfig ,first checking");
                     if (string.IsNullOrEmpty(clientConfig.Email) || clientConfig.Email != email)
                         {
+                        MyLogger.Log($"Setting clientconfig email as"+email);
                         clientConfig.EmailSet(email);
                         // await localStorageService.SetItemAsStringAsync(CONSTANTS.Email, email);//not required
                         }
                     }
+                else
+                    MyLogger.Log($"Authstate email null");
 
                 }
             else
