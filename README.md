@@ -27,6 +27,10 @@ Example Provided MyTown usecase,like that anyne can replace or extend easily upt
 - Detailed Diagram
 <img width="2093" alt="DependencyGraphSnapshot" src="https://github.com/nammadhu/CleanArchitecture_Api_BlazorWasm_Client_EndToEnd/assets/3640748/acad5ac4-7646-4af5-86e9-85b3bc2e81a5">
 
+- Request Anonymous, Authentication Flow
+![AuthKatthe](https://github.com/nammadhu/CleanArchitecture_Api_BlazorWasm_Client_EndToEnd/assets/3640748/7107b02c-16aa-412c-b114-e39cdc06c475)
+
+
 
 Forked & inspired from many other Good projects Globally, I additionally adding improvements with Blazor Standalone Webassembly client & making completely disconnected architecture implementation with features,
 
