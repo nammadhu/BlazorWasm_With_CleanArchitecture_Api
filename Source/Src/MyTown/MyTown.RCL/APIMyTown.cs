@@ -1,8 +1,8 @@
 ﻿//using Azure;
 
 //using Dto;
-using BlazorWebApp.Shared;
 using MyTown.SharedModels.DTOs;
+using SharedResponse;
 using System.Net.Http.Json;
 
 namespace BlazorRazorClassLibraryMyTown;
