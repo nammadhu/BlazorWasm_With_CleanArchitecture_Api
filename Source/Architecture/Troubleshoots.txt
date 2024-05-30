@@ -1,0 +1,1 @@
+If blazor page content not loading like carousel and all then it expects interaction mode like @rendermode InteractiveAuto at top of page

@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\css\**" />
+    <Compile Remove="wwwroot\sample-data\**" />
+    <Content Remove="wwwroot\css\**" />
+    <Content Remove="wwwroot\sample-data\**" />
+    <EmbeddedResource Remove="wwwroot\css\**" />
+    <EmbeddedResource Remove="wwwroot\sample-data\**" />
+    <None Remove="wwwroot\css\**" />
+    <None Remove="wwwroot\sample-data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\favicon.png" />
+    <Content Remove="wwwroot\icon-192.png" />
+    <Content Remove="wwwroot\icon-512.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Layout\NavMenuNotUsingNow.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.6" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorCommonRazorClassLibraries\BlazorWebApp.Shared\BlazorWebApp.Shared.csproj" />
+    <ProjectReference Include="..\BlazorCommonRazorClassLibraries\CommonRazorComponents\CommonRazorComponents.csproj" />
+    <ProjectReference Include="..\PublicCommon\PublicCommon.csproj" />
+    <ProjectReference Include="..\SharedResponse\SharedResponse.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+</Project>

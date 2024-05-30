@@ -1,0 +1,125 @@
+to make existing wasm of offline pwa https://learn.microsoft.com/en-us/aspnet/core/blazor/progressive-web-app?view=aspnetcore-8.0&tabs=visual-studio
+..
+
+https://www.youtube.com/watch?v=njA7Wb1F7pY
+
+client wasm, to add an server api interaction page
+1>u need to add controller on server
+2> server program.cs addcontroller on service & mapcontroller at use
+3> client side add httpclient with baseaddress as pointing
+4>on page by default its interactiveauto or interactivewebassembly wont work,
+solution is "@rendermode @(new InteractiveWebAssemblyRenderMode(false))" with cliebnt project httpclient configured,it means prerender off(false),  load blank & then on api request load details
+
+"@rendermode @(new InteractiveWebAssemblyRenderMode(true))" this works with making httpclient added on server project
+here true means, prerender on, first time itself it loads from server data
+
+So to work better for prerender & all ,add httpclient at both program.cs of server & client
+
+
+
+
+There are a few ways to achieve communication between your Blazor main page and the nested AddUpdateVote component after a successful submit:
+
+1. EventCallback:
+
+This approach involves defining an event in the AddUpdateVote component that gets triggered upon successful submission. The main page component can then bind to this event and handle the notification.
+
+Here's how to implement it:
+
+a. AddUpdateVote Component:
+
+Define an EventCallback property in your AddUpdateVote component:
+C#
+public EventCallback OnVoteSubmitted { get; set; }
+Use code with caution.
+Inside your submit logic, trigger the OnVoteSubmitted event:
+C#
+async Task HandleSubmit()
+{
+  // Your submit logic here
+  if (// Submission successful)
+  {
+    OnVoteSubmitted.InvokeAsync(null);
+  }
+}
+Use code with caution.
+b. Main Page Component:
+
+In the main page component, define a method to handle the vote submission notification:
+C#
+public void HandleVoteSubmitted()
+{
+  // Update UI or perform actions based on successful vote
+}
+Use code with caution.
+Pass this method as an argument to the OnVoteSubmitted property when rendering the AddUpdateVote component:
+HTML
+<AddUpdateVote OnVoteSubmitted="@HandleVoteSubmitted" />
+Use code with caution.
+2. Cascading Parameters:
+
+This approach uses cascading parameters to expose a service from the main page component that the nested AddUpdateVote component can access to signal vote submission.
+
+Here's how to implement it:
+
+a. Main Page Component:
+
+Create a service to handle vote submission notifications:
+C#
+public class VoteService
+{
+  public event Action OnVoteSubmitted;
+
+  public void NotifyVoteSubmitted()
+  {
+    OnVoteSubmitted?.Invoke();
+  }
+}
+Use code with caution.
+Inject the service instance in the main page and expose it as a cascading parameter:
+C#
+@inject VoteService VoteService
+
+<div>
+  <AddUpdateVote @CascadingParameter VoteService="VoteService" />
+</div>
+
+@code {
+  protected override void OnInitialized()
+  {
+    VoteService.OnVoteSubmitted += HandleVoteSubmitted;
+  }
+
+  private void HandleVoteSubmitted()
+  {
+    // Update UI or perform actions based on successful vote
+  }
+}
+Use code with caution.
+b. AddUpdateVote Component:
+
+Inject the VoteService through cascading parameters:
+C#
+@inject VoteService VoteService
+Use code with caution.
+Inside your submit logic, call the NotifyVoteSubmitted method on the injected service:
+C#
+async Task HandleSubmit()
+{
+  // Your submit logic here
+  if (// Submission successful)
+  {
+    VoteService.NotifyVoteSubmitted();
+  }
+}
+
+MudBlazor.Color
+default background 
+primary  violet
+secondary pink
+tertiary green neon kind of
+info skyblueDark
+success full green
+warning  orange
+error red
+dark black cement

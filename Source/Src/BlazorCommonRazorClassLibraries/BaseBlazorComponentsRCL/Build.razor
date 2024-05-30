@@ -1,0 +1,4 @@
+﻿@* @page "/build"
+ this page directive route is of no use,it wont invoke any time,instread direct referring of component name <Build/> *@
+ @inject AppConfigurations appConfigurations
+<MudText><small>@NavigationManager.AppSettings(appConfigurations).BuildNumber </small></MudText>

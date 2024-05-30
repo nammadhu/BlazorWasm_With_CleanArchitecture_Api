@@ -1,0 +1,27 @@
+﻿<MudDialog>
+    <DialogContent>
+        @* @if (Town.Name.HasText())
+            {
+            <MudText>@($"Name: {Town.Name}")</MudText>
+            }
+        Instead of above code using below components *@
+        <TextShow Text="@Town.Name" Label="Name" />
+      @*   <TextShow Text="@Town.ShortName" Label="ShortName" /> *@
+        <TextShow Text="@Town.Description" Label="Description" />
+      @*   <MudText>@($"Price: {Town.Price}")</MudText>
+        <MudText>@($"Priority Order: {Town.PriorityOrder}")</MudText> *@
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@Close">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public TownDto Town { get; set; }
+
+    private void Close()
+        {
+        MudDialog.Cancel();
+        }
+}

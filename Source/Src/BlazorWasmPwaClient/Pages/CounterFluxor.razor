@@ -1,0 +1,31 @@
+﻿@page "/CounterFluxor"
+@* https://code-maze.com/fluxor-for-state-management-in-blazor/ *@
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+
+@using Fluxor
+@using BlazorWasmPwaClient.State.Counter
+
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject IState<CounterState> CounterState
+@inject IDispatcher Dispatcher
+
+@* only for testing fluxor *@
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter comparison of default & fluxor changes tracking & state management</h1>
+
+<p role="status">Current count default: @currentCount</p>
+<p role="status">Current count With Fluxor: @CounterState.Value.ClickCount</p>
+<p>this works on button navigation only,if url manually redirected then this wont work</p>
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+        {
+        currentCount++;//this is for default way
+        Dispatcher.Dispatch(new IncrementCounterAction());//for fluxor way
+        }
+}

@@ -1,0 +1,60 @@
+﻿/api/v1/TownCardType/GetPagedList
+curl -X 'GET' \
+  'https://localhost:5001/api/v1/TownCardType/GetPagedList' \
+  -H 'accept: text/plain'
+
+/api/v1/TownCardType/GetById
+curl -X 'GET' \
+  'https://localhost:5001/api/v1/TownCardType/GetById?Id=5' \
+  -H 'accept: text/plain'
+
+/api/v1/TownCardType/GetByIdAuth
+curl -X 'GET' \
+  'https://localhost:5001/api/v1/TownCardType/GetByIdAuth' \
+  -H 'accept: text/plain'
+
+/api/v1/TownCardType/Create
+curl -X 'POST' \
+  'https://localhost:5001/api/v1/TownCardType/Create' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 0,
+  "created": "2024-05-16T07:40:30.463Z",
+  "lastModified": "2024-05-16T07:40:30.463Z",
+  "createdBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "lastModifiedBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "applicationTypeId": 0,
+  "name": "string",
+  "shortName": "string",
+  "description": "string",
+  "price": 0,
+  "priorityOrder": 0
+}'
+
+/api/v1/TownCardType/Update
+curl -X 'PUT' \
+  'https://localhost:5001/api/v1/TownCardType/Update' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 0,
+  "created": "2024-05-16T07:40:51.496Z",
+  "lastModified": "2024-05-16T07:40:51.496Z",
+  "createdBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "lastModifiedBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "applicationTypeId": 0,
+  "name": "string",
+  "shortName": "string",
+  "description": "string",
+  "price": 0,
+  "priorityOrder": 0
+}'
+
+
+/api/v1/TownCardType/Delete
+curl -X 'DELETE' \
+  'https://localhost:5001/api/v1/TownCardType/Delete?Id=9' \
+  -H 'accept: text/plain'

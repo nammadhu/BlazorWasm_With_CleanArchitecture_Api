@@ -1,0 +1,3 @@
+To Run locally (kept code as Debugger.IsAttached)
+1>add localhost  for changing settings NavigationManagerExtension here appsettings main configurations
+2> for redirection and all UrlDomainBasedHandling in which 2 place GetLandingPageOfUrl() , GetApplicationTypeOfUrlDomain() add localhost at both

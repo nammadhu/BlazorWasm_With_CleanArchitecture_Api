@@ -1,0 +1,86 @@
+﻿@using MudBlazor
+@using PublicCommon
+@using SharedResponse.Wrappers
+@using System.Text
+@using System.Text.RegularExpressions
+@using System.Net.Http.Headers
+
+@namespace BlazorWasmPwaClient
+
+@inherits LayoutComponentBase
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4 auth">
+            <LoginDisplay />
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </div>
+
+
+        <ErrorBoundary>
+            <ChildContent>
+                <MudRTLProvider>
+                    <MudDialogProvider />
+                    <MudSnackbarProvider />
+                    @*           <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="@LayoutService.SetDarkMode" /> *@
+                    <MudThemeProvider IsDarkMode="true" />
+                    @Body
+                </MudRTLProvider>
+
+                @*  <article class="content px-4">
+                @Body
+                </article> *@
+            </ChildContent>
+            @* if this enabled then on page it wont show any error ,instead only log on console.
+
+            <ErrorContent Context="ex">
+            @Body
+            @{
+            if (ex.Message.Contains("status code"))
+            Console.WriteLine(ex.Message);
+            else
+            Console.WriteLine("Error:" + ex.Message);
+            }
+            </ErrorContent> *@
+        </ErrorBoundary>
+    </main>
+</div>
+
+@code
+{
+    [Inject]
+    ClientConfig config { get; set; }
+    [Inject] AuthService authService { get; set; }
+
+    // [Inject] ILocalStorageService localStorageService { get; set; }
+    // [Inject] IHttpClientFactory httpClientFactory { get; set; }
+
+    bool extracting;
+    ErrorBoundary errorBoundary;
+
+    protected override void OnParametersSet()
+        {
+        errorBoundary?.Recover();
+        }
+    protected override async Task OnInitializedAsync()
+        {
+        await RolesAuthorize();
+        }
+
+    protected override async Task OnParametersSetAsync()
+        {
+        await RolesAuthorize();
+        }
+
+    private async Task RolesAuthorize()
+        {
+        if (!extracting)
+            {
+            extracting = true;
+            await authService.AuthorizeRoles();
+            }
+        }
+}

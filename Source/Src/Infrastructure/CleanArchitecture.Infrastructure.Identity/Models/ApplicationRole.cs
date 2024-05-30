@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-
-namespace CleanArchitecture.Infrastructure.Identity.Models
-{
-    public class ApplicationRole : IdentityRole<Guid>
+﻿namespace CleanArchitecture.Infrastructure.Identity.Models
     {
-        public ApplicationRole(string name) : base(name)
-        {
-        }
+    //Please refer from Domain layer as this is required their also
+
+
+    //public class ApplicationRole : IdentityRole<Guid>
+    //{
+    //    public ApplicationRole(string name) : base(name)
+    //    {
+    //    }
+    //}
     }
-}

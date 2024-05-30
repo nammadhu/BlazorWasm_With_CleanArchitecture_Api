@@ -1,0 +1,183 @@
+﻿@page "/TestAuth"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+@using System.Text.Json
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@* @inject IAccessTokenProvider TokenProvider *@
+@inject HttpClient HttpClient 
+@* @inject IJSRuntime JSRuntime *@
+@* @inject NavigationManager Navigation *@
+@* @inject AuthService AuthService *@
+@* @inject AuthenticationStateProvider authenticationStateProvider *@
+
+@inject IHttpClientFactory HttpClientFactory
+<p>@output</p>
+
+<button @onclick="CallApiAndTest">Display Access Token </button>
+<p style="width:auto">result Anonymous: @getAnonymousResult</p>
+<p style="width:100%">result Authenticated:@getAuthenticatedResult</p>
+
+<p style="width:auto">result2 client Anonymous(clientfactory): @getAnonymousResult2</p>
+@* <p>result2 Authenticated:@result2</p> *@
+
+<p>responsePostAnonymous : @responsePostAnonymous</p>
+<p>responsePostAuthenticated : @responsePostAuthenticated</p>
+
+
+<a href="/userinfo">User Info action link</a>
+
+@if (output != null)
+    {
+    //not using
+
+
+    @*     <h1>@AuthenticatedUser?.Identity?.Name</h1>
+
+    <h2>Claims</h2>
+
+    @foreach (var claim in AuthenticatedUser?.Claims ?? Array.Empty<Claim>())
+        {
+        <p class="claim">@(claim.Type): @claim.Value</p>
+        } *@
+
+    @if (AccessToken != null)
+        {
+        <h2>Access token expires</h2>
+
+        <p>Current time: <span id="current-time">@DateTimeOffset.Now</span></p>
+        <p id="access-token-expires">@AccessToken.Expires</p>
+
+        <h2>Access token granted scopes (as reported by the API)</h2>
+
+        @foreach (var scope in AccessToken.GrantedScopes)
+            {
+            <p>Scope: @scope</p>
+            }
+        }
+
+    }
+
+@code
+{
+    private string output;
+    public ClaimsPrincipal AuthenticatedUser { get; set; }//not using
+    public AccessToken AccessToken { get; set; }//not using
+
+    public IList<string> scopes;
+    string getAuthenticatedResult = "";
+    string getAnonymousResult = "";
+
+    string getAuthenticatedResult2 = "";
+    string getAnonymousResult2 = "";
+
+    string responsePostAnonymous = "";
+    string responsePostAuthenticated = "";
+    private HttpClient _httpClientAuth;//not working
+    private HttpClient _httpClientAnonymus;
+
+    protected override async Task OnInitializedAsync()
+        {
+        await CallApiAndTest();
+        }
+
+    private async Task CallApiAndTest()
+        {
+
+        _httpClientAnonymus = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
+
+
+        //  HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", null);
+        //dont pass token here ,instead use interceptor to pass token securely
+        var responseAnon = await HttpClient.GetAsync("TestAnonymousEndpoint");
+        //this will work only if program.cs contain   builder.Services.AddScoped(sp => new HttpClient { BaseAddress = apiUrl });
+
+        // var responseAnon = await _httpClientAnonymus.GetAsync("TestAnonymousEndpoint");
+        if (responseAnon.IsSuccessStatusCode)
+            {
+            getAnonymousResult = await responseAnon.Content.ReadAsStringAsync();
+            getAnonymousResult ??= "null";
+            }
+        else
+            {
+            getAnonymousResult = responseAnon.StatusCode.ToString();
+            }
+
+
+        //with client factory
+        var response2Anon = await _httpClientAnonymus.GetAsync("TestAnonymousEndpoint");
+        if (response2Anon.IsSuccessStatusCode)
+            {
+            getAnonymousResult2 = await response2Anon.Content.ReadAsStringAsync();
+            getAnonymousResult2 ??= "null";
+            }
+        else
+            {
+            getAnonymousResult2 = response2Anon.StatusCode.ToString();
+            }
+
+        _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
+        //token is attaching in interceptor request
+        var responseAuth = await _httpClientAuth.GetAsync("TestAuthenticatedEndpoint");
+        if (responseAuth.IsSuccessStatusCode)
+            {
+            getAuthenticatedResult = await responseAuth.Content.ReadAsStringAsync();
+            getAuthenticatedResult ??= "nothing";
+            }
+        else
+            {
+            getAuthenticatedResult = responseAuth.StatusCode.ToString();
+            }
+
+        string dataToSend = "This is some data";
+        var content = new StringContent(JsonSerializer.Serialize(dataToSend), System.Text.Encoding.UTF8, "application/json");
+
+        var request = new HttpRequestMessage(HttpMethod.Post, "TestAnonymousEndpoint")
+                {
+                Content = content
+                // Content = new StringContent(JsonSerializer.Serialize(userdata), Encoding.UTF8, "application/json")
+                };
+
+        var responsePostAnon = await _httpClientAnonymus.SendAsync(request);
+        if (responsePostAnon.IsSuccessStatusCode)
+            {
+            responsePostAnonymous = await responsePostAnon.Content.ReadAsStringAsync();
+            responsePostAnonymous ??= "nothing";
+            }
+        else
+            {
+            responsePostAnonymous = responsePostAnon.StatusCode.ToString();
+            }
+
+        var requestAuth = new HttpRequestMessage(HttpMethod.Post, "TestAuthenticatedEndpoint")
+                {
+                Content = content
+                // Content = new StringContent(JsonSerializer.Serialize(userdata), Encoding.UTF8, "application/json")
+                };
+        var responsePostAuth = await _httpClientAuth.SendAsync(requestAuth);
+        if (responsePostAuth.IsSuccessStatusCode)
+            {
+            responsePostAuthenticated = await responsePostAuth.Content.ReadAsStringAsync();
+            responsePostAuthenticated ??= "nothing";
+            }
+        else
+            {
+            responsePostAuthenticated = responsePostAuth.StatusCode.ToString();
+            }
+
+        //clientfactory
+        //this is not working with authentication had to fix
+        // HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:5001/api/TestAuthenticatedEndpoint");
+
+        // var response2Auth = await _httpClientAuth.SendAsync(request);
+        // if (response2Auth.IsSuccessStatusCode)
+        //     {
+        //     result2 = await response2Auth.Content.ReadAsStringAsync();
+        //     result2 ??= "nothing";
+        //     }
+        // else
+        //     {
+        //     result2 = response2Auth.StatusCode.ToString();
+        //     }
+        }
+}
+

@@ -1,0 +1,15 @@
+http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier:b48b65cd-9fdb-46ac-343f-08dc7ab2ecc0
+blazor.webassembly.js:1 
+blazor.webassembly.js:1 http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name:madhusudhan.veerabhadrappa@gmail.com
+blazor.webassembly.js:1 
+blazor.webassembly.js:1 http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress:madhusudhan.veerabhadrappa@gmail.com
+blazor.webassembly.js:1 
+blazor.webassembly.js:1 AspNet.Identity.SecurityStamp:S4XNDWZJMONR6PVOLZSVZGABHYTPFTBT
+blazor.webassembly.js:1 
+blazor.webassembly.js:1 http://schemas.microsoft.com/ws/2008/06/identity/claims/role:Admin
+blazor.webassembly.js:1 
+blazor.webassembly.js:1 exp:1716551845
+blazor.webassembly.js:1 
+blazor.webassembly.js:1 iss:CoreIdentity
+blazor.webassembly.js:1 
+blazor.webassembly.js:1 aud:CoreIdentityUser

@@ -1,0 +1,84 @@
+Shifting done
+
+>persistence custom
+>cascading authentication
+>offline state maintaining
+>Ip rate limiting
+>Request caching
+>loading symbol
+
+
+
+> authorizing, authentication state provider
+>api endpoint versioning--done
+> loading configuration from api to screen--done
+>loading api response to google authentication & others--done
+> persistence custom
+>static then offline storage of authentication details
+> offline data storage
+>CORS
+>api versioning--done
+>caching on api and client both
+>rate limiting
+>authentication cascading
+>api caching
+>offline more & no api data serving
+>MAUI
+>config endpoints as post and datetime key validation
+
+>
+
+DbSchema changes step1
+
+1.Load data manually & leave for sometime with message
+2.UI of Add Profile without any image
+3.upload image & store in folder
+4.Store in azure storage account & compress
+5.Cropping to screen necessary fit size if big
+6.Display onscreen profiles
+Deploy with message this will be charging soon
+
+
+6.Paymemt gateway Adding
+7.Profile validity logic of display date storing
+8.Deducting money after display & giving option to modify earlier
+Deploy
+
+9.Update profile 
+10.Approval logic
+11.Update & Approval by System Admin
+12.Approval by peer with count logic
+13.Report concern & auto blocking
+14.
+
+
+Add Town +Update
+
+
+
+1.Add TownProfile +Update+disable
+
+
+
+
+Fetch Stored Datas
+
+Dispaly Profiles on main page
+
+Approve
+Reject
+
+Store images in Blob
+Shrink images then Store without loosing quality
+Remove Existing Image & repalce wit new
+
+AddMoney
+Deduct 
+
+Subscription
+Per Day Automation
+
+Blob Tier changes
+
+
+The expression 'profile' is invalid inside an 'Include' operation, since it does not represent a property access: 't => t.MyProperty'. To target navigations declared on derived types, use casting ('t => ((Derived)t).MyProperty') or the 'as' operator ('t => (t as Derived).MyProperty'). Collection navigation access can be filtered by composing Where, OrderBy(Descending), ThenBy(Descending), Skip or Take operations. For more information on including related data, see https://go.microsoft.com/fwlink/?LinkID=746393.

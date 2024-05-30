@@ -1,12 +1,12 @@
-﻿using CleanArchitecture.Application.Interfaces;
-using FluentValidation;
+﻿using FluentValidation;
+using SharedResponse;
 
 namespace CleanArchitecture.Application.Features.Products.Commands.UpdateProduct
-{
-    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
-        public UpdateProductCommandValidator(ITranslator translator)
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
         {
+        public UpdateProductCommandValidator(ITranslator translator)
+            {
 
             RuleFor(p => p.Name)
                 .NotNull()
@@ -19,7 +19,7 @@ namespace CleanArchitecture.Application.Features.Products.Commands.UpdateProduct
                 .NotEmpty()
                 .MaximumLength(50)
                 .WithName(p => translator[nameof(p.BarCode)]);
+            }
         }
-    }
 
-}
+    }

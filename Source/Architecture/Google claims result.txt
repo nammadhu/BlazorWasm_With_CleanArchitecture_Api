@@ -1,0 +1,17 @@
+azp:283580482176-9bg60c2t21o02p32bljgi1kuahq4sf51.apps.googleusercontent.com
+ 
+ sub:110847474303853882887
+ 
+ email:madhusudhan.veerabhadrappa@gmail.com
+ 
+ email_verified:True
+ 
+ name:Madhusudhan Veerabhadrappa
+ 
+ picture:https://lh3.googleusercontent.com/a/ACg8ocJw9h98DC5zRuYjx2B3wd_PTwCAeoOjcxOqnSTgeOvoHOE4OGOu8A=s96-c
+ 
+ given_name:Madhusudhan
+ 
+ family_name:Veerabhadrappa
+ 
+ jti:920065153e739549b8f83a6392b77465661d7f6b

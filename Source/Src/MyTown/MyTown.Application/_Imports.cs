@@ -1,0 +1,13 @@
+﻿global using AutoMapper;
+global using CleanArchitecture.Application.Helpers;
+global using CleanArchitecture.Application.Interfaces;
+global using CleanArchitecture.Application.Interfaces.Repositories;
+global using MediatR;
+global using MyTown.Application.Interfaces.Repositories;
+global using MyTown.Domain;
+global using MyTown.SharedModels.DTOs;
+global using PublicCommon;
+global using SharedResponse.Wrappers;
+global using System.Collections.Generic;
+global using System.Threading;
+global using System.Threading.Tasks;

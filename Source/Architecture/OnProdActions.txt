@@ -1,0 +1,21 @@
+Disable exception handling
+remove all developer modes
+seedings
+api openness
+CORS
+
+cmd to get all timezones in local machine powershell  "Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones' | Select-Object PSChildName"
+For Windows App Service type Name and Value as:
+Name=WEBSITE_TIME_ZONE
+Value=Eastern Standard Time
+For Linux App Service type Name and Value as:
+Name=TZ
+Value=America/New_York
+
+
+for reading pipeline activity
+1> ON aZURE pipeline add variables
+2> set it conditionally
+	example: setting using az cli command as below for buildid/number
+	//az webapp config appsettings set --name nextmp --resource-group rg-Next --settings BUILDNUMBER=$BUILD_BUILDID
+3> in code read through Iconfiguration

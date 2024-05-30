@@ -6,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Infrastructure.FileManager
-{
-    public static class ServiceRegistration
     {
-        public static IServiceCollection AddFileManagerInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static class ServiceRegistration
         {
+        public static IServiceCollection AddFileManagerInfrastructure(this IServiceCollection services, IConfiguration configuration)
+            {
             services.AddDbContext<FileManagerDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("FileManagerConnection"));
@@ -18,6 +18,6 @@ namespace CleanArchitecture.Infrastructure.FileManager
             services.AddScoped<IFileManagerService, FileManagerService>();
             return services;
 
+            }
         }
     }
-}

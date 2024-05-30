@@ -1,0 +1,25 @@
+http://schemas.microsoft.com/ws/2008/06/identity/claims/role
+
+Anonymous TO View pages mostly 
+
+Authenticated+
+
+Cards
+Adding: Anyone
+Edit/Delete: Only his card
+Approve:He must be having approved already & same category or less*2
+Like/Dislike: Logged in is enough
+Temp page,with link anyone can view for period of 1 or 2 days
+
+
+Town,CardType MasterData:(will do later)
+All can view,
+Add by :InternalAdmin,RootAdmin
+View Approval state pending: InternalViewer
+Admin Can Edit/Delete
+
+
+Authenticated users Anyone can create Card
+To Edit Card/delete, he must be authenticated & his card only
+
+To Ap

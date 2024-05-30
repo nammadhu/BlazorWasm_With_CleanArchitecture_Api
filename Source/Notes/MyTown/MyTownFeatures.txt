@@ -1,0 +1,57 @@
+AM developing city based web application in which it will be having many listings like Business,Advertisements of Event (Government or Personal),Hotels,Lodges,Schools.
+I know aspnet core , blazor, azure. So wanted to make it initially .net 8 blazor webapp with auto mode & later webassembly Progressive webapp & then mobile apps. 
+AM new to payments,subscription system & gateway. So totally analyze my plan & help me with steps & all corrections
+
+Town :
+Sequentially town displays in the following order:
+1>Town main Image & few links
+2>Priority Advertisements or Alert messages
+3... Then Doctors,Business,Shops,RealEstate,BuyOrSale & More
+
+Town Features:
+0-Each & every data changes had to be traced & logged to address any later difficulty
+0.1- For each page visit keep the count of distinct users viewcount
+1-Public Anonymous access to view the pages & by each user click/open of any townProfile it makes an entry in system(anonymous count) of particular TownProfileId & hit count by any distinct users or same user with minimum of 4 minutes of gap between each click
+2-TO Like/Rating & CommentMessage with login
+3-Option to report illegal/bad of any townitem by 3 users/day or 50users/month then profile automatically gets disappeared & with system admin validation (2 times of actual validators) further.
+4-Business Profiles(TownItem) adding by Owners/Creator with registration charge of 100Rs which includes for adding their TownItem(Id, Title, Phonenumber, email, youtube, facebookUrl, instagramURl, ownerid,3 images by upload(which gets shrinked to system size before storing on Azure blob) ). 
+4.1- After registration untill approvel & date enabling to display it stays on cool tier, once active only it gets moved to Hot tier.
+4.1.1- If not approved within 48Hours then images get moved to Archive storage
+4.2- Once Added,Approved & not used can be in storage for period of 45Days then moved to Archive storage
+4.2.1- If archived then can be activated within next 3 months with charge of 60Rs
+4.2.2- After 45days+3 months data gets removed
+4.3- If rejected also moved to archive storage
+
+5-Each added profile had to be approved by SystemAdmin or equal grade other business owners, which can be either added person select the other TownItem(internally it finds emailid) or type manually their emailid
+6-Approval will get Notification
+7-Approver can approve only if they have valid card state. For each requested approve/reject he gets 3Rs of Credit as validation charges.He can use or transfer to anyone.
+8-Once approved then Owner can choose which date to appear on screen, per day 30Rs
+9-If rejected stays in same stage & informs Owner/Creator
+10- If any update happens to main data like mainimages,title name change then it requires again Approval but till then it stays in current state
+11-If user wanted at any time suddenly he can take out without any approval
+12-On click of TownItem on main page, it gets opened in new page with tag like itown.in/id=134 ,here it shows more details with description. Showing social media recent content of particular url(facebook,instagram,youtibe provided links).
+Optional-Storage(Public) also gets appeared here.
+
+13-Optional-Tagging:Each TownItem- will be having one by default integer id, but additionally & optinally user can request for a tag. this tag registration 50Rs & per day to maintain 4Rs. Example: itown.in/vinod ,itown.in/saloon , itown.in/yamaha
+14- Optional-Storage(Public): Apart from first 3 images ,if user wants to store any more images,documents they can use this . For each 5Mb-1Rs per day charges.
+On display days charge gets doubled as due to compute cost.
+15- Optional-Storage(SecureBox & Encrypted with optional password):
+For each 5Mb-1Rs per day charges. Here no compute cost.
+16-Future plan: Mobile App & Syncup of data like google drive 
+
+17-Individuals can also send directly their profile details by email to register through System Admins with charge of 150Rs payment in comfortable mode.
+18-Also any one (including public) can register others business & he will gets 150Rs in which 50Rs to registered guys. 100Rs to itown system.Then remaining all same.
+
+
+User-
+AddMoneyToWalletFromBankAccount()
+WithDrawMoneyFromWallet()//danger
+TransferMoneyFromWallet();//danger
+DeductMoneyFromWallet()
+AddMoneyToWalletFromActionCredit()
+
+
+*All amount plus tax of 18%
+*The charges wont be increased atleast for 1 year of registration or renewal.
+
+

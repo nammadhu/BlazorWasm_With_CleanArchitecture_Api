@@ -1,0 +1,84 @@
+Always API expects appkey otherwise wont repond... then authentication/authorization all
+ClientWasm calls Anonymous with interceptor AppKey(MyTown) to get config
+Api Anonymous checks for key then returns default configuration for town
+
+On MainLayout razor if logged in
+	getIdTokenAsync()
+		exract Googletoken & send over header on HttpAnoynmousINterceptor(key) ValidateG endpoint to get ApiJwt then sets in memory
+		//todo currently only google handled, if more added then had to add more for the same
+	API side 
+		validating key first
+		then Authorize Using Google-Token scheme JWT validation
+		then issuing JWT of user to clientResponse
+		
+All Anonymous endpoints checks for AppKey at bare minimum
+*Currently Encryption not implemented will do later
+
+All Auth endpoints, checks for Key at first then verifies the JWT and process action
+If Create/update/delete then at appcontext stes createdby/modifiedBy then saves
+
+
+Some old chats:
+
+Already working feature:
+clientside:Blazor webassembly standalone(.net 8)
+google authentication & pasing same token to api request
+Currently using HttpBearerTokenInterceptor adding token & passing google token alone but not storing any other token 
+APi: Asp.net core(.net 8) having Anonymous & Authorize endpoints
+For Authorize endpoints, had to validate token received from client. 
+
+Need to implement:
+if respective account exists in db (if not then creae account)  then return id, & necessary  jwt to clients.
+Later on all every requests should validate the same & also whenver required fetch userid to store in db records
+Help me with full code how to implement this(Need to implement: section) ecurely & robust.
+
+
+i have api, with both anonymous and authorize endpoints. whenever i receive requests with Authorize header & token, i should check the user already exists or not. if exists fetch the userid in db & return jwt to user. if not create in db.
+ 
+  
+
+I Need validation of my architecture stability & security in production, currently i implemnted Asp.Net core API & Blazor Webasssembly Standalone. Regarding clientside secrity & hosting models I need assistence
+
+Hi,
+We are building apps(web) & technology targeting to Tier 2 & 3 cities business & development. Before this also built many Non-Profit apps, but nowhere getting proper customers or money earning way atleast for my investment. Now further Projects also feels little feared. So I need expertise guidance on my way & corrections 
+
+
+
+client					
+1.google login
+2.fetch User/Get (making sure by calling in mainlayout authService.GetIdTokenAsync())
+	if exists then store in localstorage else nothing
+3.On AuthCall, interceptor adds Gtoken and header of KTuserId,KTroles,KTjwt in request
+4.Api side validate, if authorized then exract	KTuserId,KTroles,KTjwt & make sure GTowken also same 
+on userid required place use KTuserid 
+
+
+what i was assuming is, 
+ send google issued token to api with anonymous endpoint called "configuration/userinfo",let api check the information & get the respective userinformation & in return it send api issued token, then client stores that in memory & send for all further endpoints requests as authorization header.
+ is this wrong or what,please clarify me?
+step2> 
+
+Auth flow of my blazor webassembly & web api
+1.After Google authentication, Blazor app receives the ID token (Google-issued).
+2.Blazor app then sends the ID token to the API.
+3.The API validates the ID token and extracts relevant claims (e.g., user ID).
+4.If authorized, the API issues a JWT token (API-issued) containing additional claims.
+5. Blazor app stores the JWT token and sends it in the Authorization header for subsequent API requests.
+
+
+step1. after login sending token to post validatetoken endpoint to get new  api token
+step2. store it in memory & include in all further requests
+step3.
+
+1.login make sure of handling offline stored value  & overwrite
+2.after login extract role & respective action only on each place,try same like neozhu
+3.Role manage,currently add 5 roles
+4.On Click of Add/Edit then had to redirect by itself if not logged in
+Rather after filling then error or redirection is problem
+
+
+
+  my current setup is i have application for town in which many anonymous viewable options & endpoints, few authorize endpoint actions. for which my client is blazor standalone webassembly with remote authentication (google) ,at beginning it starts with extracting the app configuration from api endpoint called Config/Get(Currently anonymous), based on that authentication all will  be loaded. client side  once user authenticated sending that google token to api side using User/validate(currently anonymous) endpoint, once validated either creating or fetching the details it returns api issued jwt token. then that token will be used for Authorize endpoint handling.
+  
+ i will be getting token only after submitting google token till then it needs to be anonymous, so instead of making it anonymous, can i send google token also in header & api side let it validate as authentication for only User/Validate endpint policy, remaining all endpoints api issued toke validation rule/policy. so help em with that code & safe logic. if possible for anonymous endpoints make a some key in between client & server like currentTodayDate+clientname so api side if thats then only serving anonymous endpoints, to avoid other calling publicly 
+  

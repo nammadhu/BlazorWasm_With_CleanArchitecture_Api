@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-
-namespace CleanArchitecture.Infrastructure.Identity.Models
-{
-    public class ApplicationUser : IdentityUser<Guid>
+﻿namespace CleanArchitecture.Infrastructure.Identity.Models
     {
-        public ApplicationUser()
-        {
-            Created = DateTime.Now;
-        }
-        public string Name { get; set; }
-        public DateTime Created { get; set; }
+    //Please refer from Domain layer as this is required their also
+
+    //public class ApplicationUser : IdentityUser<Guid>
+    //{
+    //    public ApplicationUser()
+    //    {
+    //        Created = DateTime.Now;
+    //    }
+    //    public string Name { get; set; }
+    //    public DateTime Created { get; set; }
+    //}
     }
-}

@@ -1,0 +1,12 @@
+﻿@if (Text.HasText())
+    {
+    <MudText>@($"{(Label.HasText()?Label+":":"")} {Text}")</MudText>
+    }
+
+@code {
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+}

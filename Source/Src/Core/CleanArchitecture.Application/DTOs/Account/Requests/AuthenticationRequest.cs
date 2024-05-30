@@ -1,19 +1,19 @@
 ﻿using CleanArchitecture.Application.Helpers;
-using CleanArchitecture.Application.Interfaces;
 using FluentValidation;
+using SharedResponse;
 
 namespace CleanArchitecture.Application.DTOs.Account.Requests
-{
-    public class AuthenticationRequest
     {
+    public class AuthenticationRequest
+        {
         public string UserName { get; set; }
 
         public string Password { get; set; }
-    }
+        }
     public class AuthenticationRequestValidator : AbstractValidator<AuthenticationRequest>
-    {
-        public AuthenticationRequestValidator(ITranslator translator)
         {
+        public AuthenticationRequestValidator(ITranslator translator)
+            {
             RuleFor(x => x.UserName)
                 .NotEmpty()
                 .NotNull()
@@ -24,6 +24,6 @@ namespace CleanArchitecture.Application.DTOs.Account.Requests
                 .NotNull()
                 .Matches(Regexs.Password)
                 .WithName(p => translator[nameof(p.Password)]);
+            }
         }
     }
-}

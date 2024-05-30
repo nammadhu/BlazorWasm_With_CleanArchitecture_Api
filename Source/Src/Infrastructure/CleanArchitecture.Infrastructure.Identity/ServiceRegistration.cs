@@ -1,8 +1,6 @@
 ﻿using CleanArchitecture.Application.Interfaces.UserInterfaces;
-using CleanArchitecture.Application.Wrappers;
 using CleanArchitecture.Domain.Settings;
 using CleanArchitecture.Infrastructure.Identity.Contexts;
-using CleanArchitecture.Infrastructure.Identity.Models;
 using CleanArchitecture.Infrastructure.Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -11,18 +9,23 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PublicCommon;
+
+//using Newtonsoft.Json;
+//using Newtonsoft.Json.Serialization;
+using SharedResponse.Wrappers;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
 namespace CleanArchitecture.Infrastructure.Identity
-{
-    public static class ServiceRegistration
     {
+    public static class ServiceRegistration
+        {
 
         public static void AddIdentityCookie(this IServiceCollection services, IConfiguration configuration)
-        {
+            {
             var identitySettings = configuration.GetSection(nameof(IdentitySettings)).Get<IdentitySettings>();
             services.AddSingleton(identitySettings);
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
@@ -40,9 +43,9 @@ namespace CleanArchitecture.Infrastructure.Identity
             })
                 .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders();
-        }
+            }
         public static void AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
-        {
+            {
             services.AddDbContext<IdentityContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("IdentityConnection"),
@@ -50,9 +53,9 @@ namespace CleanArchitecture.Infrastructure.Identity
 
             services.AddTransient<IGetUserServices, GetUserServices>();
             services.AddTransient<IAccountServices, AccountServices>();
-        }
+            }
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
-        {
+            {
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
             var jwtSettings = configuration.GetSection(nameof(JWTSettings)).Get<JWTSettings>();
@@ -68,7 +71,7 @@ namespace CleanArchitecture.Infrastructure.Identity
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = false;
                     o.TokenValidationParameters = new TokenValidationParameters
-                    {
+                        {
                         ValidateIssuerSigningKey = true,
                         ValidateIssuer = true,
                         ValidateAudience = true,
@@ -77,9 +80,9 @@ namespace CleanArchitecture.Infrastructure.Identity
                         ValidIssuer = jwtSettings.Issuer,
                         ValidAudience = jwtSettings.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
-                    };
+                        };
                     o.Events = new JwtBearerEvents()
-                    {
+                        {
                         OnChallenge = async context =>
                         {
                             context.HandleResponse();
@@ -107,8 +110,12 @@ namespace CleanArchitecture.Infrastructure.Identity
                                 context.Fail("Token secuirty stamp is not valid.");
                         },
 
-                    };
-                });
+                        };
+                })
+            .AddScheme<GoogleTokenAuthenticationOptions, GoogleTokenAuthenticationHandler>("GoogleToken", options => { });
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
+            }
+
         }
     }
-}

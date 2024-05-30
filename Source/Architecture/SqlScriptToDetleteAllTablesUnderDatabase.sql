@@ -1,0 +1,22 @@
+﻿DECLARE @tableName NVARCHAR(MAX)
+DECLARE @dropTableSQL NVARCHAR(MAX)
+
+DECLARE tableCursor CURSOR FOR
+SELECT QUOTENAME(TABLE_SCHEMA) + '.' + QUOTENAME(TABLE_NAME)
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE'
+
+OPEN tableCursor
+
+FETCH NEXT FROM tableCursor INTO @tableName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @dropTableSQL = 'DROP TABLE ' + @tableName
+    EXEC sp_executesql @dropTableSQL
+
+    FETCH NEXT FROM tableCursor INTO @tableName
+END
+
+CLOSE tableCursor
+DEALLOCATE tableCursor

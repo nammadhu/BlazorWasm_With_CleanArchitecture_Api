@@ -1,0 +1,175 @@
+Currently even after login its not calling ValidateG,so gb side its not creating so had to create a call 
+
+3.IP address logging on ,or like after config/get
+
+About Me
+
+1-Is my Architecure is good or how to Improvise?
+Arch diagram...I had to send
+2-how to get help in terms of technical exact area like Blazor,Azure
+Advisory team,
+Program management benefits, service request
+
+Azure portal,sevirity A is critical
+
+Logs... 
+
+
+3-Marketing & Adv 
+4-Way for expansion & Growth via foundershub
+Idea validation...
+Before production...
+
+
+
+on delete ,if not admin then either hide or show message
+
+endpoint side add authorize of token on each api actions create,edit,delete
+on UI, Create if not logged in then login & then do check--done
+
+towncardtypes rename all place
+
+login issue ---later post login redirection to particular url--pending
+config/get- send app url based on that reply  configuration including navigations & all..
+So sakrebyle,all code base handled at once
+
+1.if expired then should auto relogin
+2. ui controls on click of create/up/delete if not logged in immediately should redirect to login page & login
+3. appKey dynamically change
+
+doing creating all repo,services of towns
+
+TowcCardtypes CRUD done
+-On list page, pagination numbers not sending,had to send
+-Same list page implement search functioanlity same like neozhu
+-Fetch all & store in offline
+	Search pending
+	Master Data setup & Seeding
+Town CRUD with towncardtype as TOWN
+Card CRUD 
+Screen Design alignments	
+
+Shifting done
+
+>persistence custom done
+>cascading authentication done
+>offline state maintaining done
+>Ip rate limiting done
+>Request caching --later
+>loading symbol done
+
+
+
+> authorizing, authentication state provider done
+>api endpoint versioning--later
+> loading configuration from api to screen--done
+>loading api response to google authentication & others--done
+>static then offline storage of authentication details
+> offline data storage
+>CORS
+>api versioning--done
+>caching on api and client both
+>rate limiting--DONE
+>authentication cascading
+>api caching
+>offline more & no api data serving
+>MAUI
+>config endpoints as post and datetime key validation
+
+>
+
+DbSchema changes step1
+
+1.Load data manually & leave for sometime with message
+2.UI of Add Profile without any image
+3.upload image & store in folder
+4.Store in azure storage account & compress
+5.Cropping to screen necessary fit size if big
+6.Display onscreen profiles
+Deploy with message this will be charging soon
+
+
+6.Paymemt gateway Adding
+7.Profile validity logic of display date storing
+8.Deducting money after display & giving option to modify earlier
+Deploy
+
+9.Update profile 
+10.Approval logic
+11.Update & Approval by System Admin
+12.Approval by peer with count logic
+13.Report concern & auto blocking
+14.
+
+Notes:
+We should register all for Mediator & automapper always from dervied projects
+
+Later:
+Fetch config from appsettings.json for "/v1"
+
+
+towncardtype listing done,
+next craete,update,delete with dto or command/query
+
+
+/api/v1/TownCardType/GetPagedList
+curl -X 'GET' \
+  'https://localhost:5001/api/v1/TownCardType/GetPagedList' \
+  -H 'accept: text/plain'
+
+/api/v1/TownCardType/GetById
+curl -X 'GET' \
+  'https://localhost:5001/api/v1/TownCardType/GetById?Id=5' \
+  -H 'accept: text/plain'
+
+/api/v1/TownCardType/GetByIdAuth
+curl -X 'GET' \
+  'https://localhost:5001/api/v1/TownCardType/GetByIdAuth' \
+  -H 'accept: text/plain'
+
+/api/v1/TownCardType/Create
+curl -X 'POST' \
+  'https://localhost:5001/api/v1/TownCardType/Create' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 0,
+  "created": "2024-05-16T07:40:30.463Z",
+  "lastModified": "2024-05-16T07:40:30.463Z",
+  "createdBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "lastModifiedBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "applicationTypeId": 0,
+  "name": "string",
+  "shortName": "string",
+  "description": "string",
+  "price": 0,
+  "priorityOrder": 0
+}'
+
+/api/v1/TownCardType/Update
+curl -X 'PUT' \
+  'https://localhost:5001/api/v1/TownCardType/Update' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 0,
+  "created": "2024-05-16T07:40:51.496Z",
+  "lastModified": "2024-05-16T07:40:51.496Z",
+  "createdBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "lastModifiedBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "applicationTypeId": 0,
+  "name": "string",
+  "shortName": "string",
+  "description": "string",
+  "price": 0,
+  "priorityOrder": 0
+}'
+
+
+/api/v1/TownCardType/Delete
+curl -X 'DELETE' \
+  'https://localhost:5001/api/v1/TownCardType/Delete?Id=9' \
+  -H 'accept: text/plain'
+  

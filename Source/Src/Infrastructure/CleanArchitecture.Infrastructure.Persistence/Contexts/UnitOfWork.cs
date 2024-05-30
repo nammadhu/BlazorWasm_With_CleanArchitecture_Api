@@ -1,17 +1,36 @@
 ﻿using CleanArchitecture.Application.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Persistence.Contexts
-{
-    public class UnitOfWork(ApplicationDbContext dbContext) : IUnitOfWork
     {
+    public class UnitOfWork(ApplicationDbContext dbContext) : IUnitOfWork
+        {
         public async Task<bool> SaveChangesAsync()
-        {
-            return await dbContext.SaveChangesAsync() > 0;
-        }
+            {
+            try
+                {
+                return await dbContext.SaveChangesAsync() > 0;
+                }
+            catch (System.Exception e)
+                {
+                Console.Write(e.ToString());
+                throw;
+                }
+
+            }
         public bool SaveChanges()
-        {
-            return dbContext.SaveChanges() > 0;
+            {
+            try
+                {
+                return dbContext.SaveChanges() > 0;
+                }
+            catch (Exception e)
+                {
+                Console.Write(e.ToString());
+                throw;
+                }
+
+            }
         }
     }
-}

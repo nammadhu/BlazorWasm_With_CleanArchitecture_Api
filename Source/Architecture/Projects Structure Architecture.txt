@@ -1,0 +1,6 @@
+1>BlazorRazorClassLibraryBase
+	All base shared components
+2>From above all specific projects will be created like
+	BlazorRazorClassLibraryMyVote,BlazorRazorClassLibraryMyTown
+3>Finally clubbing to 	BlazorCommonRazorComponents
+4>Calling BlazorCommonRazorComponents by CLient or Wasm or webapp Projects

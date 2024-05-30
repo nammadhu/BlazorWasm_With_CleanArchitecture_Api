@@ -1,0 +1,36 @@
+﻿<MudDialog Class="center-dialog">
+    <DialogContent>
+        <MudText>Are you sure you want to Remove : @Name?</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@ConfirmDelete">Remove</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="@Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+<style>
+    .center-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 90%;
+    }
+
+    @@media (max-width: 600px) {
+        .center-dialog {
+            /* Adjustments for mobile screens */
+            max-width: 80%;
+            max-height: 80%;
+        }
+    }
+
+</style>
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+    [Parameter]
+    public string Name { get; set; }
+
+    void ConfirmDelete() => MudDialog.Close(DialogResult.Ok(Name));
+    void Cancel() => MudDialog.Cancel();
+}

@@ -1,0 +1,140 @@
+In Blazor applications, component lifecycle hooks play a crucial role in managing the different stages of a component's existence. Here's a breakdown of some key lifecycle hooks with examples in the latest version (as of April 7, 2024):
+
+**1. OnInitialized:**
+
+* This method is called synchronously as soon as the component is initialized, but **before** it's rendered in the browser.
+* It's a good place for tasks that don't require interaction with the DOM (Document Object Model), such as:
+    * Initializing variables based on parameters or services.
+    * Performing calculations or data manipulation that doesn't rely on UI elements.
+
+**Example:**
+
+```csharp
+@code {
+  private int counter = 0;
+
+  protected override void OnInitialized()
+  {
+    counter = GetInitialCount(); // Hypothetical method to fetch initial count
+  }
+
+  private int GetInitialCount()
+  {
+    // Logic to fetch initial count (e.g., from a service or configuration)
+  }
+}
+```
+
+**2. OnInitializedAsync:**
+
+* This method is called asynchronously as soon as the component is initialized, similar to `OnInitialized`, but allows asynchronous operations.
+* Use it for tasks that require waiting for asynchronous data before initial rendering, such as:
+    * Fetching data from an API.
+    * Performing asynchronous initialization tasks.
+
+**Example:**
+
+```csharp
+@code {
+  private List<string> items;
+
+  protected override async Task OnInitializedAsync()
+  {
+    items = await LoadItemsAsync(); // Hypothetical method to load items asynchronously
+  }
+
+  private async Task<List<string>> LoadItemsAsync()
+  {
+    // Logic to load items from an API or other asynchronous source
+  }
+}
+```
+
+**3. OnParametersSet:**
+
+* This method is called synchronously whenever the component receives new values for its parameters.
+* It's useful for reacting to changes in parent component state or user interaction.
+* You can update internal state or perform actions based on the new parameter values.
+
+**Example:**
+
+```csharp
+@code {
+  [Parameter]
+  public string CurrentUser { get; set; }
+
+  protected override void OnParametersSet()
+  {
+    if (CurrentUser != null)
+    {
+      // Perform actions based on the updated CurrentUser value
+    }
+  }
+}
+```
+
+**4. OnParametersSetAsync:**
+
+* This method is called asynchronously whenever the component receives new values for its parameters, similar to `OnParametersSet`, but allows asynchronous operations.
+* Use it for scenarios where reacting to parameter changes involves asynchronous tasks.
+
+**Example:**
+
+```csharp
+@code {
+  [Parameter]
+  public string SelectedProductId { get; set; }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    if (SelectedProductId != null)
+    {
+      await LoadProductDetailsAsync(SelectedProductId); // Hypothetical method to load details asynchronously
+    }
+  }
+
+  private async Task LoadProductDetailsAsync(string productId)
+  {
+    // Logic to load product details from an API or other asynchronous source
+  }
+}
+```
+
+**5. OnAfterRender:**
+
+* This method is called synchronously after the component has been fully rendered in the browser for the first time **and** on subsequent re-renders.
+* It's a good place for:
+    * Accessing DOM elements using `@ref` or JavaScript interop.
+    * Performing actions that require the component to be fully rendered.
+
+**Example:**
+
+```csharp
+@code {
+  private MudTextField textField;
+
+  protected override void OnAfterRender(bool firstRender)
+  {
+    if (firstRender)
+    {
+      textField.FocusAsync(); // Focus the textbox only on the first render
+    }
+  }
+}
+```
+
+**6. OnAfterRenderAsync:**
+
+* This method is called asynchronously after the component has been fully rendered in the browser, similar to `OnAfterRender`, but allows asynchronous operations.
+* Use it for scenarios where post-rendering tasks require asynchronous operations.
+
+**Important Note:**
+
+* The `firstRender` parameter in `OnAfterRender` and `OnAfterRenderAsync` indicates whether it's the first render or a subsequent re-render. This allows you to perform specific actions only on the first render.
+
+Remember, the order of execution for these lifecycle hooks is as follows:
+
+1. `OnInitialized` (or `OnInitializedAsync`)
+2. `OnParametersSet` (or `OnParametersSetAsync` - if parameters changed)
+3. Component is rendered in the browser.
+4. `OnAfterRender` (

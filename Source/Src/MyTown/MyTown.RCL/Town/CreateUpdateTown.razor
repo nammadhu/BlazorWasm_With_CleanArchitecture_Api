@@ -1,0 +1,80 @@
+﻿@using Microsoft.Extensions.Localization
+@using MyTown.SharedModels.Features.Towns.Commands
+@using MyTown.RCL.Town
+@using SharedResponse
+@inject IStringLocalizer<TownDto> L
+@inject TownService townService
+@inherits MudComponentBase
+@* @inject ITranslator translator *@
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="@model" @ref="@_form" Validation="@(_modelValidator.Validate(model))">
+            @*  <MudGrid> *@
+            @*TODO: define mudform that should be edit fields, for example:*@
+            @if (model.Id > 0)
+                {
+                <MudText>@model.Id</MudText>
+                }
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Name)]" @bind-Value="model.Name" For="@(() => model.Name)" Required="true" RequiredError="@L["Name is required!"]"></MudTextField>
+            @* <MudTextField Label="@L[model.GetMemberDescription(x => x.ShortName)]" @bind-Value="model.ShortName" For="@(() => model.ShortName)" Required="true" RequiredError="@L["ShortName is required!"]"></MudTextField> *@
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Description)]" Lines="1" For="@(() => model.Description)" @bind-Value="model.Description"></MudTextField>
+            @* <MudTextField Label="@L[model.GetMemberDescription(x => x.Price)]" @bind-Value="model.Price" For="@(() => model.Price)" Required="true" RequiredError="@L["Price is required!"]"></MudTextField>
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.PriorityOrder)]" For="@(() => model.PriorityOrder)" @bind-Value="model.PriorityOrder"></MudTextField>
+ *@
+            @*  </MudGrid> *@
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@ConstantString.Cancel</MudButton>
+        <MudButton Loading="@_saving" OnClick="Submit">@ConstantString.Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [EditorRequired]
+    [Parameter]
+    public CreateUpdateTownCommand model { get; set; } = null!;
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    MudForm? _form;
+    private bool _saving;
+
+    CreateUpdateTownCommandValidator _modelValidator = new CreateUpdateTownCommandValidator();//translator
+
+
+    async Task Submit()
+        {
+        try
+            {
+            _saving = true;
+            await _form!.Validate().ConfigureAwait(false);
+            if (!_form!.IsValid)
+                return;
+
+            var res = await townService.CreateUpdateTownAsync(model);
+
+            if (res != null && res.Success)
+                {
+                MudDialog.Close(DialogResult.Ok(true));
+                Snackbar.Add(ConstantString.SaveSuccess, Severity.Info);
+                }
+            else
+                {
+                Snackbar.Add(res == null || res.Errors == null ? "UnKnown Error" : res.Errors.FirstOrDefault().Description, Severity.Error);
+                }
+            }
+        finally
+            {
+            _saving = false;
+            }
+        }
+
+    void Cancel()
+        {
+        MudDialog.Cancel();
+        }
+
+}

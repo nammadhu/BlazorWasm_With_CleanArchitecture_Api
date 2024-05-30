@@ -1,0 +1,12 @@
+Blazor WebApp AutoMode execution
+
+App.razor OnInitialized() then OnInitializedAsync()
+Routes.razor OnInitialized() then OnInitializedAsync()
+MainLayout.razor OnInitialized() then OnInitializedAsync()
+Navmenu.razor OnInitialized() then OnInitializedAsync()
+
+If any api calls then that
+
+Then clident side “/” root page OnInitialized() then OnInitializedAsync()
+
+Then again same from top to bottom on each page call

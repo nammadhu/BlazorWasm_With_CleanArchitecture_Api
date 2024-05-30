@@ -1,0 +1,42 @@
+under './Src/Core/CleanArchitecture.Application
+//before executing create all the class types & return types definitions ready
+//all query should return dto only
+
+1 Towns Comamnd & Queries Commands 
+ dotnet new ca-use-case --feature-name Towns --usecase-name CreateTown --usecase-type command --return-type int
+ dotnet new ca-use-case -fn Towns -ut query -un GetTowns  -rt "List<TownDto>" 
+ dotnet new ca-use-case -fn Towns -ut querypagedlist -un GetTowns  -rt TownDto  
+ dotnet new ca-use-case -fn Towns -ut query -un GetTownById  -rt TownDto 
+ 
+2 TownCards Comamnd & Queries Commands 
+ dotnet new ca-use-case --feature-name TownCards --usecase-name TownCard --usecase-type command --return-type int
+ dotnet new ca-use-case -fn TownCards -ut query -un GetTownCards  -rt "List<TownCardDto>" 
+ dotnet new ca-use-case -fn TownCards -ut querypagedlist -un GetTownCards  -rt TownCardDto  
+ dotnet new ca-use-case -fn TownCards -ut query -un GetTownCardById  -rt TownCardDto 
+  
+3 TownCardTypeMasterDatas Commands & Queries
+ dotnet new ca-use-case --feature-name TownCardTypeMasterDatas --usecase-name CreateUpdateTownCardTypeMasterData --usecase-type command --return-type TownCardTypeMasterData
+ 
+ dotnet new ca-use-case --feature-name TownCardTypeMasterDatas --usecase-name CreateTownCardTypeMasterData --usecase-type command --return-type int
+ dotnet new ca-use-case --feature-name TownCardTypeMasterDatas --usecase-name UpdateTownCardTypeMasterData --usecase-type command --return-type int
+ 
+  dotnet new ca-use-case -fn TownCardTypeMasterDatas -ut query -un        	GetTownCardTypeMasterDatas  -rt "List<TownCardTypeDto>" 
+  
+  dotnet new ca-use-case -fn TownCardTypeMasterDatas -ut query -un GetTownCardTypeMasterDataById  -rt "TownCardTypeDto" 
+  
+  dotnet new ca-use-case -fn TownCardTypeMasterDatas -ut querypagedlist -un GetTownCardTypeMasterDatas  -rt TownCardTypeDto  
+  
+  
+  
+  
+ DbMigrations 
+  add-migration baseEntityChanges -Context ApplicationDbContext -project CleanArchitecture.Infrastructure.Persistence
+update-database -Context ApplicationDbContext
+add-migration baseEntityChanges -Context FileManagerDbContext -project CleanArchitecture.Infrastructure.FileManager
+update-database -Context FileManagerDbContext
+add-migration baseEntityChanges -Context IdentityContext -project CleanArchitecture.Infrastructure.Identity
+update-database -Context IdentityContext
+
+
+  
+  

@@ -1,0 +1,41 @@
+webapp   https://nextmp.azurewebsites.net/
+map to domain next-mp.in
+remaining all just redirections 302
+mp24.in
+next-choice.in
+
+
+
+
+
+
+
+Google login using kattheworks@gmail.com account working good
+https://nextmp.azurewebsites.net/signin-google
+https://localhost:7216/signin-google
+
+fb  katthe.com@outlook.com having some issue,will see later
+mp24.in app for dev
+next-mp.in for production
+https://localhost:7216/signin-facebook
+https://nextmp.azurewebsites.net/signin-facebook
+
+
+using onedoallr gmail main azure account itself...working good
+https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/microsoft-logins?view=aspnetcore-8.0
+redirect-uris
+https://localhost:7216/signin-microsoft
+https://nextmp.azurewebsites.net/signin-microsoft
+
+twitter
+https://localhost:7216/signin-twitter
+https://nextmp.azurewebsites.net/signin-twitter
+appid 28443477
+oauth20. clientid U2l0OGQ4bXlJeW4xUmlsNHlQTXE6MTpjaQ
+oauth20. secret 1DjcbO8nnn7yznptmPneTgfHSmp8fHBu9ndLGloiBynP0sw7ls
+
+apikey   VSiQHdAerscorgZRpv6FGztse   consumerkey
+apikeysecret  tD4rfnSCTWJLwJqTvrPEVfVO1fcRjGvs8v4i71OPTAsbuvQoKJ   consumersecret
+
+https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/twitter-logins?view=aspnetcore-8.0
+https://chsakell.com/2019/07/28/asp-net-core-identity-series-external-provider-authentication-registration-strategy/#microsoft

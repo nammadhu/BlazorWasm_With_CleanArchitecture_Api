@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Features\Towns\Commands\CreateTownCommandHandler.cs" />
+    <Compile Remove="Features\Towns\Commands\UpdateTownCommandHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
+    <ProjectReference Include="..\MyTown.Domain\MyTown.Domain.csproj" />
+    <ProjectReference Include="..\MyTown.SharedModels\MyTown.SharedModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Repositories\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,51 @@
+alconstituency refresh for every 3 min once
+client side refresh for every 5 minute once
+vote summary check for update RefreshFrequncyInMinutes=1 minutes
+
+
+https://youtu.be/njA7Wb1F7pY?si=g15ESyEQNyCe5IsV
+
+facebook,microsoft,instagram integration
+ui design change
+deplyments pipleine
+restart for each day once IF posible
+
+
+make api names in separate file as const & use paths
+
+integrate below 1 & 2 done
+
+since 1 user can like 100s of const Messages, so cant extract all those,its bad design...so not extracting in any chance
+instead Support/Oppose researched only on support/oppose click inside handler
+
+1.apis
+1> Fetch all constituencies with summary(constituency + summary tables)   (done)
+
+2> fetch myvote from vote table using myid.........done
+
+3> add my vote to vote table 
+
+4> add supportOrOppose others voteMessage based on voteid & store on SupportOrOpposeTable
+
+5> in backgr
+
+2. background service to calcualte summary
+
+3.page design
+
+aspnet core server side authetnication validation if logged in & userid
+
+google intergration done
+email confirmation bypass done
+
+
+
+
+
+
+
+
+
+
+
+change pk to be as string ....done
