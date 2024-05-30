@@ -82,12 +82,9 @@
 
     async Task LoadServerData()
         {
-        var fetchAll = await TownService.GetTownsAsync(new GetTownsPagedListQuery
-                {
-                All = true
-                });
-        if (fetchAll?.Data != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
-            Elements = fetchAll.Data;
+        var fetchAll = await TownService.GetAllTownsAsync();
+        if (fetchAll != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
+            Elements = fetchAll;
         }
 
     private bool FilterFunc1(TownDto element) => FilterFunc(element, searchStringTownName);

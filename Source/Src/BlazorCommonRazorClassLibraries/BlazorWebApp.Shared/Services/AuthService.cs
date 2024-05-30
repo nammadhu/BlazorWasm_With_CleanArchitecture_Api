@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using PublicCommon;
+using SharedResponse;
 using SharedResponse.Wrappers;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -11,7 +12,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace BlazorWebApp.Shared.Services
-    {
+{
     public class AuthService(
         AuthenticationStateProvider authStateProvider, IJSRuntime JSRuntime, ILocalStorageService localStorageService,
         IHttpClientFactory httpClientFactory, NavigationManager navigationManager, ClientConfig clientConfig)

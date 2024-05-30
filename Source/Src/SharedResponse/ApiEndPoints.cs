@@ -1,7 +1,7 @@
-﻿namespace BlazorWebApp.Shared
-    {
+﻿namespace SharedResponse
+{
     public class ApiEndPoints
-        {
+    {
 
         public const string ClientAnonymous = "AnonymousClient";
         public const string ClientAuth = "AuthClient";
@@ -28,5 +28,14 @@
         //public const string TokenExtractionPost = "v1/AuthenticationConfigurations/Validate";
         public const string TokenExtractionPostGoogle = "v1/Auth/ValidateG";
         public const string ApiIssuedJwt = "ApiIssuedJwt";
-        }
+
+        public const string GetAll = "GetAll";
+        public const string GetById = "GetById";
+        public const string GetPagedList = "GetPagedList";
+        public const string Create = "Create";
+        public const string Update = "Update";
+        public const string Delete = "Delete";
+
+
     }
+}

@@ -63,7 +63,7 @@
                 }
             else
                 {
-                Snackbar.Add(res == null || res.Errors == null ? "UnKnown Error" : res.Errors.FirstOrDefault().Description, Severity.Error);
+                Snackbar.Add(res == null || res.Errors == null ? "UnKnown Error" : res.Errors.FirstOrDefault().ErrorCode.ToString(), Severity.Error);
                 }
             }
         finally
