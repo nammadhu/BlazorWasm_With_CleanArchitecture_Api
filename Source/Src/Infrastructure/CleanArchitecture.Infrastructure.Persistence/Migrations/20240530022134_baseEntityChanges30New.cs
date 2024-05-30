@@ -1,20 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace CleanArchitecture.Infrastructure.Persistence.Migrations
-    {
+{
     /// <inheritdoc />
-    public partial class baseEntityChangesNew : Migration
-        {
+    public partial class baseEntityChanges30New : Migration
+    {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
-            {
-            migrationBuilder.CreateTable(
+        {
+          /*  migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
-                    {
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -25,16 +25,16 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                    },
+                },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                });
+                });*/
 
             migrationBuilder.CreateTable(
                 name: "TownCardTypeMasterDatas",
                 columns: table => new
-                    {
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicationTypeId = table.Column<byte>(type: "tinyint", nullable: false),
@@ -47,7 +47,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                    },
+                },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TownCardTypeMasterDatas", x => x.Id);
@@ -56,13 +56,13 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
             migrationBuilder.CreateTable(
                 name: "Towns",
                 columns: table => new
-                    {
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     District = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UrlName1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UrlName2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UrlName1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UrlName2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -82,7 +82,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     InstagramUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TwitterUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherReferenceUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                    },
+                },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Towns", x => x.Id);
@@ -91,7 +91,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
             migrationBuilder.CreateTable(
                 name: "TownCards",
                 columns: table => new
-                    {
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TypeId = table.Column<int>(type: "int", nullable: false),
@@ -119,7 +119,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     InstagramUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TwitterUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherReferenceUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                    },
+                },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TownCards", x => x.Id);
@@ -146,11 +146,11 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                 name: "IX_TownCards_TypeId",
                 table: "TownCards",
                 column: "TypeId");
-            }
+        }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
-            {
+        {
             migrationBuilder.DropTable(
                 name: "Products");
 
@@ -162,6 +162,6 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Towns");
-            }
         }
     }
+}

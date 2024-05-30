@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240530021059_baseEntityChanges22")]
-    partial class baseEntityChanges22
+    [Migration("20240530022134_baseEntityChanges30New")]
+    partial class baseEntityChanges30New
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
