@@ -9,10 +9,8 @@
                 @NavigationManager.AppSettings(appConfigurations).Title.SubstringSafe(18)
                 }
         </a>
-        @if (System.Diagnostics.Debugger.IsAttached)
-            {
-                <small>@(appConfigurations.EnvironmentName ?? "")</small>
-            }
+        <small>@(appConfigurations.EnvironmentName ?? "Test")</small>
+        <small>@(appConfigurations?.AppSettingsForClient?.IpAddressClientUser??"".ToString())</small>
     </div>
 </div>
 
@@ -157,8 +155,9 @@
         </div> *@
 
     </nav>
-</div>
 
+
+</div>
 @code {
     private string? currentUrl;
 
