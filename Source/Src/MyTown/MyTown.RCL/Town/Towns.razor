@@ -21,16 +21,17 @@
     </ToolBarContent>
     <HeaderContent>
         <MudTh>Name</MudTh>
-        <MudTh>Short Name</MudTh>
+        <MudTh>SubTitle</MudTh>
         <MudTh>Description</MudTh>
-        <MudTh>Price</MudTh>
-        <MudTh>Priority Order</MudTh>
-        <MudTh>Actions</MudTh>
+        <MudTh>State</MudTh>
+      @*   <MudTh>Priority Order</MudTh>
+        <MudTh>Actions</MudTh> *@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
-      @*   <MudTd DataLabel="Short Name">@context.ShortName</MudTd> *@
+        <MudTd DataLabel="Short Name">@context.SubTitle</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Description">@context.State</MudTd>
        @*  <MudTd DataLabel="Price">@context.Price</MudTd>
         <MudTd DataLabel="Priority Order">@context.PriorityOrder</MudTd> *@
         <MudTd>

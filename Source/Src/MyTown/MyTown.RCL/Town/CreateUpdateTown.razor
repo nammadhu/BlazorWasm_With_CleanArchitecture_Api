@@ -15,9 +15,10 @@
                 {
                 <MudText>@model.Id</MudText>
                 }
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.Name)]" @bind-Value="model.Name" For="@(() => model.Name)" Required="true" RequiredError="@L["Name is required!"]"></MudTextField>
-            @* <MudTextField Label="@L[model.GetMemberDescription(x => x.ShortName)]" @bind-Value="model.ShortName" For="@(() => model.ShortName)" Required="true" RequiredError="@L["ShortName is required!"]"></MudTextField> *@
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.Description)]" Lines="1" For="@(() => model.Description)" @bind-Value="model.Description"></MudTextField>
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Name)]" @bind-Value="model.Name" For="@(() => model.Name)" Required="true" RequiredError="@L["Name is required!"]"/>
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.SubTitle)]" @bind-Value="model.SubTitle" For="@(() => model.SubTitle)"/>
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Description)]" Lines="1" For="@(() => model.Description)" @bind-Value="model.Description"/>
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.State)]" @bind-Value="model.State" For="@(() => model.State)" />
             @* <MudTextField Label="@L[model.GetMemberDescription(x => x.Price)]" @bind-Value="model.Price" For="@(() => model.Price)" Required="true" RequiredError="@L["Price is required!"]"></MudTextField>
             <MudTextField Label="@L[model.GetMemberDescription(x => x.PriorityOrder)]" For="@(() => model.PriorityOrder)" @bind-Value="model.PriorityOrder"></MudTextField>
  *@
