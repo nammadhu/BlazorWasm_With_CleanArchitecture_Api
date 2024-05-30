@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\CardTypes\Commands\CreateTownCardTypeMasterDataCommand.cs" />
+    <Compile Remove="Features\CardTypes\Commands\CreateTownCardTypeMasterDataCommandValidator.cs" />
+    <Compile Remove="Features\CardTypes\Commands\UpdateTownCardTypeMasterDataCommand.cs" />
+    <Compile Remove="Features\CardTypes\Commands\UpdateTownCardTypeMasterDataCommandValidator.cs" />
+    <Compile Remove="Features\Towns\Commands\CreateTownCommand.cs" />
+    <Compile Remove="Features\Towns\Commands\CreateTownCommandValidator.cs" />
+    <Compile Remove="Features\Towns\Commands\UpdateTownCommand.cs" />
+    <Compile Remove="Features\Towns\Commands\UpdateTownCommandValidator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.9.1" />
     <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
@@ -15,11 +26,6 @@
     <ProjectReference Include="..\..\PublicCommon\PublicCommon.csproj" />
     <ProjectReference Include="..\..\SharedResponse\SharedResponse.csproj" />
     <ProjectReference Include="..\MyTown.Domain\MyTown.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Features\" />
   </ItemGroup>
 
 </Project>

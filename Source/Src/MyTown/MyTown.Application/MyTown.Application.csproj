@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\CardTypes\Commands\CreateTownCardTypeMasterDataCommandHandler.cs" />
+    <Compile Remove="Features\CardTypes\Commands\UpdateTownCardTypeMasterDataCommandHandler.cs" />
     <Compile Remove="Features\Towns\Commands\CreateTownCommandHandler.cs" />
     <Compile Remove="Features\Towns\Commands\UpdateTownCommandHandler.cs" />
   </ItemGroup>
@@ -19,10 +21,6 @@
     <ProjectReference Include="..\..\Core\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
     <ProjectReference Include="..\MyTown.Domain\MyTown.Domain.csproj" />
     <ProjectReference Include="..\MyTown.SharedModels\MyTown.SharedModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interfaces\Repositories\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,244 @@
+﻿@* @page "/autosearch" *@
+
+@if (_allConstituencies == null)
+    { 
+        @* this works only on stream rendering *@
+    <p>Loading results...</p>
+    }
+
+else if (_allConstituencies.Any())
+    {
+    <MudAutocomplete T="string" @ref="@autoComplete" Label="Type Constituency Name" SearchFunc="@Search" ResetValueOnEmptyText="true"
+                     AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary"
+                     Clearable=true OnClearButtonClick="()=>{SearchTerm=string.Empty;}">
+    </MudAutocomplete>
+    @if (_myVote != null && _constituencies.Count > 0 && !_constituencies.Exists(c => c.Id == _myVote.ConstituencyId))
+        {
+
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="() => OnAddUpdateMyVoteToConstituency(_myVote.ConstituencyId)">
+            <MudIcon Icon="@Icons.Material.Filled.HowToVote" />
+            <small>Update My Vote @_myVote.ConstituencyName.SubstringSafe(10) </small>
+        </MudButton>
+        }
+    @*  @if (!string.IsNullOrEmpty(SearchTerm) && NoMatchFound)
+        {
+        <MudText> No Match found for Search input @SearchTerm</MudText>
+        } *@
+
+    @* constituency results Style="@($"background :#D0FED0;")" *@
+    @if (_constituencies != null && _constituencies.Any())
+        {   @* <MudPaper BackgroundColor="#138808" Elevation="3"> *@
+        @foreach (var constituency in _constituencies)
+            {
+            // var defaultClr = "border-solid border-2 mud-border-default pa-1";
+            var styleA = "border-solid border-2 mud-border-";
+            var styleB = " pa-0 rounded-b-xl";
+            var clr = "default";
+            var classToApply = styleA + clr + styleB;
+            //var clr = "border-solid border-2 mud-border-default pa-1";
+            if (constituency.Summary != null && constituency.Summary.Rating > 0)
+                {
+                clr = constituency.Summary.Rating.GetColorAsString();
+                }
+            classToApply = styleA + clr + styleB;
+
+            @* <MudCard Style="@($"background-color :{backgroundColor};border: 1px solid #ccc;margin-bottom: 16px;")"> *@
+            <MudCard Class="@classToApply">
+                <MudCardContent Class="mx-0 my-0">
+
+                    <MudGrid>
+                        <MudItem xs="6">
+                            <MudText Typo="Typo.h6">@constituency.Name</MudText>
+                        </MudItem>
+                        @if (constituency.VoteOfLoggedInUser == null)
+                            {
+                            <MudItem xs="6" Class="d-flex justify-content-end">
+                                @if (_myVote != null && constituency.Id == _myVote.ConstituencyId)
+                                    {
+                                    var clr = $"mud-theme-{_myVote.Rating.GetColorAsString1()} rounded-l-xl";
+                                    <MudButton Class="@clr" OnClick="() => OnAddUpdateMyVoteToConstituency(constituency.Id)"> <MudIcon Icon="@Icons.Material.Filled.HowToVote"></MudIcon>Update Vote</MudButton>
+                                    }
+                                else if (_myConstituencyIdAddedJustNow == constituency.Id)
+                                    {
+                                    <MudText> Vote is Updating to System...</MudText>
+                                    }
+                                else
+                                    {
+                                    <MudButton Class="mud-theme-info rounded-l-xl" OnClick="() => OnAddUpdateMyVoteToConstituency(constituency.Id)"> <MudIcon Icon="@Icons.Material.Filled.HowToVote"></MudIcon>Add Vote</MudButton>
+                                    @* <MudIconButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => OnAddMyVoteToConstituency(constituency.Id)">
+                <MudIcon Icon="@Icons.Material.Filled.HowToVote">Add Vote </MudIcon>
+                </MudIconButton> *@
+                                    }
+                            </MudItem>
+                            }
+                       
+                    </MudGrid>
+                    @if (!string.IsNullOrEmpty(constituency.State))
+                        {
+                        <MudText Typo="Typo.caption"> @constituency.State</MudText>
+                        }
+
+                    @{
+                        var times = constituency.CurrentMemberTerms!.Split(',').Count();
+                        var timesString = times > 1 ? $"[{times} Times({constituency.CurrentMemberTerms})]" : "";
+                        var party = string.IsNullOrEmpty(constituency.CurrentMemberParty) ? string.Empty : constituency.CurrentMemberParty;
+                        // if (!string.IsNullOrEmpty(party) && !party.Contains("Party"))
+                        //     {
+                        //     party += " Party";
+                        //     }
+                    }
+
+                    <MudText Typo="Typo.caption">,@constituency.CurrentMemberName - @timesString @party</MudText>
+
+
+                    @if (constituency.VoteOfLoggedInUser != null && UserId.HasValue)
+                        {
+                        <AddUpdateVote OnVoteSubmitted="@HandleVoteSubmitted" ExistingCurrentVote=_myVote.CloneBySerializing() Model="constituency.VoteOfLoggedInUser" UserId="UserId??new Guid()"></AddUpdateVote>
+                        }
+                    @if (constituency.VoteUpdateSuccess != null)
+                        {
+                        <MudText Color="constituency.VoteUpdateSuccess==true?Color.Success:Color.Error">
+                            @constituency.VoteUpdateResultMessage
+                        </MudText>
+                        }
+
+                    @{
+                        var summary = constituency.Summary;
+                    }
+                    @if (summary != null && summary.VotesCount > 0 &&
+                   summary.KpiRatingCounts != null && summary.KpiRatingCounts.Count > 0)
+                        {
+                        <MudStack Row=true>
+                            @*      <MudButton Variant="Variant.Text" @onclick="(() => OnExpandCollapseClickOfConstituencyKpisOnSummaryPage(constituency.Id))"> <verysmall>OverAll Detail @(_expandedDictionaryOfConstituencyRatingsOnSummaryPage[constituency.Id] ? "Hide" : "Show")  @($"{summary.VotesCount}({summary.WishToReElectMemberTrueCount}/{summary.WishToReElectMemberFalseCount})")</verysmall> </MudButton> *@
+                            <MudButton Variant="Variant.Text" @onclick="(() => OnExpandCollapseClickOfConstituencyKpisOnSummaryPage(constituency.Id))">
+                                Detail @(_expandedDictionaryOfConstituencyRatingsOnSummaryPage[constituency.Id] ? "Hide" : "Show") @summary.VotesCount
+                                (<MudText Color="Color.Success">@summary.WishToReElectMemberTrueCount</MudText>/
+                                <MudText Color="Color.Error">@summary.WishToReElectMemberFalseCount</MudText>)
+                            </MudButton>
+                            <MudButton Variant="Variant.Text" Color="@summary.Rating.GetColor()" @onclick="(() => OnExpandCollapseClickOfConstituencyKpisOnSummaryPage(constituency.Id))">
+                                @summary.Rating.RatingAsString()
+                            </MudButton>
+                        </MudStack>
+
+                        <MudCollapse Expanded="@_expandedDictionaryOfConstituencyRatingsOnSummaryPage[constituency.Id]">
+                            @{
+                                var kpiRatingCountsSummaryAgg = summary.KpiRatingCounts.SummaryAggregateRating();
+                                foreach (var kpi in kpiRatingCountsSummaryAgg)
+                                    {
+                                    @if (KPI.Get(kpi.Key) != null)
+                                        {
+                                        <MudGrid>
+                                            <MudItem xs="6">@kpi.Key . @KPI.Get(kpi.Key)!.Name </MudItem>
+                                            <MudItem xs="6" Class="d-flex justify-content-end">
+                                                <RatingNext SelectedRatingInt="@kpi.Value.totalRating.GetUpperLimitRating()" ReadOnly="true" />
+                                                @kpi.Value.totalCount
+                                            </MudItem>
+                                        </MudGrid>
+                                        }
+                                    }
+                                /* this prints each rating rows,instead lets print only max 12 kpi & rating & counts
+                                foreach (var kpi in summary.KpiRatingCounts)
+                                {
+                                @if (KPI.Get(kpi.KPI) != null)
+                                {
+                                <MudGrid>
+                                <MudItem xs="6">@kpi.KPI . @KPI.Get(kpi.KPI)!.Name </MudItem>
+                                <MudItem xs="6" Class="d-flex justify-content-end"> <RatingNext SelectedRatingInt="@kpi.Aggregate" ReadOnly="true" />  @kpi.RatingCountsList.Sum(c => c.Count)</MudItem>
+                                </MudGrid>
+                                }
+                                }*/
+                                if (summary.MessagesCount > 0)
+                                    {
+                                    var match = _allConstituencies.Find(x => x.Id == constituency.Id);
+                                    if (match != null)
+                                        {
+                                        if (match.Votes.IsEmpty())
+                                            {
+                                            <MudButton Variant="Variant.Filled" OnClick="() => GetMessages(constituency.Id)"><small>Messages:@summary.MessagesCount</small> </MudButton>
+                                            }
+                                        else
+                                            {
+                                            <MudText>Few Top Messages @(match.Votes.Count != summary.MessagesCount ? $"{match.Votes.Count}({summary.MessagesCount})" : string.Empty) </MudText>
+                                            //display the results
+                                            @foreach (var v in match!.Votes!)
+                                                {
+                                                if (v.KPIMessages.HasData())
+                                                    {
+                                                    <MudCard Class="border-dotted border-2 mud-border-primary pa-2">
+                                                        <MudItem xs="12" md="12">
+                                                            <MudText Style="xs-12">
+                                                                @(v.Rating.RatingAsString() + " Message:")
+                                                                @string.Join(",", v.KPIMessages!.Select(x => $"{x.KPI}.{KPI.Get(x.KPI).ShortName}-{x.Message}"))
+                                                            </MudText>
+                                                        </MudItem>
+                                                        <MudStack Row=true>
+                                                            <MudItem>
+                                                                <MudIconButton Variant="v.MySupportAsAViewer == false?Variant.Filled:Variant.Outlined"
+                                                                               Color="Color.Success" Icon="@Icons.Material.Filled.ThumbUp"
+                                                                               OnClick="() => SupportOppose(constituency.Id,v.Id,true)" />
+                                                                @v.SupportCount <small> Support</small>
+                                                            </MudItem>
+                                                            <MudItem>
+                                                                <MudIconButton Variant="v.MySupportAsAViewer == true? Variant.Filled:Variant.Outlined"
+                                                                               Color="Color.Error" Icon="@Icons.Material.Filled.ThumbDown"
+                                                                               OnClick="() => SupportOppose(constituency.Id,v.Id,false)" />
+                                                                @v.OpposeCount <small> Oppose</small>
+                                                            </MudItem>
+                                                            @*  <MudButton Variant="v.MySupportAsAViewer == false?Variant.Filled:Variant.Outlined"
+                    Color="Color.Success"
+                    OnClick="() => SupportOppose(constituency.Id,v.Id,true)">
+                    <MudIcon Icon="@Icons.Material.Filled.ThumbUp" Color="Color.Success" />
+                    @v.SupportCount <small> Support</small>
+                    </MudButton>
+
+                    <MudButton Variant="v.MySupportAsAViewer == true? Variant.Filled:Variant.Outlined"
+                    Color="Color.Error" OnClick="() => SupportOppose(constituency.Id,v.Id,false)">
+                    <MudIcon Icon="@Icons.Material.Filled.ThumbDown" />
+                    @v.OpposeCount <small> Oppose</small>
+                    </MudButton>*@
+                                                        </MudStack>
+
+                                                        @*     <MudIconButton Icon="@Icons.Material.Filled.ThumbUp" OnClick="() => SupportOppose(constituency.Id,v.Id,true)"> @v.SupportCount</MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.ThumbDown" OnClick="() => SupportOppose(constituency.Id,v.Id,false)"> @v.OpposeCount </MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Clear" OnClick="() => SupportOppose(constituency.Id,v.Id,null)"> @v.OpposeCount </MudIconButton> *@
+
+                                                    </MudCard>
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    //on click extract comments & display with pagination,so grid kind of require may be
+
+                                    }
+                            }
+                        </MudCollapse>
+                        }
+                    else
+                        {
+                        <MudText><small><i>No Opinion Yet!</i></small> </MudText>
+                        }
+
+                </MudCardContent>
+
+            </MudCard>
+            }
+        }
+    else
+        {
+        <MudInputLabel>
+            @(string.IsNullOrEmpty(SearchTerm) ? "Please type Constituency Name to see specific details & Vote" : "No Constituency found for mentioned search input")
+        </MudInputLabel>
+        }
+
+    }
+<script>
+    window.startFetchInterval = (dotnetHelper) => {
+        setInterval(async () => {
+            await dotnetHelper.invokeMethodAsync('LoadData');
+        }, 60000); // 300000 milliseconds = 5 minutes,60000=1 minutes
+    };
+</script>
+@code {
+    //code is in cs file
+}

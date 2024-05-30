@@ -37,6 +37,18 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
                 await applicationDbContext.Towns.AddRangeAsync(dd);
                 exists = true;
                 }
+            if (!(await applicationDbContext.TownCardTypeMasterDatas.AnyAsync())) //.CountAsync()>10))
+                {
+                List<TownCardTypeMasterData> dd = [
+                  new TownCardTypeMasterData("MainProfile","Main"),
+                    new TownCardTypeMasterData("SubProfile","Sub"),
+                    new TownCardTypeMasterData("AssistentProfile","Assistent"),
+                    ];
+
+                await applicationDbContext.TownCardTypeMasterDatas.AddRangeAsync(dd);
+                exists = true;
+                }
+
             if (exists)
                 await applicationDbContext.SaveChangesAsync();
             }

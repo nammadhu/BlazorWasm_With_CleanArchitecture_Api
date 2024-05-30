@@ -63,7 +63,7 @@ namespace BaseBlazorComponentsRCL
                         settingngsToModifyForRequest.Description = "RUSTING OF BHADRA ಬೆಂಕಿಪುರಕ್ಕೆ ತುಕ್ಕು";
                         //settingngsToModifyForRequest.AppVideoUrl = "https://youtu.be/Ktc8GLW3QZo";
 
-                        //settingngsToModifyForRequest.FaviconImage = "_content/BlazorRazorClassLibraryMyTown/images/faviconHolige.png";
+                        //settingngsToModifyForRequest.FaviconImage = "_content/MyTown.RCL/images/faviconHolige.png";
                         }
                     break;
                 case ApplicationTypeEnum.Katthe://default from appsettings.json

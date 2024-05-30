@@ -11,7 +11,7 @@ namespace MyTown.Application
             {
             services.AddApplicationLayer(); //separately not required because thats also part of this assembly as derived from it
             services.AddAutoMapper(config =>
-            { config.AddMaps(Assembly.GetExecutingAssembly(), typeof(MyTown.SharedModels.DTOs.TownDto).Assembly); });
+            { config.AddMaps(Assembly.GetExecutingAssembly(), typeof(TownCardTypeDto).Assembly); });
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));//https://github.com/jbogard/MediatR

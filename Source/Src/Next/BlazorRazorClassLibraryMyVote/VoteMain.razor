@@ -1,0 +1,85 @@
+﻿@page "/daredevil"
+@page "/constituency"
+@page "/constituency/{SearchTerm}"
+@page "/addvote/{SearchTerm}/{IsToAdd:bool?}"
+@page "/upvote/{SearchTerm}/{VoteId:int}/{IsSupportOppose:bool}"
+
+@*
+constituency to search
+addvote
+upvote to support oppose
+*@
+
+@rendermode RenderMode.InteractiveAuto
+
+<PageTitle>MP Election Check & Write Corruption Details Before Voting</PageTitle>
+
+@if (HideHeaderAndFooter == false)
+    {
+    <NextCarousel />
+    }
+<MudToggleIconButton @bind-Toggled="@HideHeaderAndFooter"
+                     Icon="@Icons.Material.Filled.MotionPhotosOff" Color="@Color.Error" Title="Off"
+                     ToggledIcon="@Icons.Material.Filled.MotionPhotosOn" ToggledColor="@Color.Success" ToggledTitle="On" />
+
+<MudButton Variant="Variant.Outlined" OnClick="()=>HideHeaderAndFooter=!HideHeaderAndFooter">
+    @(HideHeaderAndFooter ? "Show" : "Hide") More Informations
+</MudButton>
+<ConstituencySearchAndResult SearchTerm="@SearchTerm" IsToAdd="@IsToAdd"
+                             VoteId="@VoteId" IsSupportOppose=@IsSupportOppose
+                             HideHeaderAndFooter="()=> HideHeaderAndFooter=true" />
+
+@if (HideHeaderAndFooter == false)
+    {
+    <NextChoiceFooterContent />
+    }
+<MudToggleIconButton @bind-Toggled="@HideHeaderAndFooter"
+                     Icon="@Icons.Material.Filled.MotionPhotosOff" Color="@Color.Error" Title="Off"
+                     ToggledIcon="@Icons.Material.Filled.MotionPhotosOn" ToggledColor="@Color.Success" ToggledTitle="On" />
+
+<MudButton Variant="Variant.Outlined" OnClick="()=>HideHeaderAndFooter=!HideHeaderAndFooter">
+    @(HideHeaderAndFooter ? "Show" : "Hide") More Informations
+</MudButton>
+<verysmall> @(API.Settings?.IpAddressClientUser ?? "") </verysmall>
+@code {
+    [Parameter]
+    public string SearchTerm { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool? IsToAdd { get; set; }
+
+
+    [Parameter]
+    public int VoteId { get; set; }
+    [Parameter]
+    public bool IsSupportOppose { get; set; }
+
+    public bool ShowConstituencySearch { get; set; }
+
+    private bool HideHeaderAndFooter { get; set; } = false;
+    protected override void OnAfterRender(bool firstRender)
+        {
+        base.OnAfterRender(firstRender);
+        ShowConstituencySearch = true;
+        }
+    // protected override Task OnInitializedAsync()
+    //     {
+    //     //currently using this same app for pointing katthe.com domain so this redirection
+    //     //when user hits "katthe.com" it goes to thispage/aboutus remaining all as usual navigation,even MP home page also works fine
+    //     if (NavigationManager.Uri.EndsWith("katthe.com/", StringComparison.InvariantCultureIgnoreCase))
+    //         {
+    //         NavigationManager.NavigateTo("/aboutus");
+    //         }
+
+    //     return base.OnInitializedAsync();
+    //     }
+
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    //     {
+    //     if (firstRender)
+    //         {
+    //         ShowConstituencySearch = true;
+    //         StateHasChanged();
+    //         }
+    //     }
+}

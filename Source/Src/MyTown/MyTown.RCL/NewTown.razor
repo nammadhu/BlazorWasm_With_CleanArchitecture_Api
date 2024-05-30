@@ -1,0 +1,75 @@
+﻿@* @page "/mytown" *@
+@page "/mytown/{Id:int}/{Name}"
+
+
+<TownMainHeaderCardDisplay Model="@Model" />
+@if (Model != null)
+    {
+    @* <TownCardDisplay Model="@((TownItemDto)Model)" ImageHeight=350 /> *@
+
+    <MudText><i> <small>To Add Your Content Send details to <ContactEmail /></small></i></MudText>
+    @if (Model.TownCards != null && Model.TownCards.Any())
+        {
+        @foreach (var group in objGroups)
+            {
+            <StringDisplay Text="@group.Key.Name" Typo="Typo.body1" />
+            <MudCarousel Class="mud-width-full" ShowArrows="@true" ShowBullets="@true" EnableSwipeGesture="@true" AutoCycle="@true" TData="object"
+                         Style="@($" color:{@Colors.Red.Default};height:50vh;mud-carousel;")">
+                @foreach (var ent in group)
+                    {
+                    <MudCarouselItem Transition="Transition.Slide">
+                        <TownCardDisplay Model="@ent" />  @* Style="height:200px;" *@
+                    </MudCarouselItem>
+                    }
+            </MudCarousel>
+            <MudSpacer />
+            }
+        }
+    }
+else
+    {
+    <MudText>Sorry No Data exists @(Name??"".ToUpper()) </MudText>
+    }
+@code {
+
+    [Parameter]
+    public int Id { get; set; }//townname
+
+    [Parameter]
+    public string? Name { get; set; }//townname
+
+    TownDto Model;
+    IEnumerable<IGrouping<TownCardTypeDto, TownCardDto>> objGroups;// = Model.Objects;
+    TownDto FetchedModel;
+
+    protected override async Task OnInitializedAsync()
+        {
+        // if (Id > 0)
+        //     Model = await Http.TownGet(Id, null);
+        // else Model = null;
+
+        //return base.OnInitializedAsync();
+        }
+
+    protected override void OnInitialized()
+        {
+        //on page load based on url fetch the model & display
+       // Model = TestData.Bhadravathi.Data;// TownDto.SampleData?.Where(x => x.Name == "Bhadravathi")?.FirstOrDefault();
+       
+       // if (Model != null && Model.TownCards != null && Model.TownCards.Any())
+       //      objGroups = Model.TownCards.GroupBy(x => x.Type);
+        base.OnInitialized();
+        }
+    protected override void OnAfterRender(bool firstRender)
+        {
+            /*
+        if (Model == null) NavigationManager.NavigateTo("/");
+        if (Model.TownCards != null && Model.TownCards.Any())
+            objGroups = Model.TownCards.GroupBy(x => x.Type);
+            */
+
+
+
+        // return base.OnAfterRenderAsync(firstRender);
+        }
+}

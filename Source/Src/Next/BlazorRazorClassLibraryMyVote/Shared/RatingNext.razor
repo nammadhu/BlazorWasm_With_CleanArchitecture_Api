@@ -1,0 +1,41 @@
+﻿<RatingCustom ReadOnly=@ReadOnly Color="@(Color??SelectedRatingEnum.GetColor())" SelectedValue="@(SelectedRatingInt??0)" Disabled="@Disabled" SelectedValueChanged="@SelectedValueChanged" Style="@Style" />
+@if (DisplaySelectedRating)
+    {
+    @SelectedRatingEnum.ToString()
+    }
+@code {
+    public RatingNext()
+        {
+        }
+    [Parameter]
+    public RatingEnum? SelectedRatingEnum { get; set; }
+
+    [Parameter]
+    public int? SelectedRatingInt { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; } = false;
+
+    [Parameter]
+    public bool ReadOnly { get; set; } = false;
+
+    [Parameter]
+    public bool DisplaySelectedRating { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<int> SelectedValueChanged { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public Color? Color { get; set; }
+
+    protected override void OnInitialized()
+        {
+        if (SelectedRatingEnum == null && SelectedRatingInt == null)
+            SelectedRatingInt = 0;
+        else if (SelectedRatingEnum != null) SelectedRatingInt = (int)SelectedRatingEnum;
+        SelectedRatingEnum = EnumExtensions.ParseToEnum<RatingEnum>(SelectedRatingInt??0);
+        }
+}

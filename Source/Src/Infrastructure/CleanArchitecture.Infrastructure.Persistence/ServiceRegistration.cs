@@ -41,6 +41,8 @@ namespace CleanArchitecture.Infrastructure.Persistence
                 services.AddTransient(item, implimentation);
                 }
             services.AddTransient<ITownRepository, TownRepository>();
+            services.AddTransient<ITownCardTypeMasterDataRepository, TownCardTypeMasterDataRepository>();
+            services.AddTransient<ITownCardRepository, TownCardRepository>();
             }
         }
     }

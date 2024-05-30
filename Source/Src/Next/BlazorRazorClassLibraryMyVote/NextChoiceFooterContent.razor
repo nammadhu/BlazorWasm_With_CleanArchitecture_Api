@@ -1,0 +1,86 @@
+﻿<MudPaper Class="pa-2">
+    <MudText>This is an open & central place to collect all those data anonymously,just like voting & to see best Next-Choice @home for great country i.e India - Bharatha</MudText>
+
+    <MudList Clickable="false" Dense=true>
+        <MudListSubheader>
+            <h5>12 KPI(Key-Performance-Indicators) by which we can measure the Current @candidateType/Party work status.</h5>
+        </MudListSubheader>
+        @foreach (var kpi in KPI.GetAllDefault())
+            {
+            @if (kpi.Name == kpi.NameExpansionSubTitle)
+                {
+                <MudListItem Icon="@Icons.Material.Filled.ArrowCircleRight" Text=@((kpi.Id != KPI.OpenIssuesKpiId?kpi.Id+".":"")+kpi.Name) />
+                }
+            else
+                {
+                <MudListItem Icon="@Icons.Material.Filled.ArrowCircleRight" Text=@((kpi.Id != KPI.OpenIssuesKpiId?kpi.Id+".":"")+kpi.Name) InitiallyExpanded="true">
+                    <NestedList>
+                        <MudText>@kpi.NameExpansionSubTitle</MudText>
+                    </NestedList>
+                    @*  @if (!string.IsNullOrEmpty(kpi.SubTitle) || !string.IsNullOrEmpty(kpi.Description))
+            {
+            <NestedList>
+            @if (!string.IsNullOrEmpty(kpi.SubTitle))
+            {
+            <MudListItem> @kpi.SubTitle</MudListItem>
+            }
+            @if (!string.IsNullOrEmpty(kpi.Description))
+            {
+            <MudListItem>@kpi.Description</MudListItem>
+            }
+            </NestedList>
+            } *@
+                </MudListItem>
+
+                }
+            }
+    </MudList>
+    <MudList Clickable="true">
+        <MudListSubheader>
+            <h3>5 Ratings for each KPI(Key-Performance-Indicators)</h3>
+            <MudListItem Icon="@Icons.Material.Filled.SentimentVerySatisfied">
+                <RatingNext SelectedRatingEnum="RatingEnum.GreatWork" ReadOnly="true" DisplaySelectedRating="true" />
+            </MudListItem>
+            <MudListItem Icon="@Icons.Material.Filled.SentimentSatisfied">
+                <RatingNext SelectedRatingEnum=RatingEnum.GoodWork ReadOnly="true" DisplaySelectedRating="true" />
+            </MudListItem>
+            <MudListItem Icon="@Icons.Material.Filled.SentimentNeutral">
+                <RatingNext SelectedRatingEnum=RatingEnum.OkOk ReadOnly="true" DisplaySelectedRating="true" />
+            </MudListItem>
+            <MudListItem Icon="@Icons.Material.Filled.SentimentDissatisfied">
+                <RatingNext SelectedRatingEnum=RatingEnum.Bad ReadOnly="true" DisplaySelectedRating="true" />
+            </MudListItem>
+            <MudListItem Icon="@Icons.Material.Filled.SentimentVeryDissatisfied">
+                <RatingNext SelectedRatingEnum=RatingEnum.VeryBad ReadOnly="true" DisplaySelectedRating="true" />
+            </MudListItem>
+        </MudListSubheader>
+    </MudList>
+
+
+
+
+    <MudCardContent>
+        <MudList Clickable="true" Dense=true>
+            <MudListItem>On Rating & Clicking KPI-name it shows comment box below to add.</MudListItem>
+            <MudListItem>This is not real voting system but difference & advantage is to bring up the issues upfront to all notice rather keeping quiet like dead-citizen. Even after any elections this can be brought up to priority work mode consideration.</MudListItem>
+            <MudListItem> This is not by any Government/Political party, instead its for a social public cause non-profit activity. Request not to share any sensitive personal information in public place. </MudListItem>
+            <MudListItem>
+                Rather asking questions like Did Modi really sold tea or not, Rahul Gandhi graduated or not that's not really important, instead it's just an idiotic timepass.
+            </MudListItem>
+            <MudListItem>
+                Only required is current work with respect to their position/role, nothing else. Most important as individual, if they worked in their constitution then ReElect again otherwise just Reject whoever they are.
+            </MudListItem>
+            <MudListItem>
+                Ignore bad Politics stragtegy like Hijab row, Saffron row, Freebies...
+            </MudListItem>
+
+            <MudListItem> https://www.cnbctv18.com/politics/general-elections-2019-voters-happiest-with-kerala-rajasthan-gujarat-mps-2668851.htm</MudListItem>
+        </MudList>
+    </MudCardContent>
+
+</MudPaper>
+
+@code {
+    string home = StringExtensions.UrlGetDomain(API.Settings?.PublicDomainAbsoluteUrl,defaultValue: "Next-Mp.in") ;
+    string candidateType = API.Settings?.CandidateType ?? "MP";
+}

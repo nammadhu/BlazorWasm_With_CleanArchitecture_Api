@@ -5,7 +5,7 @@ using BlazorWebApp.Shared;
 using MyTown.SharedModels.DTOs;
 using System.Net.Http.Json;
 
-namespace MyTown.RCL;
+namespace BlazorRazorClassLibraryMyTown;
 
 //for town
 public static class APIMyTown

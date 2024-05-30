@@ -1,0 +1,141 @@
+﻿
+
+<AuthorizeView>
+    <Authorized>
+
+        @if (!Hide)
+            {
+
+            <MudCard Style="width: 100%;">
+                <MudCard Class="d-flex justify-space-between" Elevation="0">
+                    <MudText>@(ExistingCurrentVote != null && ExistingCurrentVote.ConstituencyId == Model.ConstituencyId ? "Updating Vote" : "Adding Vote")</MudText>
+                    <MudButton OnClick="async ()=>await OnVoteSubmitted.InvokeAsync(new VoteUpdateResult(Model.ConstituencyId, false,null))">
+                        <MudIcon Icon="@Icons.Material.Rounded.Close"></MudIcon>
+                    </MudButton>
+                </MudCard>
+                @*  <MudStack Row=true>
+            <MudText>@(ExistingCurrentVote != null && ExistingCurrentVote.ConstituencyId == Model.ConstituencyId ? "Updating Vote" : "Adding Vote")</MudText>
+            <div class="d-flex justify-content-end">
+            <MudButton OnClick="async ()=>await OnVoteSubmitted.InvokeAsync(new VoteUpdateResult(Model.ConstituencyId, false,null))">
+            <MudIcon Icon="@Icons.Material.Rounded.Close"></MudIcon>
+            </MudButton>
+            </div>
+            </MudStack> *@
+                @*   Display yes/no to reeclect current      Validation="@(Validator.ValidateValue(Model))"*@
+                <MudForm Model="@Model" @ref="@_form">
+                    <MudItem>
+                        <MudText>How Is Current Mp Work Done? <small>(Would you Re-consider for Next Election Term?)</small></MudText>
+                        <MudRadioGroup Value="Model.WorkDoneQuality" ValueChanged="OnReElectRadioChanged" T="bool?">
+                            <MudRadio T="bool?" Value="@true" Color="Color.Success" Dense="true">
+                                <MudIcon Icon="@Icons.Material.Rounded.ThumbUp" />Good
+                            </MudRadio>
+                            <MudRadio T="bool?" Value="@false" Color="Color.Error" Dense="true">
+                                <MudIcon Icon="@Icons.Material.Rounded.ThumbDown" />Bad
+                            </MudRadio>
+                            <MudRadio T="bool?" Value="@null" Color="Color.Warning" Dense="true"> Not Sure </MudRadio>
+                        </MudRadioGroup>
+                        @if (DataChanged)
+                            {
+                            @if (_onPageLoadVoteState != null && _onPageLoadVoteState != Model)
+                                {
+                                <MudButton OnClick="Undo"><MudIcon Icon="@Icons.Material.Filled.Undo"></MudIcon></MudButton>
+                                }
+                            <MudButton OnClick="Clear"><MudIcon Icon="@Icons.Material.Filled.Clear"></MudIcon></MudButton>
+                            }
+                    </MudItem>
+
+                    @* ratings with messages *@
+                    @if (Model.KPIRatingMessages != null)
+                        @foreach (var kpiRatingMesage in Model.KPIRatingMessages)
+                            {
+
+                            kpiRatingMesage.KPI ??= new KPI(kpiRatingMesage.KPI_Id);
+                            //https://mudblazor.com/utilities/spacing#size
+                            //it means under grid full width take 6(md=6) columns on desktop, mobile device full width 12 columns(xs=12)
+                            //so below on desktop 2 kpi(with rating) for 1 row, mobile 1 kpi(with rating)
+                            <MudCard Class="border-dashed border-2 mud-border-primary pa-0">
+                                <MudGrid Class="d-flex justify-content: flex-end;">
+                                    <MudItem xs="6">
+                                        <MudButton Variant="Variant.Text" @onclick="(() => OnKpiNameClick(kpiRatingMesage.KPI_Id))">
+                                            @if (kpiRatingMesage.KPI_Id != KPI.OpenIssuesKpiId)
+                                                {
+                                                <small>@kpiRatingMesage.KPI_Id</small>
+                                                }
+                                            <div class="desktop">@kpiRatingMesage.KPI!.Name</div>
+                                            <div class="mobile"> @kpiRatingMesage.KPI!.ShortName  </div>
+
+                                            @* do on mouse over to show details *@
+                                        </MudButton>
+                                    </MudItem>
+                                    <MudItem xs="6" Class="d-flex justify-content-end">
+                                        @if (kpiRatingMesage.KPI_Id != KPI.OpenIssuesKpiId)
+                                            {
+
+                                            <RatingNext Color=@kpiRatingMesage.Rating.GetColor() SelectedRatingInt="@(kpiRatingMesage.Rating)" DisplaySelectedRating="false"
+                                                        Style="display: flex; align-content: flex-end;  align-items: flex-end;"
+                                                        SelectedValueChanged="@((Action<int>)(rating =>
+                    {
+                    kpiRatingMesage.Rating = rating;
+                    DataChanged=true;
+                    Model.RatingForUiPurposeInNegativeRangeOnlyForDisplay = Model.KPIRatingMessages.CalculateRating();//update whole rating on each click
+                    OnExpandCollapseClick(kpiRatingMesage.KPI_Id);//open respective comments box
+                    }))" />
+
+                                            }
+                                    </MudItem>
+                                </MudGrid>
+
+                                <MudItem xs="12" md="12">
+                                    @if (_expandedDictionary[kpiRatingMesage.KPI_Id])
+                                        {
+                                        <MudCollapse Expanded="@_expandedDictionary[kpiRatingMesage.KPI_Id]" class="pa-0">
+                                            <MudTextField AutoGrow Placeholder=@(kpiRatingMesage.KPI!.NameExpansionSubTitle + " Message(upto 50 characters)") Class="d-flex pa-0" @bind-Value="kpiRatingMesage.Message" MaxLength="50" Immediate=true Counter="50" />
+                                        </MudCollapse>
+                                        }
+                                    else
+                                        {
+
+                                        @if (!string.IsNullOrEmpty(kpiRatingMesage.Message))
+                                            {
+                                            <MudButton OnClick="()=>OnExpandCollapseClick(kpiRatingMesage.KPI_Id)">
+                                                <b>@(kpiRatingMesage.Message)</b>
+                                            </MudButton>
+                                            }
+                                        else
+                                            {
+                                            <MudButton OnClick="()=>OnExpandCollapseClick(kpiRatingMesage.KPI_Id)" Color=@Color.Tertiary>
+                                                <i><small>@((kpiRatingMesage.KPI!.NameExpansionSubTitle ?? kpiRatingMesage.KPI!.Name) + " Specific Message")</small></i>
+                                            </MudButton>
+                                            }
+
+
+                                        }
+                                </MudItem>
+
+                            </MudCard>
+                            }
+                </MudForm>
+                @if (Model.KPIRatingMessages.HasData() && Model.KPIRatingMessages!.Any(x => !string.IsNullOrEmpty(x.Message)))
+                    {
+                    <MudText>Message:  <small> @string.Join(",", Model.KPIRatingMessages!.Where(x => x.Message.HasData()).Select(x => $"{x.KPI_Id}.{x.KPI?.ShortName ?? ""}:{x.Message}")) </small>
+                    </MudText>
+                    }
+                @if (!string.IsNullOrEmpty(overWriteMessage))
+                    {
+                    <MudAlert Severity="Severity.Warning" Variant="Variant.Filled"><small><i>@overWriteMessage</i></small></MudAlert>
+                    }
+                <MudCard Class="d-flex justify-space-between" Elevation="0">
+                    <MudButton Variant="Variant.Outlined" Color="@Model.RatingForUiPurposeInNegativeRangeOnlyForDisplay.GetColor()"> @Model.RatingForUiPurposeInNegativeRangeOnlyForDisplay.RatingAsString()</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Submit" Class="d-flex justify-content: flex-end;">
+                        Save
+                    </MudButton>
+                </MudCard>
+                @* save with overwrite message *@
+            </MudCard>
+            }
+    </Authorized>
+    <NotAuthorized>
+
+
+    </NotAuthorized>
+</AuthorizeView>

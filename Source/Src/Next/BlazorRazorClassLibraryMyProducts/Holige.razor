@@ -1,0 +1,164 @@
+﻿@page "/Holige"
+@rendermode RenderMode.InteractiveWebAssembly
+
+<MudLayout>
+    @*  <MudAppBar Fixed="true" Elevation="1">
+    <MudText Typo="Typo.h6">Holige.in</MudText>
+    <!-- Add AppBar buttons or other elements here -->
+    </MudAppBar> *@
+
+    <MudContainer Class="mt-5">
+        <MudText Typo="Typo.h5">Holige 2 meanings in Kannada</MudText>
+        <MudText Typo="Typo.h6">1>ಹೋಳಿಗೆ: SWEET-Obbattu Karnataka's Culinary Heritage & Taste of Tradition</MudText>
+        <MudText Typo="Typo.h6">2>ಹೊಲಿಗೆ: STITCH Living Source of Million's of WoMen</MudText>
+        <MudText Typo="Typo.h6">Lets EmPower Every Suffering WoMen by WoManizer</MudText>
+
+
+        <MudText Style="margin-top: 16px;">
+            Holige(ಹೋಳಿಗೆ):Flatbread from Karnataka. Prepared with all-purpose flour, chana dal, and jaggery, and it's a common treat on occasions.
+        </MudText>
+        <MudCarousel Class="mud-width-full" ShowArrows="@true" ShowBullets="@true" EnableSwipeGesture="@true" AutoCycle="@true" TData="object" Style="@($" color:{@Colors.Red.Default};height:50vh;mud-carousel;")">
+            <MudCarouselItem>
+                <YouTubeVideoDisplay YouTubeUrlSrc="https://www.youtube.com/embed/l-HJjPmiht4?si=1cmWnjWvxdEsB0Gz" />
+            </MudCarouselItem>
+
+            <MudCarouselItem>
+                <MudText Typo=Typo.h6 Class="typewriterFor1LineOnly">
+                    <h2>ಹೋಮ್‌ ಮೇಡ್‌ ಉದ್ಯಮದ ದಿಗ್ಗಜೆಯಾಗಿದ್ದ ಹೋಳಿಗೆ ಗೌರಮ್ಮ ಇನ್ನಿಲ್ಲ! ಬಿ.ಬಿ. ಸ್ಟ್ರೀಟ್‌ನ ಇವರ ಬಗ್ಗೆ ಪ್ರತಿ ಮಹಿಳೆಯರು ತಿಳಿಯಬೇಕು!</h2>
+                </MudText>
+                <MudText Typo=Typo.h6>
+                    Holige Gowramma, the legend of the homemade industry, is no more! Every woman should know about this lady of BB Street!
+                </MudText>
+            </MudCarouselItem>
+
+            <MudCarouselItem>
+                <ImageDisplay ImageUrl="https://malenadutoday.com/uploads/images/202404/image_870x_661ccf71bf1a4.webp"></ImageDisplay>
+                <UrlIconButton Text="Click Here to Know More" Url="https://malenadutoday.com/holige-gowramma-legend-homemade-industry-no" />
+            </MudCarouselItem>
+            <!-- Add more MudCarouselItem components for more videos -->
+        </MudCarousel>
+
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h5">Holige Varieties(Few)</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <ul>
+                    <MudCard>
+                        <MudText>Bele Holige (Lentil Holige):</MudText>
+                        @* <MudImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6_RmQUtclATeBC_XHHCHR2fJaBW50Swdui8GGP754m-eW5xtnMG8eXMRI_uZb" alt="Bele Holige" class="holige-image" /> *@
+                        <ImageDisplay ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6_RmQUtclATeBC_XHHCHR2fJaBW50Swdui8GGP754m-eW5xtnMG8eXMRI_uZb" AltText="Bele Holige" />
+                        <MudText>Classic Holige filled with sweet lentil(dal) and jaggery(bella) mixture. The lentils are typically cooked and mashed with jaggery, cardamom, and ghee to create a thick paste.</MudText>
+                        <br />
+
+                    </MudCard>
+                    <MudCard>
+                        <MudText>Shenga Holige (Peanut Holige):</MudText>
+                        @* <MudImage src="https://i0.wp.com/florafoods.in/wp-content/uploads/2019/07/shenga-holige-1-.jpg?fit=800%2C800&ssl=1" alt="Shenga Holige" class="holige-image" /> *@
+                        <ImageDisplay ImageUrl="https://i0.wp.com/florafoods.in/wp-content/uploads/2019/07/shenga-holige-1-.jpg?fit=800%2C800&ssl=1" AltText="Shenga Holige" />
+                        <MudText>Holige with a delicious filling of roasted peanuts, jaggery, and cardamom.The peanuts are ground into a coarse powder and then mixed with the other ingredients to create a flavorful stuffing.</MudText>
+                        <br />
+
+                    </MudCard>
+                    <MudCard>
+                        <MudText>Kayi Holige (Coconut Holige):</MudText>
+                        @* <MudImage src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSiR-YWcBGXUlGoher87_Q7O48TSK6BpOiFZ1KP4WdyiNjUbCNuOOiG6MNGJioQ" alt="Kayi Holige" class="holige-image" /> *@
+                        <ImageDisplay ImageUrl="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSiR-YWcBGXUlGoher87_Q7O48TSK6BpOiFZ1KP4WdyiNjUbCNuOOiG6MNGJioQ" AltText="Kayi Holige" />
+                        <MudText>Unique Holige with a sweet and nutty filling made with grated coconut, jaggery, and cardamom.  The coconut adds a delightful textural contrast to the soft dough.</MudText>
+                        <br />
+
+                    </MudCard>
+
+                    <MudCard>
+                        <MudText>Bisi Bele Holige (Lentil and Rice Holige):</MudText>
+                        @* <MudImage src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTcu4EBheZiZsp9qvUd9MfI_eIYU6u8FlZ06Xalrw7OtH9DFLflzrqMkP8Rgv04" alt="Bisi Bele Holige" class="holige-image" /> *@
+                        <ImageDisplay ImageUrl="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTcu4EBheZiZsp9qvUd9MfI_eIYU6u8FlZ06Xalrw7OtH9DFLflzrqMkP8Rgv04" AltText="Bisi Bele Holige" />
+                        <MudText>This savory Holige is a delightful twist on the traditional sweet version. It's stuffed with a mixture of cooked lentils, rice, vegetables, and spices.</MudText>
+                        <br />
+
+                    </MudCard>
+                    <MudCard>
+                        <MudText>Sweet Potato Holige: </MudText>
+                        @* <MudImage src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQF1Guzlfrpq92O_2R5-J0i9TukTSf7b_f5FPSt1cXv5orR4LKwyWmlD0fIGkza" alt="Sweet Potato Holige" class="holige-image" /> *@
+                        <ImageDisplay ImageUrl="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQF1Guzlfrpq92O_2R5-J0i9TukTSf7b_f5FPSt1cXv5orR4LKwyWmlD0fIGkza" AltText="Sweet Potato Holige" />
+                        <MudText>This Holige incorporates mashed sweet potato into the filling, along with jaggery and spices, for a vibrant orange color and a naturally sweet taste.</MudText>
+                        <br />
+
+                    </MudCard>
+                    <MudCard>
+                        <MudText>Mawa Badam Holige</MudText>
+                        @*  <MudImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHxoS8SGHZkMpOsdivMgRZ8QC8PrJybz0Q3q64jJ94UyT7QmDk9K3_n7iVM6E4" alt="Mawa Badam Holige" class="holige-image" /> *@
+                        <ImageDisplay ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHxoS8SGHZkMpOsdivMgRZ8QC8PrJybz0Q3q64jJ94UyT7QmDk9K3_n7iVM6E4" AltText="Mawa Badam Holige" />
+                        <MudText>
+                            This decadent Holige features a rich filling made with mawa (khoya), chopped almonds, and cardamom. The mawa adds a luxurious texture and a milky flavor to the Holige.
+                        </MudText>
+                        <br />
+
+                    </MudCard>
+                    <MudCard>...Still More than 300 exists will be adding...</MudCard>
+                </ul>
+            </MudCardContent>
+        </MudCard>
+
+        <MudText>
+            Making is a <b>"labor of love"</b>. The dough is kneaded until it's soft and smooth, then filled with a sweet mixture of cooked chana dal and jaggery. The filled dough is then rolled out and cooked until golden brown. The result is a deliciously sweet and satisfying treat that's a beloved part of our culinary heritage.
+        </MudText>
+
+        <MudText Typo="Typo.h5">Remembering Holige Gowramma</MudText>
+        <MudText Typo="Typo.h6">A Legacy of Culinary Excellence</MudText>
+        <MudText>
+            She was a renowned figure in the culinary world of Karnataka, known for her exceptional skills in making Holige. Despite the challenges she faced, Gowramma's dedication to her craft led her to become internationally famous. Her story is a testament to the power of perseverance , passion & Strength of Women Power.
+        </MudText>
+
+        <!-- More details about Holige Gowramma -->
+        <MudText>
+            Gowramma's journey began in a small village in Sringeri, where she learned cooking from her mother. She was well-versed in making all kinds of south Indian dishes, especially sweets. Her dedication & perfection helped her family & sorroundings.
+            Her Holige was praised by many, and she received numerous orders. This prompted her to start a business from home, which continues to operate out of the same outlet.
+        </MudText>
+
+        <MudText Typo=Typo.h6 Class="typewriterFor1LineOnly">
+            <h2>
+                More Interesting facts & Speciality of Holige will be added soon,stay tuned!!!
+            </h2>
+        </MudText>
+        @*
+        <!-- Product 1 -->
+        <MudPaper Elevation="1" Square="false" Class="pa-4 my-4">
+        <MudText Typo="Typo.h5">Product 1</MudText>
+        <MudText>Product 1 description goes here.</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Learn More</MudButton>
+        </MudPaper>
+
+        <!-- Product 2 -->
+        <MudPaper Elevation="1" Square="false" Class="pa-4 my-4">
+        <MudText Typo="Typo.h5">Product 2</MudText>
+        <MudText>Product 2 description goes here.</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Learn More</MudButton>
+        </MudPaper>
+
+        <!-- Add more products as needed -->
+
+        <MudTextField Label="Contact" @bind-Value="yourContactVariable"></MudTextField>
+        <MudTextField Label="Feedback" @bind-Value="yourFeedbackVariable"></MudTextField>
+        <MudTextField Label="Message" @bind-Value="yourMessageVariable"></MudTextField> *@
+    </MudContainer>
+</MudLayout>
+
+@code {
+    // Variables for your contact, feedback, and message fields
+    // string yourContactVariable;
+    // string yourFeedbackVariable;
+    // string yourMessageVariable;
+}
+
+
+
+@* References
+    https://hebbarskitchen.com/holige-recipe-bele-obbattu-puran-poli/
+    https://florafoods.in/product/shenga-holige-groundnut-poli/
+    https://hebbarskitchen.com/kayi-holige-recipe-naariyal-puran-poli/
+    https://www.palatesdesire.com/obbattu-bele-holige-puran-poli/
+    https://udupi-recipes.com/2015/03/sweet-potato-poli-recipe-sihi-genasina-holige-with-video.html
+    https://cookpad.com/in/recipes/5788801-mawa-badam-holige
+
+*@

@@ -1,0 +1,27 @@
+﻿@page "/townsOld"
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+<h3>Towns</h3>
+
+<MudButton>Add New Town</MudButton>
+@foreach (var item in ModelTowns)
+    {
+    string key = $"/myTown/{item.Key}/{item.Value}";
+    <Row> <MudButton Href="@key">@item.Value</MudButton>  <MudSpacer />  </Row>
+    }
+
+
+@code {
+    [Parameter]
+    public Dictionary<int, String> ModelTowns { get; set; }
+
+    protected override Task OnInitializedAsync()
+        {
+        //fetch actual from db
+        ModelTowns = new Dictionary<int, string>();
+        ModelTowns.Add(1, "Bhadravathi");
+        ModelTowns.Add(2, "Shivamogga");
+        ModelTowns.Add(3, "Kadur");
+        return base.OnInitializedAsync();
+        }
+}

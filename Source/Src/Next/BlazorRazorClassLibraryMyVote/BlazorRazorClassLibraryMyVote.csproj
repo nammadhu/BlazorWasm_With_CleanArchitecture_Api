@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="StaticPages\Alert.razor" />
+    <Content Remove="StaticPages\BitterTruth.razor" />
+    <Content Remove="StaticPages\Facts.razor" />
+    <Content Remove="StaticPages\WhatIsThisProject.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="AddUpdateVote.razor" />
+    <None Include="ConstituencySearchAndResult.razor" />
+    <None Include="NextCarousel.razor" />
+    <None Include="NextChoiceFooterContent.razor" />
+    <None Include="StaticPages\Alert.razor" />
+    <None Include="StaticPages\BitterTruth.razor" />
+    <None Include="StaticPages\Facts.razor" />
+    <None Include="StaticPages\WhatIsThisProject.razor" />
+    <None Include="VoteMain.razor" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.5.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.4" />
+    <PackageReference Include="MudBlazor" Version="6.19.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorRazorClassLibraryBase\BaseBlazorComponentsRCL.csproj" />
+  </ItemGroup>
+
+</Project>

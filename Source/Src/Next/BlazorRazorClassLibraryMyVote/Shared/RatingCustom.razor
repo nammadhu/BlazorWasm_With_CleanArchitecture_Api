@@ -1,0 +1,38 @@
+﻿
+
+<MudRating Color=@Color SelectedValue="@SelectedValue" Disabled="@Disabled" ReadOnly=@ReadOnly
+           FullIcon="@Icons.Material.Filled.ThumbUp" EmptyIcon="@Icons.Material.Filled.StarBorder"
+           Style="@Style"
+           SelectedValueChanged="@SelectedValueChanged" />
+
+@* <MudRating SelectedValue="@SelectedValue" Disabled="@Disabled" FullIcon="@Icons.Material.Filled.ThumbUp" EmptyIcon="@Icons.Material.Filled.StarBorder" />
+    <MudRating SelectedValue="@(kpiRatingComment.Rating??-999)"
+           FullIcon="@Icons.Material.Filled.ThumbUp" EmptyIcon="@Icons.Material.Filled.StarBorder"
+           Style="display: flex; align-content: flex-end;  align-items: flex-end;"
+           SelectedValueChanged="@(rating =>
+                    {
+                    kpiRatingComment.Rating = rating;
+                    //kpiRatingComment.Rating = rating == -999 ? null : rating;
+                    Model.RatingForUiPurposeInNegativeRangeOnlyForDisplay = @VoteHelperExtensions.RatingAsString(VoteHelperExtensions.CalculateRatings(Model.KPIRatingMessages.Where(x=>x.Rating!=null)));//update whole rating on each click
+                    })" /> *@
+
+@code {
+    [Parameter]
+    public int SelectedValue { get; set; } = 0;
+
+    [Parameter]
+    public bool Disabled { get; set; } = false;
+
+    [Parameter]
+    public bool ReadOnly { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<int> SelectedValueChanged { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public Color Color { get; set; }
+
+}

@@ -1,0 +1,104 @@
+﻿@* @inject IStringLocalizer<NextChoice> L *@
+
+@*  *@
+<MudCarousel ShowArrows="true" ShowBullets="true" Style="@($" color:{@Colors.Red.Default};height:35vh;mud-carousel;")"
+             EnableSwipeGesture="true" AutoCycle="true" AutoCycleTime=TimeSpan.FromSeconds(10) TData="object">
+    <MudCarouselItem Transition="@Transition.Slide">
+        <MudCard>
+            <MudCardContent>
+                <MudText Typo=Typo.h6 Class="typewriterFor1LineOnly">
+                    <h2>Stop Murmuring @candidateType's Secrets & Corruptions, Express here Openly & Stay Anonymous</h2>
+                </MudText>
+                <MudText Typo=Typo.h6>
+                    How long keep talking in back as They are Good-Bad-Corrupt But...
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+        @* <h3>If you vote by considering top leader(PM candidate),eventhough they are Good Bue due to any reason if they gets replaced/expired then control goes to Ghost!!!</h3> *@
+
+    </MudCarouselItem>
+    <MudCarouselItem Transition="@Transition.Slide">
+        <MudCard>
+            <MudCardContent>
+                <MudText Typo=Typo.h6 Class="typewriterFor1LineOnly">
+                    <h2>Voting means, Choosing your @candidateType, Not Prime Minister, HM or anyone else.</h2>
+                    @*  <h2>Voting means, Choosing your place right_@candidateType, Not PM,HM or anyone else.</h2> *@
+                </MudText>
+                <MudText Typo=Typo.h6>
+                    Its DareDevil, Transparent, Complete Secure & Secret.
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+        @* <h3>If you vote by considering top leader(PM candidate),eventhough they are Good Bue due to any reason if they gets replaced/expired then control goes to Ghost!!!</h3> *@
+
+    </MudCarouselItem>
+    <MudCarouselItem Transition="@Transition.Slide">
+        <MudText Typo="Typo.h6">
+            Here collecting Quality of Work Done & What required in future to make Good Constituency. Mainly 12 section(KPI's) & Ratings(5) with comments
+        </MudText>
+    </MudCarouselItem>
+    @* <MudCarouselItem Style="" Transition="@Transition.Slide" Color="@Color.Primary">
+    <h4>If you consider Party-Caste-Religion-Money-PM-Leader-Dirty Political strategy like Idiot then obviously choosen Candidate/Leader also Idiots/Corrupt!!!</h4>
+    <h4>May be in one place, some Party/Group @ConfigurationService.Settings.CandidateType is Great, it doesnt mean everyone of that Party are same!!!</h4>
+    </MudCarouselItem> *@
+    @*   <MudCarouselItem Transition="@Transition.Slide">
+    <MudText Typo="Typo.h5">
+    <p>Instead of just complaining as Modi,Gandhi,Nehru are bad or did that mistake or any other useless & proofless rumours</p>
+    <p>Lets RAISE exactly the current truth. Let all know about the reality,rather hiding forever dictatorship.</p>
+    </MudText>
+    </MudCarouselItem> *@
+    <MudCarouselItem Transition="@Transition.Slide">
+        <MudText Typo="Typo.h6">
+            12 KPI's- <small>@string.Join(", ", @KPI.GetAllDefault().Select(x => x.ShortName))</small>
+        </MudText>
+
+    </MudCarouselItem>
+
+    <MudCarouselItem Transition="@Transition.Slide">
+        <MudText Class="align-content: center;">
+            5 Ratings for each KPI <small>(Key_Performance_Indicators)</small>
+        </MudText>
+        <MudItem Icon="@Icons.Material.Filled.SentimentVerySatisfied">
+            <RatingNext SelectedRatingEnum="RatingEnum.GreatWork" ReadOnly="true" DisplaySelectedRating="true" />
+        </MudItem>
+        <MudItem Icon="@Icons.Material.Filled.SentimentSatisfied">
+            <RatingNext SelectedRatingEnum=RatingEnum.GoodWork ReadOnly="true" DisplaySelectedRating="true" />
+        </MudItem>
+        <MudItem Icon="@Icons.Material.Filled.SentimentNeutral">
+            <RatingNext SelectedRatingEnum=RatingEnum.OkOk ReadOnly="true" DisplaySelectedRating="true" />
+        </MudItem>
+        <MudItem Icon="@Icons.Material.Filled.SentimentDissatisfied">
+            <RatingNext SelectedRatingEnum=RatingEnum.Bad ReadOnly="true" DisplaySelectedRating="true" />
+        </MudItem>
+        <MudItem Icon="@Icons.Material.Filled.SentimentVeryDissatisfied">
+            <RatingNext SelectedRatingEnum=RatingEnum.VeryBad ReadOnly="true" DisplaySelectedRating="true" />
+        </MudItem>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="@Transition.Slide">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/Ktc8GLW3QZo?si=T0JUqrfq8RXIPewX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </MudCarouselItem>
+
+    @*     <MudCarouselItem Transition="@Transition.Slide">
+    <MudCardContent>
+    <p>On Rating & Clicking KPI-name it shows comment box below to add.</p>
+    <p class="mb-4">This is not real voting system but difference & advantage is to bring up the issues upfront to all notice rather keeping quiet like dead-citizen. Even after any elections this can be brought up to priority work mode consideration.</p>
+    <p class="mb-4"> This is not by any Government/Political party,instead its for a social public cause non-profit activity. Request not to share any sensitive personal information in public place. </p>
+    <p>
+    Rather asking questions like Did Modi really sold tea or not ,
+    Rahul Gandhi graduated or not that's not really important,instead it's just an idiotic timepass.
+    Only required is current work wrt their role,nothing else. Most important as individual, if they worked in their constitution then ReElect again otherwise just Reject whoever he is.
+    </p>
+    <p>
+    Caste Politics example:
+    Hijab,Saffron row
+    </p>
+
+    <MudLink Href="https://www.cnbctv18.com/politics/general-elections-2019-voters-happiest-with-kerala-rajasthan-gujarat-mps-2668851.htm"></MudLink>
+    </MudCardContent>
+    </MudCarouselItem> *@
+</MudCarousel>
+
+@code {
+    string home = StringExtensions.UrlGetDomain(API.Settings?.PublicDomainAbsoluteUrl, defaultValue: "Next-Mp.in");
+    string candidateType = API.Settings?.CandidateType?? "MP";
+}

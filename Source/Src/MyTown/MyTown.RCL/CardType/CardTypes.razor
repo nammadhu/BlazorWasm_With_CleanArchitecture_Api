@@ -1,0 +1,173 @@
+﻿@page "/Town/CardTypes"
+@using Blazored.LocalStorage
+@using MyTown.SharedModels.Features.CardTypes.Commands
+@using MyTown.SharedModels.Features.CardTypes.Queries
+@using System.Security.Claims
+@inject TownCardTypeService townCardTypeService
+@inject IStringLocalizer<TownCardTypeDto> L
+
+@* @inject AuthenticationStateProvider authenticationStateProvider *@
+@inject ClientConfig clientConfig
+@inject AuthService authService
+
+<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<TownCardTypeDto,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Town Card Types</MudText>
+        <MudTextField @bind-Value="searchStringTownCardTypeName" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        @if (clientConfig.IsAdmin==true)
+            {
+            <MudIconButton Icon="@Icons.Material.Filled.Create" OnClick="OnCreate" />
+            }
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Short Name</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Priority Order</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Short Name">@context.ShortName</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Price">@context.Price</MudTd>
+        <MudTd DataLabel="Priority Order">@context.PriorityOrder</MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.ViewCompact" OnClick="@( () => OpenViewDialog(context))" />
+            @if (clientConfig.IsAdmin==true)
+                {
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OnEdit(context))" />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteWithConfirmationDialog(context))" />
+                }
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    [Inject] ILocalStorageService localStorageService { get; set; }
+
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private string searchStringTownCardTypeName = "";
+    private TownCardTypeDto selectedItem1 = null;
+    private HashSet<TownCardTypeDto> selectedItems = new HashSet<TownCardTypeDto>();
+
+    private List<TownCardTypeDto> Elements = new List<TownCardTypeDto>();
+
+    private bool IsAuthenticated;
+    private async Task CheckAuthenticationStateAsync()
+        {
+        IsAuthenticated = await authService.IsAuthenticatedAsync();
+        }
+
+    protected override async Task OnInitializedAsync()
+        {
+        await LoadServerData();
+        await CheckAuthenticationStateAsync();
+        }
+    protected override async Task OnParametersSetAsync()
+        {
+        await CheckAuthenticationStateAsync();
+        if (IsAuthenticated)
+            {
+            await authService.AuthorizeRoles();
+            }
+        }
+
+    async Task LoadServerData()
+        {
+        var fetchAll = await townCardTypeService.GetTownCardTypesAsync(new GetTownCardTypeMasterDatasPagedListQuery
+                {
+                All = true
+                });
+        if (fetchAll?.Data != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
+            Elements = fetchAll.Data;
+        }
+
+    private bool FilterFunc1(TownCardTypeDto element) => FilterFunc(element, searchStringTownCardTypeName);
+
+    private bool FilterFunc(TownCardTypeDto element, string searchString)
+        {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.ShortName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        //currently comparing only name & shortname, if anymore like description required then can be added here
+        //or one searchstring property & make changes
+        // if ($"{element.Number} {element.Position} {element.Molar}".Contains(searchString))
+        //     return true;
+        return false;
+        }
+
+
+
+    private async Task OpenViewDialog(TownCardTypeDto townCardType)//good
+        {
+        var parameters = new DialogParameters { ["TownCardType"] = townCardType };
+        var dialog = DialogService.Show<ViewDialogCardType>("View Town Card", parameters);
+        await dialog.Result; // No need to check the result since it's read-only
+        }
+
+    private async Task OnCreate()
+        {
+        await authService.LoginUserMakingSure();
+        await OnEdit(new TownCardTypeDto());
+        }
+
+    private async Task OnEdit(TownCardTypeDto dto)
+        {
+        await authService.LoginUserMakingSure();
+        if (clientConfig.IsAdmin==false) return;//|| dto.Id == 0
+
+        var command = mapper.Map<CreateUpdateTownCardTypeMasterDataCommand>(dto);
+        var parameters = new DialogParameters<CreateUpdateCardType>
+        {
+            { x => x.model, command }
+        };
+        var options = new DialogOptions { CloseButton = true };// MaxWidth = MaxWidth.Medium, FullWidth = true
+        var dialog = DialogService.Show<CreateUpdateCardType>
+            (dto.Id > 0 ? L["Create 'Town Card Type'"] : L["Edit 'Town Card Type'"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Canceled)
+            {
+            //this should be done if any changes happened only  otherwise not required on no change
+            //so dialog result should confirm any changes happened or not
+            await LoadServerData();
+            //make sure result should show the modifications on result page
+            //await LoadPage(pagedResponse.PageNumber);
+            }
+
+        }
+
+    private async Task DeleteWithConfirmationDialog(TownCardTypeDto townCardType)
+        {
+        await authService.LoginUserMakingSure();
+        if (clientConfig.IsAdmin==false || townCardType.Id == 0) return;
+        var parameters = new DialogParameters { ["Name"] = townCardType.Name + "/" + townCardType.Id };
+        var dialog = DialogService.Show<DeleteConfirmationDialog>
+    ("Remove Master Data Town Card Type", parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+            {
+            var res = await townCardTypeService.DeleteTownCardTypeAsync(townCardType.Id);
+            if (res != null && res.Success)
+                {
+                //await LoadServerData();
+                //insteaqd of reloading all(above), lets remove locally itself as like below
+                Elements.RemoveAll(x => x.Id == townCardType.Id);
+
+                Snackbar.Add($"Removed Town Card Type:({townCardType.Name})", Severity.Success);
+                }
+            else Snackbar.Add($"Issue in Removing Town Card Type ({townCardType.Name})", Severity.Error);
+
+            }
+        }
+}

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MyTown.Domain;
 using PublicCommon.Common;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,8 +19,11 @@ namespace CleanArchitecture.Infrastructure.Persistence.Contexts
             {
             this.authenticatedUser = authenticatedUser;
             }
+        public DbSet<TownCardTypeMasterData> TownCardTypeMasterDatas { get; set; }
         public DbSet<Town> Towns { get; set; }
+        public DbSet<TownCard> TownCards { get; set; }
 
+        //[NotMapped]//later lets remove this product component itslef
         public DbSet<Product> Products { get; set; }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
             {
