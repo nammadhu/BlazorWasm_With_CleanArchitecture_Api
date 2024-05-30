@@ -1,6 +1,6 @@
-﻿using MyTown.RCL;
-using BlazorWebApp.Shared;
+﻿using BlazorWebApp.Shared;
 using Microsoft.Extensions.DependencyInjection;
+using MyTown.RCL;
 
 namespace CommonRazorComponents
     {

@@ -3,7 +3,7 @@ using PublicCommon;
 using SharedResponse;
 
 namespace BlazorWebApp.Shared.Services
-{
+    {
     //public interface IConfigurationService
     //{
     //    Task<Settings> LoadSettings();

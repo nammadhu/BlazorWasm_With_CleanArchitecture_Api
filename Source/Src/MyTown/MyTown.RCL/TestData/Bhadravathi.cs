@@ -21,14 +21,14 @@
                    OtherReferenceUrl="https://www.researchgate.net/profile/Anil-Kallesh"
                    },
 
-                new TownCard(TownCardTypeMasterData.GetFirst("doctor"),"Aswath Narayana")
+                new Card(TownCardTypeMasterData.GetFirst("doctor"),"Aswath Narayana")
                 {SubTitle="Physician",Address="Sujatha Clinic,New Bridge,Bhadravathi",Description="General Medicine",
                     ImageUrl="https://mytown.blob.core.windows.net/files-of-town/bhadravathi.com/UserFiles/DrAshwathNarayanHd.png",
                     GoogleMapAddressUrl="https://maps.app.goo.gl/rtMJyszi9ATfwFUC9",InstagramUrl="https://www.instagram.com/dr.anilkallesh/",
                     //TwitterUrl="https://twitter.com/anilkallesh?lang=en",
                     //OtherReferenceUrl="https://www.ask4healthcare.com/healthcaresolutions/DesktopModules/SearchCommon/ResDoctordetails.aspx?docid=DR/NEM001428"
                     },
-                new TownCard(TownCardTypeMasterData.GetFirst("doctor"),"Mallikarjun")
+                new Card(TownCardTypeMasterData.GetFirst("doctor"),"Mallikarjun")
                 {SubTitle="Pediatric",Address="Old Town,Bhadravathi",Description="Kids specialist",
                     //ImageUrl="https://mytown.blob.core.windows.net/files-of-town/bhadravathi.com/Iron_City.jpg",
                     //GoogleMapAddressUrl="https://g.co/kgs/78o8hhL",
@@ -36,13 +36,13 @@
                     //TwitterUrl="https://twitter.com/anilkallesh?lang=en",
                     //OtherReferenceUrl="https://www.ask4healthcare.com/healthcaresolutions/DesktopModules/SearchCommon/ResDoctordetails.aspx?docid=DR/NEM001428"
                     },
-               new TownCard(TownCardTypeMasterData.GetFirst("doctor"),"Meena Nursing Home")
+               new Card(TownCardTypeMasterData.GetFirst("doctor"),"Meena Nursing Home")
                 {SubTitle="Hospital",Address="Old Town,Bhadravathi",Description="Hospital",
                     ImageUrl="https://ourdoctors.in/meenanursinghome/images/hospital-1.jpg",
                     //GoogleMapAddressUrl="https://g.co/kgs/78o8hhL",InstagramUrl="https://www.instagram.com/dr.anilkallesh/",
                     //TwitterUrl="https://twitter.com/anilkallesh?lang=en",OtherReferenceUrl="https://www.ask4healthcare.com/healthcaresolutions/DesktopModules/SearchCommon/ResDoctordetails.aspx?docid=DR/NEM001428",
                     },
-                new TownCard(TownCardTypeMasterData.GetFirst("doctor"),"ShivaShankar")
+                new Card(TownCardTypeMasterData.GetFirst("doctor"),"ShivaShankar")
                 {SubTitle="Pediatric",Address="Old Town,Bhadravathi",Description="Kids specialist",
                     GoogleMapAddressUrl="https://maps.app.goo.gl/4KvKGxmiDQWWJDbt5",
                     //InstagramUrl="https://www.instagram.com/dr.anilkallesh/",
@@ -54,7 +54,7 @@
                 //    GoogleMapAddressUrl="https://g.co/kgs/78o8hhL",InstagramUrl="https://www.instagram.com/dr.anilkallesh/",
                 //    TwitterUrl="https://twitter.com/anilkallesh?lang=en",OtherReferenceUrl="https://www.ask4healthcare.com/healthcaresolutions/DesktopModules/SearchCommon/ResDoctordetails.aspx?docid=DR/NEM001428",ImageUrl="https://lh5.googleusercontent.com/p/AF1QipPSgv8ZzUDUx-9sPW-joj-iV7ijS1UyU3-J0kNs=w284-h160-k-no"},
 
-              new TownCard(TownCardTypeMasterData.GetFirst("event"),"Kabaddi"),
+              new Card(TownCardTypeMasterData.GetFirst("event"),"Kabaddi"),
                 ]
             };
 

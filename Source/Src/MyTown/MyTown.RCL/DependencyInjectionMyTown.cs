@@ -1,7 +1,7 @@
-﻿using MyTown.RCL.Card;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MyTown.RCL.Card;
 using MyTown.RCL.CardType;
 using MyTown.RCL.Town;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace MyTown.RCL

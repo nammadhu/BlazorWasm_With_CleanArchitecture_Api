@@ -1,5 +1,6 @@
 ﻿@using Microsoft.Extensions.Localization
 @using MyTown.SharedModels.Features.CardTypes.Commands
+@using MyTown.RCL.CardType
 @using SharedResponse
 @inject IStringLocalizer<TownCardTypeDto> L
 @inject TownCardTypeService townCardTypeService
@@ -14,18 +15,18 @@
                 {
                 <MudText>@model.Id</MudText>
                 }
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.Name)]" @bind-Value="model.Name" For="@(() => model.Name)" Required="true" RequiredError="@L["Name is required!"]"></MudTextField>
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.ShortName)]" @bind-Value="model.ShortName" For="@(() => model.ShortName)" Required="true" RequiredError="@L["ShortName is required!"]"></MudTextField>
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.Description)]" Lines="1" For="@(() => model.Description)" @bind-Value="model.Description"></MudTextField>
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.Price)]" @bind-Value="model.Price" For="@(() => model.Price)" Required="true" RequiredError="@L["Price is required!"]"></MudTextField>
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.PriorityOrder)]" For="@(() => model.PriorityOrder)" @bind-Value="model.PriorityOrder"></MudTextField>
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Name)]" @bind-Value="model.Name" For="@(() => model.Name)" Required="true" RequiredError="@L["Name is required!"]" tabindex="1"/>
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.ShortName)]" @bind-Value="model.ShortName" For="@(() => model.ShortName)" Required="true" RequiredError="@L["ShortName is required!"]" tabindex="2" />
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Description)]" Lines="1" For="@(() => model.Description)" @bind-Value="model.Description" tabindex="3" />
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Price)]" @bind-Value="model.Price" For="@(() => model.Price)" Required="true" RequiredError="@L["Price is required!"]" tabindex="4" />
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.PriorityOrder)]" For="@(() => model.PriorityOrder)" @bind-Value="model.PriorityOrder" tabindex="5" />
 
             @*  </MudGrid> *@
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">@ConstantString.Cancel</MudButton>
-        <MudButton Loading="@_saving" OnClick="Submit">@ConstantString.Save</MudButton>
+        <MudButton OnClick="Cancel" tabindex="11">@ConstantString.Cancel</MudButton>
+        <MudButton Loading="@_saving" OnClick="Submit" tabindex="10">@ConstantString.Save</MudButton>
     </DialogActions>
 </MudDialog>
 

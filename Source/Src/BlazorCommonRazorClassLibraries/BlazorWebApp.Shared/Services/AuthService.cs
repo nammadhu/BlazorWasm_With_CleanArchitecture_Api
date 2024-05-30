@@ -35,7 +35,7 @@ namespace BlazorWebApp.Shared.Services
                     MyLogger.Log($"Setting clientconfig ,first checking");
                     if (string.IsNullOrEmpty(clientConfig.Email) || clientConfig.Email != email)
                         {
-                        MyLogger.Log($"Setting clientconfig email as"+email);
+                        MyLogger.Log($"Setting clientconfig email as" + email);
                         clientConfig.EmailSet(email);
                         // await localStorageService.SetItemAsStringAsync(CONSTANTS.Email, email);//not required
                         }

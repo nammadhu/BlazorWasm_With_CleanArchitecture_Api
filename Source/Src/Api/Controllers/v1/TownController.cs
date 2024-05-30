@@ -2,7 +2,6 @@
 using MyTown.SharedModels.Features.Towns.Commands;
 using MyTown.SharedModels.Features.Towns.Queries;
 using PublicCommon;
-using System.Security.Claims;
 using SharedResponse;
 
 namespace CleanArchitecture.WebApi.Controllers.v1

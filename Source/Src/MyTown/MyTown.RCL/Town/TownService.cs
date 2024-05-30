@@ -3,7 +3,6 @@ using BlazorWebApp.Shared.Services;
 using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.Towns.Commands;
 using MyTown.SharedModels.Features.Towns.Queries;
-using PublicCommon;
 using SharedResponse;
 
 
@@ -126,10 +125,13 @@ namespace MyTown.RCL.Town
             {
             //do minimum check of duplicate name with local storage to avoid unnecessary api calls
             var storageDataList = await _localStorage.Get<List<TownDto>>(TownsKey);
-            if (storageDataList != null && storageDataList.Count > 0 
+            if (storageDataList != null && storageDataList.Count > 0
                 && storageDataList.Any(x => x.Id != command.Id && x.Name == command.Name))
                 {
-                return new BaseResult<TownDto>() { Success = false, Data = null ,
+                return new BaseResult<TownDto>()
+                    {
+                    Success = false,
+                    Data = null,
                     Errors = [new(ErrorCode.DuplicateData)]
                     };
                 }

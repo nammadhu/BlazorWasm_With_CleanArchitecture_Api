@@ -1,7 +1,7 @@
-using CommonRazorComponents;
 using Blazored.LocalStorage;
 using BlazorWebApp.Shared;
 using BlazorWebApp.Shared.Services;
+using CommonRazorComponents;
 using Fluxor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

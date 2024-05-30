@@ -3,6 +3,7 @@
 @using MyTown.SharedModels.Features.CardTypes.Commands
 @using MyTown.SharedModels.Features.CardTypes.Queries
 @using System.Security.Claims
+@using MyTown.RCL.CardType
 @inject TownCardTypeService townCardTypeService
 @inject IStringLocalizer<TownCardTypeDto> L
 
@@ -14,7 +15,7 @@
     <ToolBarContent>
         <MudText Typo="Typo.h6">Town Card Types</MudText>
         <MudTextField @bind-Value="searchStringTownCardTypeName" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        @if (clientConfig.IsAdmin==true)
+        @if (clientConfig.IsAdmin == true)
             {
             <MudIconButton Icon="@Icons.Material.Filled.Create" OnClick="OnCreate" />
             }
@@ -35,7 +36,7 @@
         <MudTd DataLabel="Priority Order">@context.PriorityOrder</MudTd>
         <MudTd>
             <MudIconButton Icon="@Icons.Material.Filled.ViewCompact" OnClick="@( () => OpenViewDialog(context))" />
-            @if (clientConfig.IsAdmin==true)
+            @if (clientConfig.IsAdmin == true)
                 {
                 <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OnEdit(context))" />
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteWithConfirmationDialog(context))" />
@@ -82,12 +83,9 @@
 
     async Task LoadServerData()
         {
-        var fetchAll = await townCardTypeService.GetTownCardTypesAsync(new GetTownCardTypeMasterDatasPagedListQuery
-                {
-                All = true
-                });
-        if (fetchAll?.Data != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
-            Elements = fetchAll.Data;
+        var fetchAll = await townCardTypeService.GetAllTownCardTypesAsync();
+        if (fetchAll != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
+            Elements = fetchAll;
         }
 
     private bool FilterFunc1(TownCardTypeDto element) => FilterFunc(element, searchStringTownCardTypeName);
@@ -125,7 +123,7 @@
     private async Task OnEdit(TownCardTypeDto dto)
         {
         await authService.LoginUserMakingSure();
-        if (clientConfig.IsAdmin==false) return;//|| dto.Id == 0
+        if (clientConfig.IsAdmin == false) return;//|| dto.Id == 0
 
         var command = mapper.Map<CreateUpdateTownCardTypeMasterDataCommand>(dto);
         var parameters = new DialogParameters<CreateUpdateCardType>
@@ -150,7 +148,7 @@
     private async Task DeleteWithConfirmationDialog(TownCardTypeDto townCardType)
         {
         await authService.LoginUserMakingSure();
-        if (clientConfig.IsAdmin==false || townCardType.Id == 0) return;
+        if (clientConfig.IsAdmin == false || townCardType.Id == 0) return;
         var parameters = new DialogParameters { ["Name"] = townCardType.Name + "/" + townCardType.Id };
         var dialog = DialogService.Show<DeleteConfirmationDialog>
     ("Remove Master Data Town Card Type", parameters);

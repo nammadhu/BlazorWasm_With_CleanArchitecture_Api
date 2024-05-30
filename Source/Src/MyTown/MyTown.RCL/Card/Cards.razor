@@ -4,6 +4,7 @@
 @using MyTown.SharedModels.Features.Cards.Commands
 @using MyTown.SharedModels.Features.Cards.Queries
 @using System.Security.Claims
+@using MyTown.RCL.Card
 @inject TownCardService townCardService
 @inject IStringLocalizer<TownCardDto> L
 
@@ -83,12 +84,9 @@
 
     async Task LoadServerData()
         {
-        var fetchAll = await townCardService.GetTownCardsAsync(new GetTownCardsPagedListQuery
-                {
-                All = true
-                });
-        if (fetchAll?.Data != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
-            Elements = fetchAll.Data;
+        var fetchAll = await townCardService.GetAllTownCardsAsync();
+        if (fetchAll != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
+            Elements = fetchAll;
         }
 
     private bool FilterFunc1(TownCardDto element) => FilterFunc(element, searchStringTownCardName);

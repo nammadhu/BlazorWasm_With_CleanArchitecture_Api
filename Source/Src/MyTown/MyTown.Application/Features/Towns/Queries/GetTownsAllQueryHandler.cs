@@ -1,5 +1,4 @@
 ﻿using MyTown.SharedModels.Features.Towns.Queries;
-using SharedResponse.DTOs;
 
 namespace MyTown.Application.Features.Towns.Queries
     {

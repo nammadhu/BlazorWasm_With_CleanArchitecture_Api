@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 
 namespace BlazorWebApp.Shared.Services
-{
+    {
     public class HttpBearerTokenInterceptor(AuthService authService, ILocalStorageService localStorageService) : DelegatingHandler
         {
         //this gets intercepted in calling auth endpoints & includes ApiIssuedJwt

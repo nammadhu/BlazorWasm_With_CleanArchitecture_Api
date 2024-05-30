@@ -1,7 +1,7 @@
 ﻿namespace SharedResponse
-{
-    public class ApiEndPoints
     {
+    public class ApiEndPoints
+        {
 
         public const string ClientAnonymous = "AnonymousClient";
         public const string ClientAuth = "AuthClient";
@@ -37,5 +37,5 @@
         public const string Delete = "Delete";
 
 
+        }
     }
-}

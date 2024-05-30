@@ -4,7 +4,7 @@ using SharedResponse;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace BlazorWebApp.Shared.Services
-{
+    {
     public static class LocalStorageExtensions
         {
         private static readonly TimeSpan MaxDefaultTimespan = TimeSpan.FromHours(12);

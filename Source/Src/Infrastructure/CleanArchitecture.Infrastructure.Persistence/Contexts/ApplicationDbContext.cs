@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using MyTown.Domain;
 using PublicCommon.Common;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
