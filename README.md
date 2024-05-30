@@ -1,4 +1,75 @@
-# ASP Dotnet Core Clean Architecture
+# Blazor Advanced With Multiple Types of Development Once & Apply to All types 
+Here Development is all only once but can be used in any type with any level of easy expansion with ReUsable & Shared Components with Advanced Security of data & api.
+Example Provided MyTown usecase,like that anyne can replace or extend easily upto any level.
+
+- Type1: Blazor WebAssembly Stnadalone(PWA+Offline) Client(Static App) & ASP Dotnet Core Clean Architecture Api
+  (For less cost consumption due to Static WebApp Deployment )
+
+- Type2: Blazor WebAssembly Stnadalone(PWA+Offline) Client Hosted on ASP Dotnet Core Clean Architecture Api Single Project Deployment
+  (For Advanced with Easy Deployment Just like Api deployment specifically in advanced case)
+
+- Type3:(Adding Sooner) Blazor WebApp With Auto Render Modes
+  (For Advanced Sensitive cases)
+
+# Lets Jump Into Interesting Architectural Design 
+- Api & Backend
+<img width="1930" alt="DependencyGraphSnapshot0" src="https://github.com/nammadhu/CleanArchitecture_Api_BlazorWasm_Client_EndToEnd/assets/3640748/446bbd15-5b9a-484d-8932-1919de43fb61">
+
+
+
+- Blazor WebAssembly CLient & ReUsable components
+<img width="1269" alt="DependencyGraphSnapshot" src="https://github.com/nammadhu/CleanArchitecture_Api_BlazorWasm_Client_EndToEnd/assets/3640748/91712f98-7290-43d5-b424-674fd8278ad5">
+
+
+- Together Shared Project structure as below,
+<img width="3378" alt="DependencyGraphSnapshot" src="https://github.com/nammadhu/CleanArchitecture_Api_BlazorWasm_Client_EndToEnd/assets/3640748/bde43116-242d-4c38-aebd-015cd6bcc5d3">
+
+- Detailed Diagram
+<img width="2093" alt="DependencyGraphSnapshot" src="https://github.com/nammadhu/CleanArchitecture_Api_BlazorWasm_Client_EndToEnd/assets/3640748/acad5ac4-7646-4af5-86e9-85b3bc2e81a5">
+
+
+Forked & inspired from many other Good projects Globally, I additionally adding improvements with Blazor Standalone Webassembly client & making completely disconnected architecture implementation with features,
+
+>Social accounts login & Jwt
+
+>Same Jwt token using for validation with API calls with id_Tokens & validation
+
+>For new users dynamically creates AspNet Identity Account & more
+
+>Razor Class Library & Component based reusable architecture in multi-layered projects
+
+>Fluxor Redux Pattern
+
+>IExceptionHandler implemetnation of dotnet 8
+
+>IP Rate limiting on API to secure attacks
+
+>Only API Side configuration & dynamically load those to client webassembly without hardcoded client Appsettings for security concern
+
+>CLient side only api url first time ,reamining all fetching from API dynamically
+
+>Offline Db with Blazored.localstorage
+
+>More necessary features will be adding sooner like  Auto refresh...
+Authentication & made Apis only responded to dedicated cleints using AppKey & Interceptors logic, will share the details soon but code & fully working code is in place.
+
+
+# Big Thanks to The most decent API code Author ### Saman Azadi (https://github.com/samanazadi1996)
+  On Top Of Base Branch more contents adding here for improvement
+
+# For db migration or update migration follow below steps,
+0> make changes in domains
+1> Set API project as startup project(must be only one startup project,if api & client both startup then it creates issue )
+2> then specific commands like any of below
+  - add-migration baseEntityChanges -Context ApplicationDbContext -project CleanArchitecture.Infrastructure.Persistence
+    - update-database -Context ApplicationDbContext
+  - add-migration baseEntityChanges -Context FileManagerDbContext -project CleanArchitecture.Infrastructure.FileManager
+    - update-database -Context FileManagerDbContext
+  - add-migration baseEntityChanges -Context IdentityContext -project CleanArchitecture.Infrastructure.Identity
+    - update-database -Context IdentityContext
+
+
+Below is mostly forked contents with default of ONLY API focused:
 
 An Implementation of Clean Architecture with ASP.NET Core 8 WebApi. With this Open-Source BoilerPlate Template, you will get access to the world of Loosely-Coupled and Inverted-Dependency Architecture in ASP.NET Core 8 WebApi with a lot of best practices.
 
@@ -40,7 +111,7 @@ Follow these Steps to get started.
 
 [![](./Documents/Images/NewProject.png)](#)
 
-You Solution Template is Ready!
+You Solution Template is Ready with default as below!
 
 [![](./Documents/Images/ProjectCreated.png)](#)
 
@@ -83,6 +154,12 @@ If you found this Implementation helpful or used it in your Projects, do give it
 
 - ASP.NET Core 8 WebApi
 - REST Standards
+- Blazor Standalone WebAssembly Client
+- Fluxor/Redux
+- Serilog
+- Rate limiting
+- Social Account login & Jwt validation of API also
+- MudBlazor
 
 # Features
 
@@ -111,14 +188,14 @@ If you found this Implementation helpful or used it in your Projects, do give it
 - Visual Studio 2022 Community and above
 - .NET Core 8 SDK and above
 - Basic Understanding of Architectures and Clean Code Principles
+- Blazor Knowledge
 
 # Share it!
 
-I have personally not come across a clean implementation on a WebAPI, which is the reason that I started building this up. There are quite a lot of improvements and fixes along the way from the day I started out. Thanks to the community for the support and suggestions. Please share this Repository within your developer community, if you think that this would a difference! Thanks.
+I have personally not come across any existing clean implementation of ReUsable & Extendable Blazor options with WebAPI, which is the reason that I started building this up. There are quite a lot of improvements and fixes along the way from the day I started out. Thanks to the community for the support and suggestions. Please share this Repository within your developer community, if you think that this would a difference! Thanks.
 
-# About the Author
+# Questions
 
-### Saman Azadi
-- Twitter - [Saman Azadi](https://twitter.com/intent/follow?screen_name=saman_azadi_)
-- Linkedin - [Saman Azadi](https://www.linkedin.com/in/saman-azadi/)
-- Github - [Saman Azadi](https://github.com/samanazadi1996)
+If any issue or Questions Please raise!!!
+
+
