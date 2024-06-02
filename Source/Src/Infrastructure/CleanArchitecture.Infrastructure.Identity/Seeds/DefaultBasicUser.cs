@@ -13,7 +13,7 @@ namespace CleanArchitecture.Infrastructure.Identity.Seeds
             var defaultUser = new ApplicationUser
                 {
                 UserName = CONSTANTS.Auth.Role_Admin,
-                Email = "Admin@Admin.com",
+                Email = "Madhusudhan.veerabhadrappa@gmail.com",
                 Name = "Nammadhu",
                 PhoneNumber = "9964548789",
                 EmailConfirmed = true,
@@ -25,7 +25,7 @@ namespace CleanArchitecture.Infrastructure.Identity.Seeds
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                     {
-                    await userManager.CreateAsync(defaultUser, "Sam@12345");
+                    await userManager.CreateAsync(defaultUser);
                     await userManager.AddToRoleAsync(defaultUser, CONSTANTS.Auth.Role_Admin);
                     }
 

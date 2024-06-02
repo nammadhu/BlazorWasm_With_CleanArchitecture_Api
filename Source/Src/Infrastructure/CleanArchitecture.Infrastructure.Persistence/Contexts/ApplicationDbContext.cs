@@ -55,6 +55,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Contexts
             }
         protected override void OnModelCreating(ModelBuilder builder)
             {
+            builder.Entity<Town>().Property(et => et.Id).ValueGeneratedNever();
+            builder.Entity<TownCardTypeMasterData>().Property(et => et.Id).ValueGeneratedNever();
+
+
             //All Decimals will have 18,6 Range
             foreach (var property in builder.Model.GetEntityTypes()
             .SelectMany(t => t.GetProperties())

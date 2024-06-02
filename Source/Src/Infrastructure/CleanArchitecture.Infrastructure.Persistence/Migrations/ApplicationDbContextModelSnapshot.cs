@@ -66,10 +66,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MyTown.Domain.Town", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -244,10 +241,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MyTown.Domain.TownCardTypeMasterData", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<byte>("ApplicationTypeId")
                         .HasColumnType("tinyint");

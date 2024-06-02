@@ -5,7 +5,9 @@ using CleanArchitecture.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyTown.Application.Interfaces;
 using MyTown.Application.Interfaces.Repositories;
+using MyTown.Domain;
 using System.Linq;
 using System.Reflection;
 
@@ -43,6 +45,11 @@ namespace CleanArchitecture.Infrastructure.Persistence
             services.AddTransient<ITownRepository, TownRepository>();
             services.AddTransient<ITownCardTypeMasterDataRepository, TownCardTypeMasterDataRepository>();
             services.AddTransient<ITownCardRepository, TownCardRepository>();
+
+            services.AddScoped<IIDGenerator<Town>>(provider =>
+       new IDGenerator<Town>(provider.GetService<ApplicationDbContext>(), "Id"));
+            services.AddScoped<IIDGenerator<TownCardTypeMasterData>>(provider =>
+       new IDGenerator<TownCardTypeMasterData>(provider.GetService<ApplicationDbContext>(), "Id"));
             }
         }
     }

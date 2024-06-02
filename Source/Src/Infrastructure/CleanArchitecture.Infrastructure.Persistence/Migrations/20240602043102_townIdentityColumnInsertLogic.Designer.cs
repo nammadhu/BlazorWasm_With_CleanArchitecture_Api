@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240530080109_baseEntityChanges")]
-    partial class baseEntityChanges
+    [Migration("20240602043102_townIdentityColumnInsertLogic")]
+    partial class townIdentityColumnInsertLogic
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,10 +69,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MyTown.Domain.Town", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -247,10 +244,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MyTown.Domain.TownCardTypeMasterData", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<byte>("ApplicationTypeId")
                         .HasColumnType("tinyint");

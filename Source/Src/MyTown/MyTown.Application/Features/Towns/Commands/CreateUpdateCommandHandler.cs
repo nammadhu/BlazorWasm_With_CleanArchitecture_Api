@@ -1,10 +1,11 @@
-﻿using MyTown.SharedModels.Features.Towns.Commands;
+﻿using MyTown.Application.Interfaces;
+using MyTown.SharedModels.Features.Towns.Commands;
 using SharedResponse;
 
 namespace MyTown.Application.Features.Towns.Commands
     {
     public class CreateUpdateTownCommandHandler(ITownRepository repository, IUnitOfWork unitOfWork,
-        ITranslator translator, IMapper mapper) : IRequestHandler<CreateUpdateTownCommand, BaseResult<TownDto>>
+        ITranslator translator, IMapper mapper, IIDGenerator<Town> idNextGenerator) : IRequestHandler<CreateUpdateTownCommand, BaseResult<TownDto>>
         {
         public async Task<BaseResult<TownDto>> Handle(CreateUpdateTownCommand request, CancellationToken cancellationToken)
             {
@@ -39,8 +40,7 @@ namespace MyTown.Application.Features.Towns.Commands
                 //todo should modify above 
                 //var product = new Town(request.Name, request.Price, request.BarCode);
 
-
-
+                obj.Id = idNextGenerator.GetNextID();
                 var result = await repository.AddAsync(obj);
                 //var success = await unitOfWork.SaveChangesAsync();
                 return new BaseResult<TownDto>() { Success = await unitOfWork.SaveChangesAsync(), Data = mapper.Map<TownDto>(result) };

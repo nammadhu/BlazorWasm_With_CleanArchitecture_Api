@@ -44,6 +44,19 @@ namespace MyTown.Domain
             ShortName = shortName;
             }
 
+        public TownCardTypeMasterData(int id, string name)
+            {
+            Id = id;
+            Name = name;
+            ShortName = name;
+            }
+        public TownCardTypeMasterData(int id, string name, string shortName)
+            {
+            Id = id;
+            Name = name;
+            ShortName = shortName;
+            }
+
         //[Key]
         //public int Id { get; set; }
         //this should not  be appeared to front end screen to users
