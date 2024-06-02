@@ -1,6 +1,6 @@
 ﻿namespace MyTown.SharedModels.Features.CardTypes.Commands
     {
-    public class CreateUpdateTownCardTypeMasterDataCommand : TownCardTypeMasterData, IRequest<BaseResult<TownCardTypeDto>>
+    public class CreateUpdateTownCardTypeMasterDataCommand : TownCardType, IRequest<BaseResult<TownCardTypeDto>>
         {
         }
     }

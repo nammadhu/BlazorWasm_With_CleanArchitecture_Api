@@ -5,7 +5,7 @@ using SharedResponse;
 namespace MyTown.Application.Features.CardTypes.Commands
     {
     public class CreateUpdateTownCardTypeMasterDataCommandHandler(ITownCardTypeMasterDataRepository repository, IUnitOfWork unitOfWork,
-        ITranslator translator, IMapper mapper, IIDGenerator<TownCardTypeMasterData> idNextGenerator) : IRequestHandler<CreateUpdateTownCardTypeMasterDataCommand, BaseResult<TownCardTypeDto>>
+        ITranslator translator, IMapper mapper, IIDGenerator<TownCardType> idNextGenerator) : IRequestHandler<CreateUpdateTownCardTypeMasterDataCommand, BaseResult<TownCardTypeDto>>
         {
         public async Task<BaseResult<TownCardTypeDto>> Handle(CreateUpdateTownCardTypeMasterDataCommand request, CancellationToken cancellationToken)
             {
@@ -36,9 +36,9 @@ namespace MyTown.Application.Features.CardTypes.Commands
                 var isDuplicateResult = await NameExists(repository, translator, request, null);
                 if (isDuplicateResult != null) return isDuplicateResult;
 
-                var obj = request.To<CreateUpdateTownCardTypeMasterDataCommand, TownCardTypeMasterData>();
+                var obj = request.To<CreateUpdateTownCardTypeMasterDataCommand, TownCardType>();
                 //todo should modify above 
-                //var product = new TownCardTypeMasterData(request.Name, request.Price, request.BarCode);
+                //var product = new TownCardType(request.Name, request.Price, request.BarCode);
 
 
                 obj.Id = idNextGenerator.GetNextID();
@@ -48,7 +48,7 @@ namespace MyTown.Application.Features.CardTypes.Commands
                 }
             }
 
-        private static async Task<BaseResult<TownCardTypeDto>?> NameExists(ITownCardTypeMasterDataRepository repository, ITranslator translator, CreateUpdateTownCardTypeMasterDataCommand request, TownCardTypeMasterData? existingData)
+        private static async Task<BaseResult<TownCardTypeDto>?> NameExists(ITownCardTypeMasterDataRepository repository, ITranslator translator, CreateUpdateTownCardTypeMasterDataCommand request, TownCardType? existingData)
             {
             if (existingData is null && request.Id > 0)//exisitng shuld have matching record
                 {

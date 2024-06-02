@@ -5,13 +5,13 @@ namespace MyTown.SharedModels.DTOs
     {
 
     //todo change all these later
-    public class TownCardTypeDto : TownCardTypeMasterData
+    public class TownCardTypeDto : TownCardType
         {
         private class Mapping : Profile
             {
             public Mapping()
                 {
-                CreateMap<TownCardTypeMasterData, TownCardTypeDto>().ReverseMap();
+                CreateMap<TownCardType, TownCardTypeDto>().ReverseMap();
                 CreateMap<CreateUpdateTownCardTypeMasterDataCommand, TownCardTypeDto>().ReverseMap();
                 }
             }

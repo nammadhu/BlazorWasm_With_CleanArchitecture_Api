@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Persistence.Repositories
     {
-    public class TownCardTypeMasterDataRepository(ApplicationDbContext dbContext) : GenericRepository<TownCardTypeMasterData>(dbContext), ITownCardTypeMasterDataRepository
+    public class TownCardTypeMasterDataRepository(ApplicationDbContext dbContext) : GenericRepository<TownCardType>(dbContext), ITownCardTypeMasterDataRepository
         {
         const int ResultLimit = 20;
-        private readonly DbSet<TownCardTypeMasterData> db = dbContext.Set<TownCardTypeMasterData>();
+        private readonly DbSet<TownCardType> db = dbContext.Set<TownCardType>();
 
         public async Task<PagenationResponseDto<TownCardTypeDto>> GetPagedListAsync(int pageNumber, int pageSize, string? name)
             {
@@ -26,7 +26,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
                 }
 
             return await Paged(
-                query.Select(p => p.To<TownCardTypeMasterData, TownCardTypeDto>()),
+                query.Select(p => p.To<TownCardType, TownCardTypeDto>()),
                 pageNumber,
                 pageSize);
 
@@ -37,7 +37,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
             if (!string.IsNullOrEmpty(name))
                 query = query.Where(p => p.Name.Contains(name));
 
-            return await query.Take(ResultLimit).Select(p => p.To<TownCardTypeMasterData, TownCardTypeDto>()).ToListAsync();
+            return await query.Take(ResultLimit).Select(p => p.To<TownCardType, TownCardTypeDto>()).ToListAsync();
             }
 
         public async Task<bool> IsNameExistsAsync(string name)

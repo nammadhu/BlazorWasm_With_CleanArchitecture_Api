@@ -14,7 +14,7 @@ namespace MyTown.Application.Features.CardTypes.Queries
                 return new BaseResult<TownCardTypeDto>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.ProductMessages.Product_notfound_with_id(request.Id)), nameof(request.Id)));
                 }
 
-            var result = product.To<TownCardTypeMasterData, TownCardTypeDto>();
+            var result = product.To<TownCardType, TownCardTypeDto>();
 
             return new BaseResult<TownCardTypeDto>(result);
             }

@@ -5,7 +5,6 @@ using MyTown.Domain;
 using PublicCommon.Common;
 using System;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,11 +18,11 @@ namespace CleanArchitecture.Infrastructure.Persistence.Contexts
             {
             this.authenticatedUser = authenticatedUser;
             }
-        public DbSet<TownCardTypeMasterData> TownCardTypeMasterDatas { get; set; }
+        public DbSet<TownCardType> CardTypes { get; set; }
         public DbSet<Town> Towns { get; set; }
-        public DbSet<TownCard> TownCards { get; set; }
-        public DbSet<TownCardApproval> TownCardApprovals { get; set; }
-        public DbSet<SelectedDate> SelectedDate { get; set; }
+        public DbSet<TownCard> Cards { get; set; }
+        public DbSet<TownCardApproval> CardApprovals { get; set; }
+        public DbSet<TownApprovedCardSelectedDate> SelectedDates { get; set; }
 
 
         //not included in db,as builder.Ignore<Product>();
@@ -63,14 +62,12 @@ namespace CleanArchitecture.Infrastructure.Persistence.Contexts
 
             //master datas id identity disabling
             builder.Entity<Town>().Property(et => et.Id).ValueGeneratedNever();
-            builder.Entity<TownCardTypeMasterData>().Property(et => et.Id).ValueGeneratedNever();
+            builder.Entity<TownCardType>().Property(et => et.Id).ValueGeneratedNever();
 
             // Configure TPT inheritance
-            builder.Entity<TownCard>()
-                .ToTable("TownCards").HasKey(t => t.Id);
+            builder.Entity<TownCard>().ToTable("Cards").HasKey(t => t.Id);
             //if this not mentioned,due to inheritance it creates single table(Table-Per-Hierarchy (TPH)) itself with discriminator,so to avoid these statements
-            builder.Entity<TownApprovedCard>()
-                .ToTable("TownApprovedCards");
+            builder.Entity<TownApprovedCard>().ToTable("ApprovedCards");
 
             //builder.Entity<TownCard>().HasOne(tac => tac.ApprovedCard).WithOne().
             //    HasForeignKey<TownApprovedCard>(tc => tc.CardId);

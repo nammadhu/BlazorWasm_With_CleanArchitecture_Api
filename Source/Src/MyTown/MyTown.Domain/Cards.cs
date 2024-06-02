@@ -9,9 +9,9 @@ namespace MyTown.Domain
         {
         public TownApprovedCard()
             {
-            SelectedDates = new HashSet<SelectedDate>();
+            SelectedDates = new HashSet<TownApprovedCardSelectedDate>();
             }
-        public void AddDate(SelectedDate date)
+        public void AddDate(TownApprovedCardSelectedDate date)
             {
             // The HashSet will handle uniqueness and performance efficiently
             SelectedDates.Add(date);
@@ -23,7 +23,7 @@ namespace MyTown.Domain
         [ForeignKey(nameof(CardId))]
         public TownCard Card { get; set; }
 
-        public virtual ICollection<SelectedDate> SelectedDates { get; set; }
+        public virtual ICollection<TownApprovedCardSelectedDate> SelectedDates { get; set; }
 
         [Required]
         public int TownId { get; set; } //bhadravathi,kadur,bidar
@@ -37,7 +37,7 @@ namespace MyTown.Domain
         public int LikeCount { get; set; }//by public anyone
         public int DisLikeCount { get; set; }//by public anyone
         }
-    public class SelectedDate
+    public class TownApprovedCardSelectedDate
         {
         public int Id { get; set; }
         public int CardId { get; set; }
@@ -54,16 +54,16 @@ namespace MyTown.Domain
             {
             //this should never be called,1ly for the sake of EF cores
             }
-        public TownCard(TownCardTypeMasterData type, string title)
+        public TownCard(TownCardType type, string title)
             {
             Type = type;
             Name = title;
             }
-        public TownCard(TownCardTypeMasterData type, string title, string subtitle) : this(type, title)
+        public TownCard(TownCardType type, string title, string subtitle) : this(type, title)
             {
             SubTitle = subtitle;
             }
-        public TownCard(TownCardTypeMasterData type, int id, string title, string subtitle) : this(type, title, subtitle)
+        public TownCard(TownCardType type, int id, string title, string subtitle) : this(type, title, subtitle)
             {
             //this should be removed later,as id is from db or from screen its 0/null only
             Id = id;
@@ -80,7 +80,7 @@ namespace MyTown.Domain
         public int TypeId { get; set; }//doctor,event,business
 
         [ForeignKey(nameof(TypeId))]
-        public TownCardTypeMasterData Type { get; set; }
+        public TownCardType Type { get; set; }
 
 
         [Required]

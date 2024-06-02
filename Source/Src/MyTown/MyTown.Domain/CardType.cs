@@ -27,30 +27,30 @@ namespace MyTown.Domain
 
 
     //db entity
-    public class TownCardTypeMasterData : BaseAuditableEntityMultiUser, IMasterData
+    public class TownCardType : BaseAuditableEntityMultiUser, IMasterData
         {//this is only masterdata
-        public TownCardTypeMasterData()
+        public TownCardType()
             {
 
             }
-        public TownCardTypeMasterData(string name)
+        public TownCardType(string name)
             {
             Name = name;
             ShortName = name;
             }
-        public TownCardTypeMasterData(string name, string shortName)
+        public TownCardType(string name, string shortName)
             {
             Name = name;
             ShortName = shortName;
             }
 
-        public TownCardTypeMasterData(int id, string name)
+        public TownCardType(int id, string name)
             {
             Id = id;
             Name = name;
             ShortName = name;
             }
-        public TownCardTypeMasterData(int id, string name, string shortName)
+        public TownCardType(int id, string name, string shortName)
             {
             Id = id;
             Name = name;
@@ -77,43 +77,43 @@ namespace MyTown.Domain
         //    Price = price;
         //    }
         /*
-        public static TownCardTypeMasterData? Get(int id)
+        public static TownCardType? Get(int id)
             {
             return StandardList.Find(x => x.Id == id);
             }
-        public static TownCardTypeMasterData? GetFirst(string nameContains)
+        public static TownCardType? GetFirst(string nameContains)
             {
             return StandardList.Where(x => x.Name.Contains(nameContains, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
             }
-        public static List<TownCardTypeMasterData>? GetList(string nameContains)
+        public static List<TownCardType>? GetList(string nameContains)
             {
             return StandardList.Where(x => x.Name.Contains(nameContains, StringComparison.InvariantCultureIgnoreCase)).ToList();
             }
-        public static readonly List<TownCardTypeMasterData> StandardList = new List<TownCardTypeMasterData>(){
-            new TownCardTypeMasterData(0,"Town"),
-            new TownCardTypeMasterData(1,"Priority Message"),//flash message
-            new TownCardTypeMasterData(2,"Event"),
-                 new TownCardTypeMasterData(3,"Premium Shops"),
-            new TownCardTypeMasterData(4,"Doctor Clinic Hospital"),
-            new TownCardTypeMasterData(5,"School College Tuition"),
+        public static readonly List<TownCardType> StandardList = new List<TownCardType>(){
+            new TownCardType(0,"Town"),
+            new TownCardType(1,"Priority Message"),//flash message
+            new TownCardType(2,"Event"),
+                 new TownCardType(3,"Premium Shops"),
+            new TownCardType(4,"Doctor Clinic Hospital"),
+            new TownCardType(5,"School College Tuition"),
 
             //business types
-            new TownCardTypeMasterData(11,"Vehicle Garage Bike Car Scooter","Vehicle Garage"),
-            new TownCardTypeMasterData(11,"Hotel Lodge Restaurant"),
-            new TownCardTypeMasterData(11,"Textiles Tailors Designers"),
-            new TownCardTypeMasterData(11,"Beauticians Saloons Hair Cut"),
-            new TownCardTypeMasterData(11,"Electricals Home Appliances"),
-            new TownCardTypeMasterData(11,"Choultry & Convention Hall"),
-            new TownCardTypeMasterData(11,"Shops,Provision Stores,Super Markets"),//Jewellary,saw mills
-            new TownCardTypeMasterData(11,"Gas Agency Petrol Bunks"),
-            new TownCardTypeMasterData(11,"Bank,Govt Offices"),
+            new TownCardType(11,"Vehicle Garage Bike Car Scooter","Vehicle Garage"),
+            new TownCardType(11,"Hotel Lodge Restaurant"),
+            new TownCardType(11,"Textiles Tailors Designers"),
+            new TownCardType(11,"Beauticians Saloons Hair Cut"),
+            new TownCardType(11,"Electricals Home Appliances"),
+            new TownCardType(11,"Choultry & Convention Hall"),
+            new TownCardType(11,"Shops,Provision Stores,Super Markets"),//Jewellary,saw mills
+            new TownCardType(11,"Gas Agency Petrol Bunks"),
+            new TownCardType(11,"Bank,Govt Offices"),
 
 
-             new TownCardTypeMasterData(7,"Real Estate"),
-            new TownCardTypeMasterData(8,"Buy Or sale"),
-            new TownCardTypeMasterData(9,"Open Issue"),
-            new TownCardTypeMasterData(10,"Jobs Available"),
-            new TownCardTypeMasterData(11,"Add Resume"),
+             new TownCardType(7,"Real Estate"),
+            new TownCardType(8,"Buy Or sale"),
+            new TownCardType(9,"Open Issue"),
+            new TownCardType(10,"Jobs Available"),
+            new TownCardType(11,"Add Resume"),
             //user complaints
             };
         */

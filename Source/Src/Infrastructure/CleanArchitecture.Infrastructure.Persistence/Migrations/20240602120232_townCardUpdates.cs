@@ -12,6 +12,27 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "CardTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    ApplicationTypeId = table.Column<byte>(type: "tinyint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    PriorityOrder = table.Column<byte>(type: "tinyint", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CardTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -29,27 +50,6 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TownCardTypeMasterDatas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    ApplicationTypeId = table.Column<byte>(type: "tinyint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<int>(type: "int", nullable: false),
-                    PriorityOrder = table.Column<byte>(type: "tinyint", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TownCardTypeMasterDatas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,7 +87,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TownApprovedCards",
+                name: "ApprovedCards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -120,9 +120,9 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TownApprovedCards", x => x.Id);
+                    table.PrimaryKey("PK_ApprovedCards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TownApprovedCards_Towns_TownId",
+                        name: "FK_ApprovedCards_Towns_TownId",
                         column: x => x.TownId,
                         principalTable: "Towns",
                         principalColumn: "Id",
@@ -130,28 +130,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SelectedDate",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CardId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    ApprovedCardId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SelectedDate", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SelectedDate_TownApprovedCards_ApprovedCardId",
-                        column: x => x.ApprovedCardId,
-                        principalTable: "TownApprovedCards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TownCards",
+                name: "Cards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -181,21 +160,21 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TownCards", x => x.Id);
+                    table.PrimaryKey("PK_Cards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TownCards_TownApprovedCards_ApprovedCardId",
+                        name: "FK_Cards_ApprovedCards_ApprovedCardId",
                         column: x => x.ApprovedCardId,
-                        principalTable: "TownApprovedCards",
+                        principalTable: "ApprovedCards",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_TownCards_TownCardTypeMasterDatas_TypeId",
+                        name: "FK_Cards_CardTypes_TypeId",
                         column: x => x.TypeId,
-                        principalTable: "TownCardTypeMasterDatas",
+                        principalTable: "CardTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TownCards_Towns_TownId",
+                        name: "FK_Cards_Towns_TownId",
                         column: x => x.TownId,
                         principalTable: "Towns",
                         principalColumn: "Id",
@@ -203,7 +182,28 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TownCardApprovals",
+                name: "SelectedDates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CardId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    ApprovedCardId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SelectedDates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SelectedDates_ApprovedCards_ApprovedCardId",
+                        column: x => x.ApprovedCardId,
+                        principalTable: "ApprovedCards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CardApprovals",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -217,67 +217,67 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TownCardApprovals", x => x.Id);
+                    table.PrimaryKey("PK_CardApprovals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TownCardApprovals_TownCards_TownCardId",
+                        name: "FK_CardApprovals_Cards_TownCardId",
                         column: x => x.TownCardId,
-                        principalTable: "TownCards",
+                        principalTable: "Cards",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SelectedDate_ApprovedCardId",
-                table: "SelectedDate",
-                column: "ApprovedCardId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TownApprovedCards_TownId",
-                table: "TownApprovedCards",
+                name: "IX_ApprovedCards_TownId",
+                table: "ApprovedCards",
                 column: "TownId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TownCardApprovals_TownCardId",
-                table: "TownCardApprovals",
+                name: "IX_CardApprovals_TownCardId",
+                table: "CardApprovals",
                 column: "TownCardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TownCards_ApprovedCardId",
-                table: "TownCards",
+                name: "IX_Cards_ApprovedCardId",
+                table: "Cards",
                 column: "ApprovedCardId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_TownCards_TownId",
-                table: "TownCards",
+                name: "IX_Cards_TownId",
+                table: "Cards",
                 column: "TownId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TownCards_TypeId",
-                table: "TownCards",
+                name: "IX_Cards_TypeId",
+                table: "Cards",
                 column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SelectedDates_ApprovedCardId",
+                table: "SelectedDates",
+                column: "ApprovedCardId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CardApprovals");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "SelectedDate");
+                name: "SelectedDates");
 
             migrationBuilder.DropTable(
-                name: "TownCardApprovals");
+                name: "Cards");
 
             migrationBuilder.DropTable(
-                name: "TownCards");
+                name: "ApprovedCards");
 
             migrationBuilder.DropTable(
-                name: "TownApprovedCards");
-
-            migrationBuilder.DropTable(
-                name: "TownCardTypeMasterDatas");
+                name: "CardTypes");
 
             migrationBuilder.DropTable(
                 name: "Towns");

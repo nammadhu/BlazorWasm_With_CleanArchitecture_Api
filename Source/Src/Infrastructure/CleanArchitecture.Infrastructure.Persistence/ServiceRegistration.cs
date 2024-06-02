@@ -48,8 +48,8 @@ namespace CleanArchitecture.Infrastructure.Persistence
 
             services.AddScoped<IIDGenerator<Town>>(provider =>
        new IDGenerator<Town>(provider.GetService<ApplicationDbContext>(), "Id"));
-            services.AddScoped<IIDGenerator<TownCardTypeMasterData>>(provider =>
-       new IDGenerator<TownCardTypeMasterData>(provider.GetService<ApplicationDbContext>(), "Id"));
+            services.AddScoped<IIDGenerator<TownCardType>>(provider =>
+       new IDGenerator<TownCardType>(provider.GetService<ApplicationDbContext>(), "Id"));
             }
         }
     }

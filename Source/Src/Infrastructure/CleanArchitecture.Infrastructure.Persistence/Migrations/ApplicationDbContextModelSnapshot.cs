@@ -63,30 +63,6 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("MyTown.Domain.SelectedDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ApprovedCardId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CardId")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApprovedCardId");
-
-                    b.ToTable("SelectedDate");
-                });
-
             modelBuilder.Entity("MyTown.Domain.Town", b =>
                 {
                     b.Property<int>("Id")
@@ -255,7 +231,31 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("TownId");
 
-                    b.ToTable("TownApprovedCards", (string)null);
+                    b.ToTable("ApprovedCards", (string)null);
+                });
+
+            modelBuilder.Entity("MyTown.Domain.TownApprovedCardSelectedDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApprovedCardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CardId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovedCardId");
+
+                    b.ToTable("SelectedDates");
                 });
 
             modelBuilder.Entity("MyTown.Domain.TownCard", b =>
@@ -343,7 +343,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("TownCards", (string)null);
+                    b.ToTable("Cards", (string)null);
                 });
 
             modelBuilder.Entity("MyTown.Domain.TownCardApproval", b =>
@@ -376,10 +376,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("TownCardId");
 
-                    b.ToTable("TownCardApprovals");
+                    b.ToTable("CardApprovals");
                 });
 
-            modelBuilder.Entity("MyTown.Domain.TownCardTypeMasterData", b =>
+            modelBuilder.Entity("MyTown.Domain.TownCardType", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -418,18 +418,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TownCardTypeMasterDatas");
-                });
-
-            modelBuilder.Entity("MyTown.Domain.SelectedDate", b =>
-                {
-                    b.HasOne("MyTown.Domain.TownApprovedCard", "ApprovedCard")
-                        .WithMany("SelectedDates")
-                        .HasForeignKey("ApprovedCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApprovedCard");
+                    b.ToTable("CardTypes");
                 });
 
             modelBuilder.Entity("MyTown.Domain.TownApprovedCard", b =>
@@ -439,6 +428,17 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         .HasForeignKey("TownId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MyTown.Domain.TownApprovedCardSelectedDate", b =>
+                {
+                    b.HasOne("MyTown.Domain.TownApprovedCard", "ApprovedCard")
+                        .WithMany("SelectedDates")
+                        .HasForeignKey("ApprovedCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApprovedCard");
                 });
 
             modelBuilder.Entity("MyTown.Domain.TownCard", b =>
@@ -455,7 +455,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyTown.Domain.TownCardTypeMasterData", "Type")
+                    b.HasOne("MyTown.Domain.TownCardType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)

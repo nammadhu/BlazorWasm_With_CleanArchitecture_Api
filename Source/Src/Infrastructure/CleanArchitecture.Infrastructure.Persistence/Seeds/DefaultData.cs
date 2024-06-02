@@ -64,32 +64,31 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
                 }
             Console.WriteLine("Town seeds update exists:" + changedExists);
 
-            var existingCardTypes = await applicationDbContext.TownCardTypeMasterDatas.ToListAsync();
-            List<TownCardTypeMasterData> cardTypesMasterData = [
-            new (0,"Town"),
-            new (1,"Priority Message"),//flash message
-            new (2,"Event"),
-            new (3,"Premium Shops"),
-            new TownCardTypeMasterData(4,"Doctor Clinic Hospital"),
-            new TownCardTypeMasterData(5,"School College Tuition"),
+            var existingCardTypes = await applicationDbContext.CardTypes.ToListAsync();
+            List<TownCardType> cardTypesMasterData = [
+            new (1,"Town"),
+            new (2,"Priority Message"),//flash message
+            new (3,"Event"),
+            new (4,"Premium Shops"),
+            new (5,"Doctor Clinic Hospital"),
+            new (6,"School College Tuition"),
 
             //business types
-            new TownCardTypeMasterData(6,"Vehicle Garage Bike Car Scooter","Vehicle Garage"),
-            new TownCardTypeMasterData(7,"Hotel Lodge Restaurant"),
-            new TownCardTypeMasterData(8,"Textiles Tailors Designers"),
-            new TownCardTypeMasterData(9,"Beauticians Saloons Hair Cut"),
-            new TownCardTypeMasterData(10,"Electricals Home Appliances"),
-            new TownCardTypeMasterData(11,"Choultry & Convention Hall"),
-            new TownCardTypeMasterData(12,"Shops,Provision Stores,Super Markets"),//Jewellary,saw mills
-            new TownCardTypeMasterData(13,"Gas Agency Petrol Bunks"),
-            new TownCardTypeMasterData(14,"Bank,Govt Offices"),
+            new (7,"Vehicle Garage Bike Car Scooter","Vehicle Garage"),
+            new (8,"Hotel Lodge Restaurant"),
+            new (9,"Textiles Tailors Designers"),
+            new (10,"Beauticians Saloons Hair Cut"),
+            new (11,"Electricals Home Appliances"),
+            new (12,"Choultry & Convention Hall"),
+            new (13,"Shops,Provision Stores,Super Markets"),//Jewellary,saw mills
+            new (14,"Gas Agency Petrol Bunks"),
+            new (15,"Bank,Govt Offices"),
 
-
-             new TownCardTypeMasterData(15,"Real Estate"),
-            new TownCardTypeMasterData(16,"Buy Or sale"),
-            new TownCardTypeMasterData(17,"Open Issue"),
-            new TownCardTypeMasterData(18,"Jobs Available"),
-            new TownCardTypeMasterData(19,"Add Resume"),
+            new (16,"Real Estate"),
+            new (17,"Buy Or sale"),
+            new (18,"Open Issue"),
+            new (19,"Jobs Available"),
+            new (20,"Add Resume"),
             //user complaints
             ];
 
@@ -100,7 +99,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
                 {
                     if (!existingCardTypes.Exists(e => e.Id == cardType.Id))
                         {
-                        applicationDbContext.TownCardTypeMasterDatas.Add(cardType);
+                        applicationDbContext.CardTypes.Add(cardType);
                         changedExists = true;
                         }
 
@@ -108,7 +107,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
                 }
             else
                 {
-                await applicationDbContext.TownCardTypeMasterDatas.AddRangeAsync(cardTypesMasterData);
+                await applicationDbContext.CardTypes.AddRangeAsync(cardTypesMasterData);
                 changedExists = true;
                 }
 

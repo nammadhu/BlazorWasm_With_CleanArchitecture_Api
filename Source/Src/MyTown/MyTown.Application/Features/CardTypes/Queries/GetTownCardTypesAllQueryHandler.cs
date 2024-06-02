@@ -8,7 +8,7 @@ namespace MyTown.Application.Features.CardTypes.Queries
             {
             var res = await cardTypeRepository.GetAllAsync();
 
-            return res.Select(r => r.To<TownCardTypeMasterData, TownCardTypeDto>()).ToList();
+            return res.Select(r => r.To<TownCardType, TownCardTypeDto>()).ToList();
             }
         }
     }
