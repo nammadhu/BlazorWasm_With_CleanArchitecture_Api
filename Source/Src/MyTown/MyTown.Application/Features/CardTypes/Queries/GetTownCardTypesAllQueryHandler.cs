@@ -2,9 +2,9 @@
 
 namespace MyTown.Application.Features.CardTypes.Queries
     {
-    public class GetTownCardTypeMasterDatasAllQueryHandler(ITownCardTypeMasterDataRepository cardTypeRepository) : IRequestHandler<GetTownCardTypeMasterDatasAllQuery, IReadOnlyList<TownCardTypeDto>>
+    public class GetTownCardTypesAllQueryHandler(ITownCardTypeRepository cardTypeRepository) : IRequestHandler<GetTownCardTypesAllQuery, IReadOnlyList<TownCardTypeDto>>
         {
-        public async Task<IReadOnlyList<TownCardTypeDto>> Handle(GetTownCardTypeMasterDatasAllQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<TownCardTypeDto>> Handle(GetTownCardTypesAllQuery request, CancellationToken cancellationToken)
             {
             var res = await cardTypeRepository.GetAllAsync();
 

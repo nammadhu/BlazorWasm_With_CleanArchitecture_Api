@@ -14,17 +14,17 @@ under './Src/Core/CleanArchitecture.Application
  dotnet new ca-use-case -fn TownCards -ut querypagedlist -un GetTownCards  -rt TownCardDto  
  dotnet new ca-use-case -fn TownCards -ut query -un GetTownCardById  -rt TownCardDto 
   
-3 TownCardTypeMasterDatas Commands & Queries
- dotnet new ca-use-case --feature-name TownCardTypeMasterDatas --usecase-name CreateUpdateTownCardTypeMasterData --usecase-type command --return-type TownCardTypeMasterData
+3 TownCardTypes Commands & Queries
+ dotnet new ca-use-case --feature-name TownCardTypes --usecase-name CreateUpdateTownCardType --usecase-type command --return-type TownCardType
  
- dotnet new ca-use-case --feature-name TownCardTypeMasterDatas --usecase-name CreateTownCardTypeMasterData --usecase-type command --return-type int
- dotnet new ca-use-case --feature-name TownCardTypeMasterDatas --usecase-name UpdateTownCardTypeMasterData --usecase-type command --return-type int
+ dotnet new ca-use-case --feature-name TownCardTypes --usecase-name CreateTownCardType --usecase-type command --return-type int
+ dotnet new ca-use-case --feature-name TownCardTypes --usecase-name UpdateTownCardType --usecase-type command --return-type int
  
-  dotnet new ca-use-case -fn TownCardTypeMasterDatas -ut query -un        	GetTownCardTypeMasterDatas  -rt "List<TownCardTypeDto>" 
+  dotnet new ca-use-case -fn TownCardTypes -ut query -un        	GetTownCardTypes  -rt "List<TownCardTypeDto>" 
   
-  dotnet new ca-use-case -fn TownCardTypeMasterDatas -ut query -un GetTownCardTypeMasterDataById  -rt "TownCardTypeDto" 
+  dotnet new ca-use-case -fn TownCardTypes -ut query -un GetTownCardTypeById  -rt "TownCardTypeDto" 
   
-  dotnet new ca-use-case -fn TownCardTypeMasterDatas -ut querypagedlist -un GetTownCardTypeMasterDatas  -rt TownCardTypeDto  
+  dotnet new ca-use-case -fn TownCardTypes -ut querypagedlist -un GetTownCardTypes  -rt TownCardTypeDto  
   
   
   

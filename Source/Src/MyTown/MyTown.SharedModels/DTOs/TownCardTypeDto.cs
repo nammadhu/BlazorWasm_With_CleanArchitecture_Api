@@ -12,7 +12,7 @@ namespace MyTown.SharedModels.DTOs
             public Mapping()
                 {
                 CreateMap<TownCardType, TownCardTypeDto>().ReverseMap();
-                CreateMap<CreateUpdateTownCardTypeMasterDataCommand, TownCardTypeDto>().ReverseMap();
+                CreateMap<CreateUpdateTownCardTypeCommand, TownCardTypeDto>().ReverseMap();
                 }
             }
         }

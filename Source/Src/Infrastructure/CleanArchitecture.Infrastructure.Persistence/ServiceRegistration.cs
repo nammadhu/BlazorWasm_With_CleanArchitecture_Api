@@ -43,7 +43,7 @@ namespace CleanArchitecture.Infrastructure.Persistence
                 services.AddTransient(item, implimentation);
                 }
             services.AddTransient<ITownRepository, TownRepository>();
-            services.AddTransient<ITownCardTypeMasterDataRepository, TownCardTypeMasterDataRepository>();
+            services.AddTransient<ITownCardTypeRepository, TownCardTypeRepository>();
             services.AddTransient<ITownCardRepository, TownCardRepository>();
 
             services.AddScoped<IIDGenerator<Town>>(provider =>

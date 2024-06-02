@@ -19,7 +19,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
             Console.WriteLine($"{nameof(TownCardTypeController)}/{nameof(ApiEndPoints.GetAll)}");
             try
                 {
-                var res = await Mediator.Send(new GetTownCardTypeMasterDatasAllQuery());
+                var res = await Mediator.Send(new GetTownCardTypesAllQuery());
                 return res;
                 }
             catch (Exception e)
@@ -30,7 +30,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
             }
 
         [HttpGet]
-        public async Task<PagedResponse<TownCardTypeDto>> GetPagedList([FromQuery] GetTownCardTypeMasterDatasPagedListQuery model)
+        public async Task<PagedResponse<TownCardTypeDto>> GetPagedList([FromQuery] GetTownCardTypesPagedListQuery model)
             {
             Console.WriteLine($"{nameof(TownCardTypeController)}/{nameof(ApiEndPoints.GetPagedList)}");
             try
@@ -46,7 +46,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
             }
 
         [HttpGet]
-        public async Task<BaseResult<TownCardTypeDto>> GetById([FromQuery] GetTownCardTypeMasterDataByIdQuery model)
+        public async Task<BaseResult<TownCardTypeDto>> GetById([FromQuery] GetTownCardTypeByIdQuery model)
             {
             Console.WriteLine($"{nameof(TownCardTypeController)}/{nameof(ApiEndPoints.GetById)}");
             return await Mediator.Send(model);
@@ -54,7 +54,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
 
 
         [HttpPost, Authorize(Roles = CONSTANTS.Auth.Role_Admin)]
-        public async Task<BaseResult<TownCardTypeDto>> Create(CreateUpdateTownCardTypeMasterDataCommand model)
+        public async Task<BaseResult<TownCardTypeDto>> Create(CreateUpdateTownCardTypeCommand model)
             {
             Console.WriteLine($"{nameof(TownCardTypeController)}/{nameof(ApiEndPoints.Create)}");
             //model.CreatedBy = UserIdExtract();
@@ -64,7 +64,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
 
 
         [HttpPut, Authorize(Roles = CONSTANTS.Auth.Role_Admin)]
-        public async Task<BaseResult<TownCardTypeDto>> Update(CreateUpdateTownCardTypeMasterDataCommand model)
+        public async Task<BaseResult<TownCardTypeDto>> Update(CreateUpdateTownCardTypeCommand model)
             {
             Console.WriteLine($"{nameof(TownCardTypeController)}/{nameof(ApiEndPoints.Update)}");
             //model.LastModifiedBy = UserIdExtract();
@@ -72,7 +72,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
             }
 
         [HttpDelete, Authorize(Roles = CONSTANTS.Auth.Role_Admin)]
-        public async Task<BaseResult> Delete([FromQuery] DeleteTownCardTypeMasterDataCommand model)
+        public async Task<BaseResult> Delete([FromQuery] DeleteTownCardTypeCommand model)
             {
             Console.WriteLine($"{nameof(TownCardTypeController)}/{nameof(ApiEndPoints.Delete)}");
             //model.LastModifiedBy = UserIdExtract();

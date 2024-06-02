@@ -2,7 +2,7 @@
 
 namespace MyTown.Application.Interfaces.Repositories
     {
-    public interface ITownCardTypeMasterDataRepository : IGenericRepository<TownCardType>
+    public interface ITownCardTypeRepository : IGenericRepository<TownCardType>
         {
         Task<PagenationResponseDto<TownCardTypeDto>> GetPagedListAsync(int pageNumber, int pageSize, string? name);
 

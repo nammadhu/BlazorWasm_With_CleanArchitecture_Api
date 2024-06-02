@@ -31,7 +31,7 @@ namespace MyTown.RCL.CardType
         readonly TimeSpan timeSpanLocalStorage = TimeSpan.FromMinutes(5);
 
         //todo had to add pagination & search over api
-        private async Task<PagedResponse<TownCardTypeDto>?> GetTownCardTypesPaginationAsyncNotCompletedPending(GetTownCardTypeMasterDatasAllQuery query)
+        private async Task<PagedResponse<TownCardTypeDto>?> GetTownCardTypesPaginationAsyncNotCompletedPending(GetTownCardTypesAllQuery query)
             {
             //todo had to pass query object
             //this fetches data for after 5 minute only,till then cache will be served for all with in browser
@@ -62,7 +62,7 @@ namespace MyTown.RCL.CardType
                 return result;
                 }
             }
-        public async Task<BaseResult<TownCardTypeDto>> CreateUpdateTownCardTypeAsync(CreateUpdateTownCardTypeMasterDataCommand command)
+        public async Task<BaseResult<TownCardTypeDto>> CreateUpdateTownCardTypeAsync(CreateUpdateTownCardTypeCommand command)
             {
             if (command.Id == 0)
                 return await CreateTownCardTypeAsync(command);
@@ -83,7 +83,7 @@ namespace MyTown.RCL.CardType
             B.else remove all matching conditions
             
             */
-        public async Task<BaseResult<TownCardTypeDto>> CreateTownCardTypeAsync(CreateUpdateTownCardTypeMasterDataCommand command)
+        public async Task<BaseResult<TownCardTypeDto>> CreateTownCardTypeAsync(CreateUpdateTownCardTypeCommand command)
             {
             //do minimum check of duplicate name with local storage to avoid unnecessary api calls
             var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesKey);
@@ -121,7 +121,7 @@ namespace MyTown.RCL.CardType
             return new BaseResult<TownCardTypeDto>() { Success = false, Data = null };//Errors = responseMessage.StatusCode
             }
 
-        public async Task<BaseResult<TownCardTypeDto>> UpdateTownCardTypeAsync(CreateUpdateTownCardTypeMasterDataCommand command)
+        public async Task<BaseResult<TownCardTypeDto>> UpdateTownCardTypeAsync(CreateUpdateTownCardTypeCommand command)
             {
             //do minimum check of duplicate name with local storage to avoid unnecessary api calls
             var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesKey);

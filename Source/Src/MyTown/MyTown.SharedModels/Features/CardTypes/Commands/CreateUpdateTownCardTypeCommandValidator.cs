@@ -2,9 +2,9 @@
 
 namespace MyTown.SharedModels.Features.CardTypes.Commands
     {
-    public class CreateUpdateTownCardTypeMasterDataCommandValidator : AbstractValidator<CreateUpdateTownCardTypeMasterDataCommand>
+    public class CreateUpdateTownCardTypeCommandValidator : AbstractValidator<CreateUpdateTownCardTypeCommand>
         {
-        public CreateUpdateTownCardTypeMasterDataCommandValidator()//(ITranslator translator)
+        public CreateUpdateTownCardTypeCommandValidator()//(ITranslator translator)
             {
             RuleFor(p => p.Name)
                 .NotNull();

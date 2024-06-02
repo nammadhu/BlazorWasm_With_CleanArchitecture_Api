@@ -35,7 +35,7 @@
 
     [EditorRequired]
     [Parameter]
-    public CreateUpdateTownCardTypeMasterDataCommand model { get; set; } = null!;
+    public CreateUpdateTownCardTypeCommand model { get; set; } = null!;
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
@@ -43,7 +43,7 @@
     MudForm? _form;
     private bool _saving;
 
-    CreateUpdateTownCardTypeMasterDataCommandValidator _modelValidator = new CreateUpdateTownCardTypeMasterDataCommandValidator();//translator
+    CreateUpdateTownCardTypeCommandValidator _modelValidator = new CreateUpdateTownCardTypeCommandValidator();//translator
 
 
     async Task Submit()

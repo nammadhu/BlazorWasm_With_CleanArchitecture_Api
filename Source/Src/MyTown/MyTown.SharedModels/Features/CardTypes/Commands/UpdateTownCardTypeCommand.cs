@@ -3,7 +3,7 @@
 namespace MyTown.SharedModels.Features.CardTypes.Commands
     {
     //not using this,instead using CreateUpdate
-    public class UpdateTownCardTypeMasterDataCommand : TownCardTypeMasterData,//later should remove this domain type
+    public class UpdateTownCardTypeCommand : TownCardType,//later should remove this domain type
         IRequest<BaseResult>
         {
         //public int MyProperty { get; set; }
@@ -12,7 +12,7 @@ namespace MyTown.SharedModels.Features.CardTypes.Commands
             {
             public Mapping()
                 {
-                CreateMap<TownCardTypeMasterData, UpdateTownCardTypeMasterDataCommand>().ReverseMap();
+                CreateMap<TownCardType, UpdateTownCardTypeCommand>().ReverseMap();
                 }
             }
 

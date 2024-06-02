@@ -3,9 +3,9 @@ using SharedResponse;
 
 namespace MyTown.Application.Features.CardTypes.Commands
     {
-    public class DeleteTownCardTypeMasterDataCommandHandler(ITownCardTypeMasterDataRepository townCardTypeMasteDataRepository, IUnitOfWork unitOfWork, ITranslator translator) : IRequestHandler<DeleteTownCardTypeMasterDataCommand, BaseResult>
+    public class DeleteTownCardTypeCommandHandler(ITownCardTypeRepository townCardTypeMasteDataRepository, IUnitOfWork unitOfWork, ITranslator translator) : IRequestHandler<DeleteTownCardTypeCommand, BaseResult>
         {
-        public async Task<BaseResult> Handle(DeleteTownCardTypeMasterDataCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResult> Handle(DeleteTownCardTypeCommand request, CancellationToken cancellationToken)
             {
             var data = await townCardTypeMasteDataRepository.GetByIdIntAsync(request.Id);
 

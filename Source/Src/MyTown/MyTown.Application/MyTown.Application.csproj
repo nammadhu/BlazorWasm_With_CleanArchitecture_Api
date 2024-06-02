@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\CardTypes\Commands\CreateTownCardTypeMasterDataCommandHandler.cs" />
-    <Compile Remove="Features\CardTypes\Commands\UpdateTownCardTypeMasterDataCommandHandler.cs" />
     <Compile Remove="Features\Towns\Commands\CreateTownCommandHandler.cs" />
     <Compile Remove="Features\Towns\Commands\UpdateTownCommandHandler.cs" />
   </ItemGroup>

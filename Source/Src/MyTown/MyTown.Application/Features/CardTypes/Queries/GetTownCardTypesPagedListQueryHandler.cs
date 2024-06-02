@@ -3,9 +3,9 @@ using SharedResponse.DTOs;
 
 namespace MyTown.Application.Features.CardTypes.Queries
     {
-    public class GetTownCardTypeMasterDatasPagedListQueryHandler(ITownCardTypeMasterDataRepository townCardTypeMasteDataRepository) : IRequestHandler<GetTownCardTypeMasterDatasPagedListQuery, PagedResponse<TownCardTypeDto>>
+    public class GetTownCardTypesPagedListQueryHandler(ITownCardTypeRepository townCardTypeMasteDataRepository) : IRequestHandler<GetTownCardTypesPagedListQuery, PagedResponse<TownCardTypeDto>>
         {
-        public async Task<PagedResponse<TownCardTypeDto>> Handle(GetTownCardTypeMasterDatasPagedListQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<TownCardTypeDto>> Handle(GetTownCardTypesPagedListQuery request, CancellationToken cancellationToken)
             {
             PagenationResponseDto<TownCardTypeDto> result;
             if (request.All)

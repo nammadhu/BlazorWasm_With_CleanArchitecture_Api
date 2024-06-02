@@ -125,7 +125,7 @@
         await authService.LoginUserMakingSure();
         if (clientConfig.IsAdmin == false) return;//|| dto.Id == 0
 
-        var command = mapper.Map<CreateUpdateTownCardTypeMasterDataCommand>(dto);
+        var command = mapper.Map<CreateUpdateTownCardTypeCommand>(dto);
         var parameters = new DialogParameters<CreateUpdateCardType>
         {
             { x => x.model, command }

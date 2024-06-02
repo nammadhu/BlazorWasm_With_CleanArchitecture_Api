@@ -3,11 +3,11 @@ using SharedResponse;
 
 namespace MyTown.Application.Features.CardTypes.Queries
     {
-    public class GetTownCardTypeMasterDataByIdQueryHandler(ITownCardTypeMasterDataRepository townCardTypeMasterDataRepository, ITranslator translator) : IRequestHandler<GetTownCardTypeMasterDataByIdQuery, BaseResult<TownCardTypeDto>>
+    public class GetTownCardTypeByIdQueryHandler(ITownCardTypeRepository townCardTypeRepository, ITranslator translator) : IRequestHandler<GetTownCardTypeByIdQuery, BaseResult<TownCardTypeDto>>
         {
-        public async Task<BaseResult<TownCardTypeDto>> Handle(GetTownCardTypeMasterDataByIdQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResult<TownCardTypeDto>> Handle(GetTownCardTypeByIdQuery request, CancellationToken cancellationToken)
             {
-            var product = await townCardTypeMasterDataRepository.GetByIdIntAsync(request.Id);
+            var product = await townCardTypeRepository.GetByIdIntAsync(request.Id);
 
             if (product is null)
                 {

@@ -4,10 +4,10 @@ using SharedResponse;
 
 namespace MyTown.Application.Features.CardTypes.Commands
     {
-    public class CreateUpdateTownCardTypeMasterDataCommandHandler(ITownCardTypeMasterDataRepository repository, IUnitOfWork unitOfWork,
-        ITranslator translator, IMapper mapper, IIDGenerator<TownCardType> idNextGenerator) : IRequestHandler<CreateUpdateTownCardTypeMasterDataCommand, BaseResult<TownCardTypeDto>>
+    public class CreateUpdateTownCardTypeCommandHandler(ITownCardTypeRepository repository, IUnitOfWork unitOfWork,
+        ITranslator translator, IMapper mapper, IIDGenerator<TownCardType> idNextGenerator) : IRequestHandler<CreateUpdateTownCardTypeCommand, BaseResult<TownCardTypeDto>>
         {
-        public async Task<BaseResult<TownCardTypeDto>> Handle(CreateUpdateTownCardTypeMasterDataCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResult<TownCardTypeDto>> Handle(CreateUpdateTownCardTypeCommand request, CancellationToken cancellationToken)
             {
             if (request.Id > 0)//UPDATE
                 {
@@ -36,7 +36,7 @@ namespace MyTown.Application.Features.CardTypes.Commands
                 var isDuplicateResult = await NameExists(repository, translator, request, null);
                 if (isDuplicateResult != null) return isDuplicateResult;
 
-                var obj = request.To<CreateUpdateTownCardTypeMasterDataCommand, TownCardType>();
+                var obj = request.To<CreateUpdateTownCardTypeCommand, TownCardType>();
                 //todo should modify above 
                 //var product = new TownCardType(request.Name, request.Price, request.BarCode);
 
@@ -48,7 +48,7 @@ namespace MyTown.Application.Features.CardTypes.Commands
                 }
             }
 
-        private static async Task<BaseResult<TownCardTypeDto>?> NameExists(ITownCardTypeMasterDataRepository repository, ITranslator translator, CreateUpdateTownCardTypeMasterDataCommand request, TownCardType? existingData)
+        private static async Task<BaseResult<TownCardTypeDto>?> NameExists(ITownCardTypeRepository repository, ITranslator translator, CreateUpdateTownCardTypeCommand request, TownCardType? existingData)
             {
             if (existingData is null && request.Id > 0)//exisitng shuld have matching record
                 {

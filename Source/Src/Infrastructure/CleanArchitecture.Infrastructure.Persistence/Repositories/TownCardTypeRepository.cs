@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Persistence.Repositories
     {
-    public class TownCardTypeMasterDataRepository(ApplicationDbContext dbContext) : GenericRepository<TownCardType>(dbContext), ITownCardTypeMasterDataRepository
+    public class TownCardTypeRepository(ApplicationDbContext dbContext) : GenericRepository<TownCardType>(dbContext), ITownCardTypeRepository
         {
         const int ResultLimit = 20;
         private readonly DbSet<TownCardType> db = dbContext.Set<TownCardType>();

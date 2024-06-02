@@ -4,9 +4,9 @@ using SharedResponse;
 namespace MyTown.SharedModels.Features.CardTypes.Commands
     {
     //not using this,instead using CreateUpdate
-    public class UpdateTownCardTypeMasterDataCommandValidator : AbstractValidator<UpdateTownCardTypeMasterDataCommand>
+    public class UpdateTownCardTypeCommandValidator : AbstractValidator<UpdateTownCardTypeCommand>
         {
-        public UpdateTownCardTypeMasterDataCommandValidator(ITranslator translator)
+        public UpdateTownCardTypeCommandValidator(ITranslator translator)
             {
             //    RuleFor(p => p.MyProperty)
             //        .NotNull()
