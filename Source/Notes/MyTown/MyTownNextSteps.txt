@@ -1,4 +1,16 @@
-Remove approvedcount,rejected count ,likes all from TownCards table
+Towns page=>click thenopen particular page with
+1>Header card with 1(main town card),if not exist then show button to add/edit
+2>Add Card
+3>List of existing cards
+
+If blank(on selection with preset) section then ,create card, with dropdown of 
+Town
+Type
+Details...
+
+
+
+done-Remove approvedcount,rejected count ,likes all from TownCards table
 
 Shifting done
 
