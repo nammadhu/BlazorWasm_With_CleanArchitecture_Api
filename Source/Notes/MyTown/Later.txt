@@ -1,2 +1,2 @@
 State,District separate table
-Town ids fix instead of increment
+Card Types priority,Price handling

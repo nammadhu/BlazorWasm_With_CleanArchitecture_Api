@@ -5,7 +5,7 @@ using SharedResponse;
 namespace MyTown.Application.Features.CardTypes.Commands
     {
     public class CreateUpdateTownCardTypeMasterDataCommandHandler(ITownCardTypeMasterDataRepository repository, IUnitOfWork unitOfWork,
-        ITranslator translator, IMapper mapper, IIDGenerator<Town> idNextGenerator) : IRequestHandler<CreateUpdateTownCardTypeMasterDataCommand, BaseResult<TownCardTypeDto>>
+        ITranslator translator, IMapper mapper, IIDGenerator<TownCardTypeMasterData> idNextGenerator) : IRequestHandler<CreateUpdateTownCardTypeMasterDataCommand, BaseResult<TownCardTypeDto>>
         {
         public async Task<BaseResult<TownCardTypeDto>> Handle(CreateUpdateTownCardTypeMasterDataCommand request, CancellationToken cancellationToken)
             {
