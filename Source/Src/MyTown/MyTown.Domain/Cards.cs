@@ -47,7 +47,7 @@ namespace MyTown.Domain
         }
 
     //each called iCard , internet card of any user or business entity
-    //dbentity
+    //dbentity, once approved then will be moving the approved entity to ApprovedCard table
     public class TownCard : TownBase
         {
         public TownCard()

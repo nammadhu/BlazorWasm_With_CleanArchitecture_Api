@@ -1,2 +1,5 @@
 State,District separate table
 Card Types priority,Price handling
+
+CardOwnership transfer by creator
+Also guy can create & get incentive & then transfer ownership

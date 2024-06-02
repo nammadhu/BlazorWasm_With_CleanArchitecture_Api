@@ -52,7 +52,7 @@
             public const string Role_Admin = "Admin";
             public const string Role_InternalAdmin = "InternalAdmin";
             public const string Role_InternalViewer = "InternalViewer";
-            public const string Role_CardOwner = "CardOwner";//creator
+            public const string Role_CardCreator = "Creator";//creator
             //Any AuthenticatedUser //no separate role required
             //Anonymous //no separate role required
 

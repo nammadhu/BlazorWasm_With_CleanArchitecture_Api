@@ -13,7 +13,7 @@ namespace CleanArchitecture.Infrastructure.Identity.Seeds
             await AddRole(roleManager, CONSTANTS.Auth.Role_Admin);
             await AddRole(roleManager, CONSTANTS.Auth.Role_InternalAdmin);
             await AddRole(roleManager, CONSTANTS.Auth.Role_InternalViewer);
-            await AddRole(roleManager, CONSTANTS.Auth.Role_CardOwner);
+            await AddRole(roleManager, CONSTANTS.Auth.Role_CardCreator);
             //Creator
             //Any AuthenticatedUser
             //Anonymous
