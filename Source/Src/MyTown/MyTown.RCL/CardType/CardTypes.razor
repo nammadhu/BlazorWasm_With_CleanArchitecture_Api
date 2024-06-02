@@ -13,7 +13,7 @@
 
 <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<TownCardTypeDto,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Town Card Types</MudText>
+        <MudText Typo="Typo.h6">Card Types</MudText>
         <MudTextField @bind-Value="searchStringTownCardTypeName" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         @if (clientConfig.IsAdmin == true)
             {
