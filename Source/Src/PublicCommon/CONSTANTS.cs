@@ -52,10 +52,14 @@
             public const string Role_Admin = "Admin";
             public const string Role_InternalAdmin = "InternalAdmin";
             public const string Role_InternalViewer = "InternalViewer";
-            public const string Role_CardCreator = "Creator";//creator
+            public const string Role_CardCreator = "Creator";//any guy can create & transfer to owner
+            public const string Role_CardOwner = "Owner";//any other user might have created but now transferred to this owner
+            //Town main page,option works with Owner role only,if owner then only he can edit,not with creator
+
             //Any AuthenticatedUser //no separate role required
             //Anonymous //no separate role required
 
+            public const string Role_Blocked = "Blocked";
             public static class ExternalProviders
                 {
                 public const string Google = "Google";

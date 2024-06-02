@@ -2,6 +2,7 @@
 using CleanArchitecture.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using SharedResponse.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
             }
 
-        public virtual async Task<T> GetByIdIntAsync(int id)
+        public virtual async Task<T> GetByIdIntAsync(int id, Guid? userId=null)
             {
             var result = await _dbContext.Set<T>().FindAsync(id);
             if (result != null)

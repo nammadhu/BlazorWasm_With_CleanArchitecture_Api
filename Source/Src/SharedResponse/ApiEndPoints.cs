@@ -3,13 +3,21 @@
     public class ApiEndPoints
         {
 
+        public const string Version = "V1";
+
         public const string ClientAnonymous = "AnonymousClient";
         public const string ClientAuth = "AuthClient";
 
         public const string Prefix = "api";
 
         public const string Town = "Town";
+        public const string TownCard = "TownCard";
+        public const string TownCardType = "TownCardType";
 
+        public static string BaseUrl(string type)
+            {
+            return $"{Version}/{type}";
+            }
 
         public const string Config = "Config";
         public const string Vote = "Vote";

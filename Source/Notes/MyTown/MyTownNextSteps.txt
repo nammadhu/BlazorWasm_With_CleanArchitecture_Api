@@ -1,3 +1,12 @@
+Townid=> call extract town all fields with CardsApproved
+1-controller endpoint readyness(Anonymous)
+2-integrate with screen
+
+Card=>
+Addition,must be logged in (not blocked)
+On click ,shows new card page with options to save
+Send for approval screen then selecting Approvers in any town,not restricted
+
 Towns page=>click thenopen particular page with
 1>Header card with 1(main town card),if not exist then show button to add/edit
 2>Add Card
@@ -8,7 +17,7 @@ Town
 Type
 Details...
 
-
+If any user who is owner
 
 done-Remove approvedcount,rejected count ,likes all from TownCards table
 

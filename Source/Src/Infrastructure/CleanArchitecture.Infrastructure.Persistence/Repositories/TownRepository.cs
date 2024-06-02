@@ -2,9 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using MyTown.Application.Interfaces.Repositories;
 using MyTown.Domain;
-using MyTown.SharedModels.DTOs;
 using PublicCommon;
+using MyTown.SharedModels.DTOs;
 using SharedResponse.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,6 +31,40 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
                 pageNumber,
                 pageSize);
 
+            }
+        public override async Task<Town> GetByIdIntAsync(int id, Guid? userId=null)
+        //public async Task<Town> GetTownByIdAsync(int id, Guid? userId)
+            {
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var townQuery = db.Where(t => t.Id == id)
+         .Select(t => new
+             {
+             Town = t,
+             ApprovedCards = t.ApprovedCards
+                 .Where(ac => ac.SelectedDates.Any(sd => sd.Date == today))
+                 .Select(ac => new
+                     {
+                     ApprovedCard = ac,
+                     IsOwner = userId.HasValue && ac.Card.UserId == userId.Value
+                     })
+             })
+         .AsNoTracking();
+            var result = await townQuery.FirstOrDefaultAsync();
+            if (result != null)
+                {
+                // If a UserId is provided and matches the owner of the card, include it in the result
+                foreach (var approvedCard in result.ApprovedCards)
+                    {
+                    if (approvedCard.IsOwner)
+                        {
+                        approvedCard.ApprovedCard.UserId = userId.Value;
+                        }
+                    }
+
+                return result.Town;
+                //return towns.To<Town, TownDto>();
+                }
+            return null;
             }
         public async Task<IList<TownDto>> GetByNameAsync(string name)
             {

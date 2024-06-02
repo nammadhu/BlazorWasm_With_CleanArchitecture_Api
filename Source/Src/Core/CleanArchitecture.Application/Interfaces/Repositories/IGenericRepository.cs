@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Interfaces.Repositories
     {
     public interface IGenericRepository<T> where T : class
         {
-        Task<T> GetByIdIntAsync(int id);
+        Task<T> GetByIdIntAsync(int id, Guid? userId=null);
         Task<T> GetByIdAsync(long id);
         Task<IReadOnlyList<T>> GetAllAsync();
         Task<T> AddAsync(T entity);

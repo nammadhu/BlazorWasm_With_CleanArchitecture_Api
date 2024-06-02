@@ -7,14 +7,14 @@ namespace MyTown.Application.Features.Towns.Queries
         {
         public async Task<BaseResult<TownDto>> Handle(GetTownByIdQuery request, CancellationToken cancellationToken)
             {
-            var product = await TownRepository.GetByIdIntAsync(request.Id);
+            var town = await TownRepository.GetByIdIntAsync(request.Id,request.UserId);
 
-            if (product is null)
+            if (town is null)
                 {
                 return new BaseResult<TownDto>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.ProductMessages.Product_notfound_with_id(request.Id)), nameof(request.Id)));
                 }
 
-            var result = product.To<Town, TownDto>();
+            var result = town.To<Town, TownDto>();
 
             return new BaseResult<TownDto>(result);
             }
