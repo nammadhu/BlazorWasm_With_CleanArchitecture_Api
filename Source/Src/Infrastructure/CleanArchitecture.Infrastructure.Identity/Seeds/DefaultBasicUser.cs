@@ -20,8 +20,9 @@ namespace CleanArchitecture.Infrastructure.Identity.Seeds
                 PhoneNumberConfirmed = true
                 };
 
-            if (!await userManager.Users.AnyAsync())
-                {
+            //if (!await userManager.Users.AnyAsync())
+              //  {
+              //always checks on every run due to above commented line
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                     {
@@ -29,7 +30,7 @@ namespace CleanArchitecture.Infrastructure.Identity.Seeds
                     await userManager.AddToRoleAsync(defaultUser, CONSTANTS.Auth.Role_Admin);
                     }
 
-                }
+                //}
             }
         }
     }
