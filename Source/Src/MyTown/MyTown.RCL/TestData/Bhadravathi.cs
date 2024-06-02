@@ -11,7 +11,7 @@
             SubTitle = "Steel & Iron Rusted City",
             ImageUrl = "https://mytown.blob.core.windows.net/files-of-town/bhadravathi.com/bdvtProblems.gif",
 
-            TownCards = [
+            ActiveCards = [
                new TownCardDto(TownCardTypeMasterData.GetFirst("doctor") ,"Kallesh")
                    {SubTitle="Pediatric",Address="Old Town,Bhadravathi",Description="Kids specialist",
                    ImageUrl="https://lh5.googleusercontent.com/p/AF1QipPSgv8ZzUDUx-9sPW-joj-iV7ijS1UyU3-J0kNs=w284-h160-k-no",

@@ -5,6 +5,47 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MyTown.Domain
     {
 
+    public class TownApprovedCard : TownBase
+        {
+        public TownApprovedCard()
+            {
+            SelectedDates = new HashSet<SelectedDate>();
+            }
+        public void AddDate(SelectedDate date)
+            {
+            // The HashSet will handle uniqueness and performance efficiently
+            SelectedDates.Add(date);
+            }
+
+        [Required]
+        public int CardId { get; set; }//doctor,event,business
+
+        [ForeignKey(nameof(CardId))]
+        public TownCard Card { get; set; }
+
+        public virtual ICollection<SelectedDate> SelectedDates { get; set; }
+
+        [Required]
+        public int TownId { get; set; } //bhadravathi,kadur,bidar
+
+
+        //separatetable "TownCardApproval"
+        public int ApprovedCount { get; set; } //by equal or above grade people
+        public int RejectedCount { get; set; } //by equal or above grade people
+
+        //TownItemLikeDisLike
+        public int LikeCount { get; set; }//by public anyone
+        public int DisLikeCount { get; set; }//by public anyone
+        }
+    public class SelectedDate
+        {
+        public int Id { get; set; }
+        public int CardId { get; set; }
+        public DateOnly Date { get; set; }
+        // Navigation property to the ApprovedCard
+        public TownApprovedCard ApprovedCard { get; set; }
+        }
+
     //each called iCard , internet card of any user or business entity
     //dbentity
     public class TownCard : TownBase
@@ -18,15 +59,6 @@ namespace MyTown.Domain
             Type = type;
             Name = title;
             }
-        /*
-        public TownCard(int townCardTypeId, string title) : this(TownCardTypeMasterData.Get(townCardTypeId), title)
-        {
-        }
-        public TownCard(int townCardTypeId, string title, string subtitle) : this(TownCardTypeMasterData.Get(townCardTypeId), title)
-        {
-            SubTitle = subtitle;
-        }*/
-
         public TownCard(TownCardTypeMasterData type, string title, string subtitle) : this(type, title)
             {
             SubTitle = subtitle;
@@ -37,6 +69,13 @@ namespace MyTown.Domain
             Id = id;
             }
 
+
+
+        [Required]
+        public int? ApprovedCardId { get; set; }//if approved then that will be linked here
+
+        //[ForeignKey(nameof(ApprovedCardId))]
+        //public TownApprovedCard ApprovedCard { get; set; }
         [Required]
         public int TypeId { get; set; }//doctor,event,business
 
@@ -50,17 +89,8 @@ namespace MyTown.Domain
         //[ForeignKey(nameof(TownId))]
         //public Town Town { get; set; }
 
-
-        //separatetable "TownCardApproval"
-        public int ApprovedCount { get; set; } //by equal or above grade people
-        public int RejectedCount { get; set; } //by equal or above grade people
-
-        //TownItemLikeDisLike
-        public int LikeCount { get; set; }//by public anyone
-        public int DisLikeCount { get; set; }//by public anyone
         }
 
-    //later
     public class TownCardApproval : BaseAuditableEntitySingleUser
         {
 
@@ -79,6 +109,8 @@ namespace MyTown.Domain
 
         public string? Message { get; set; }
         }
+
+
     //later
     public class TownCardLikes : BaseAuditableEntitySingleUser
         {

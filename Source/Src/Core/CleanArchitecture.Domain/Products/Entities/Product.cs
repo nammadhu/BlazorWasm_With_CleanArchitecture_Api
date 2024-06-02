@@ -1,7 +1,9 @@
 ﻿using PublicCommon.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Domain.Products.Entities
     {
+    //[NotMapped]//this is not excluding so using builder.Ignore<Product>();
     public class Product : AuditableBaseEntity
         {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

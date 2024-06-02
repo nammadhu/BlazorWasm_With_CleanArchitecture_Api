@@ -14,8 +14,8 @@
             }
 
         //move & fetch this from separate tables
-        public string District { get; set; } = "Shimoga";//later move to other table called districts & refer here only id 
-        public string State { get; set; } = "Karnataka";//later move to other table called states & refer here only id 
+        public string? District { get; set; } //= "Shimoga";//later move to other table called districts & refer here only id 
+        public string? State { get; set; } //= "Karnataka";//later move to other table called states & refer here only id 
 
         public string? UrlName1 { get; set; }//bhadravathi.com
         public string? UrlName2 { get; set; }//bdvt.in
@@ -27,9 +27,12 @@
         //public string? TownImageUrl5 { get; set; }
         //public string? TownYoutubeVideo { get; set; }
 
-        // Navigation property for TownCards
+        // Navigation property for ActiveCards
+        public virtual ICollection<TownApprovedCard> ApprovedCards { get; set; } = new List<TownApprovedCard>();
+
+        //should not be loaded on town page,instead only for creator appearance selection
         public virtual ICollection<TownCard> TownCards { get; set; } = new List<TownCard>();
-        //virtual - lazy loading, if still needed then use .Inculde(x=>x.TownCards)
+        //virtual - lazy loading, if still needed then use .Inculde(x=>x.ActiveCards)
         }
 
 

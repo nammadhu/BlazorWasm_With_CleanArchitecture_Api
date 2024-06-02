@@ -1,3 +1,5 @@
+Remove approvedcount,rejected count ,likes all from TownCards table
+
 Shifting done
 
 >persistence custom

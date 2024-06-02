@@ -8,7 +8,7 @@
     @* <TownCardDisplay Model="@((TownItemDto)Model)" ImageHeight=350 /> *@
 
     <MudText><i> <small>To Add Your Content Send details to <ContactEmail /></small></i></MudText>
-    @if (Model.TownCards != null && Model.TownCards.Any())
+    @if (Model.ApprovedCards != null && Model.ApprovedCards.Any())
         {
         @foreach (var group in objGroups)
             {
@@ -56,16 +56,16 @@ else
         //on page load based on url fetch the model & display
        // Model = TestData.Bhadravathi.Data;// TownDto.SampleData?.Where(x => x.Name == "Bhadravathi")?.FirstOrDefault();
        
-       // if (Model != null && Model.TownCards != null && Model.TownCards.Any())
-       //      objGroups = Model.TownCards.GroupBy(x => x.Type);
+       // if (Model != null && Model.ActiveCards != null && Model.ActiveCards.Any())
+       //      objGroups = Model.ActiveCards.GroupBy(x => x.Type);
         base.OnInitialized();
         }
     protected override void OnAfterRender(bool firstRender)
         {
             /*
         if (Model == null) NavigationManager.NavigateTo("/");
-        if (Model.TownCards != null && Model.TownCards.Any())
-            objGroups = Model.TownCards.GroupBy(x => x.Type);
+        if (Model.ActiveCards != null && Model.ActiveCards.Any())
+            objGroups = Model.ActiveCards.GroupBy(x => x.Type);
             */
 
 

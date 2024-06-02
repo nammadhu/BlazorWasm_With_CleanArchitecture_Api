@@ -5,6 +5,7 @@ using MyTown.Domain;
 using PublicCommon.Common;
 using System;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,8 +22,11 @@ namespace CleanArchitecture.Infrastructure.Persistence.Contexts
         public DbSet<TownCardTypeMasterData> TownCardTypeMasterDatas { get; set; }
         public DbSet<Town> Towns { get; set; }
         public DbSet<TownCard> TownCards { get; set; }
+        public DbSet<TownCardApproval> TownCardApprovals { get; set; }
+        public DbSet<SelectedDate> SelectedDate { get; set; }
 
-        //[NotMapped]//later lets remove this product component itslef
+
+        //not included in db,as builder.Ignore<Product>();
         public DbSet<Product> Products { get; set; }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
             {
@@ -55,8 +59,40 @@ namespace CleanArchitecture.Infrastructure.Persistence.Contexts
             }
         protected override void OnModelCreating(ModelBuilder builder)
             {
+            builder.Ignore<Product>();
+
+            //master datas id identity disabling
             builder.Entity<Town>().Property(et => et.Id).ValueGeneratedNever();
             builder.Entity<TownCardTypeMasterData>().Property(et => et.Id).ValueGeneratedNever();
+
+            // Configure TPT inheritance
+            builder.Entity<TownCard>()
+                .ToTable("TownCards").HasKey(t => t.Id);
+            //if this not mentioned,due to inheritance it creates single table(Table-Per-Hierarchy (TPH)) itself with discriminator,so to avoid these statements
+            builder.Entity<TownApprovedCard>()
+                .ToTable("TownApprovedCards");
+
+            //builder.Entity<TownCard>().HasOne(tac => tac.ApprovedCard).WithOne().
+            //    HasForeignKey<TownApprovedCard>(tc => tc.CardId);
+
+            builder.Entity<TownApprovedCard>().HasOne<TownCard>(t => t.Card).WithOne()
+                .HasForeignKey<TownCard>(t => t.ApprovedCardId)
+                .OnDelete(DeleteBehavior.Restrict)
+                ; // This will prevent cascade delete;
+
+            
+            // Configure the foreign key for TownApprovedCard
+            builder.Entity<TownApprovedCard>()
+                .HasOne<Town>() // Specify the navigation property in Town
+                .WithMany(t => t.ApprovedCards) // Specify the collection property in Town
+                .HasForeignKey(tac => tac.TownId); // Specify the foreign key property in TownApprovedCard
+
+            // Configure the foreign key for TownCard
+            builder.Entity<TownCard>()
+                .HasOne<Town>() // Specify the navigation property in Town
+                .WithMany(t => t.TownCards) // Specify the collection property in Town
+                .HasForeignKey(tc => tc.TownId); // Specify the foreign key property in TownCard
+
 
 
             //All Decimals will have 18,6 Range

@@ -63,6 +63,30 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.SelectedDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApprovedCardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CardId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovedCardId");
+
+                    b.ToTable("SelectedDate");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Town", b =>
                 {
                     b.Property<int>("Id")
@@ -84,7 +108,6 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("District")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDateToShow")
@@ -122,7 +145,6 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SubTitle")
@@ -145,7 +167,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.ToTable("Towns");
                 });
 
-            modelBuilder.Entity("MyTown.Domain.TownCard", b =>
+            modelBuilder.Entity("MyTown.Domain.TownApprovedCard", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,6 +182,9 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ApprovedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CardId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
@@ -223,6 +248,86 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<string>("TwitterUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("YouTubeUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TownId");
+
+                    b.ToTable("TownApprovedCards", (string)null);
+                });
+
+            modelBuilder.Entity("MyTown.Domain.TownCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ApprovedCardId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDateToShow")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FaceBookUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GoogleMapAddressUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GoogleProfileUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InstagramUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MobileNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OtherReferenceUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TownId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TwitterUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("TypeId")
                         .HasColumnType("int");
 
@@ -231,11 +336,47 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApprovedCardId")
+                        .IsUnique();
+
                     b.HasIndex("TownId");
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("TownCards");
+                    b.ToTable("TownCards", (string)null);
+                });
+
+            modelBuilder.Entity("MyTown.Domain.TownCardApproval", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool?>("Approved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TownCardId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TownCardId");
+
+                    b.ToTable("TownCardApprovals");
                 });
 
             modelBuilder.Entity("MyTown.Domain.TownCardTypeMasterData", b =>
@@ -280,8 +421,34 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.ToTable("TownCardTypeMasterDatas");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.SelectedDate", b =>
+                {
+                    b.HasOne("MyTown.Domain.TownApprovedCard", "ApprovedCard")
+                        .WithMany("SelectedDates")
+                        .HasForeignKey("ApprovedCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApprovedCard");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.TownApprovedCard", b =>
+                {
+                    b.HasOne("MyTown.Domain.Town", null)
+                        .WithMany("ApprovedCards")
+                        .HasForeignKey("TownId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MyTown.Domain.TownCard", b =>
                 {
+                    b.HasOne("MyTown.Domain.TownApprovedCard", null)
+                        .WithOne("Card")
+                        .HasForeignKey("MyTown.Domain.TownCard", "ApprovedCardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MyTown.Domain.Town", null)
                         .WithMany("TownCards")
                         .HasForeignKey("TownId")
@@ -297,9 +464,30 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.TownCardApproval", b =>
+                {
+                    b.HasOne("MyTown.Domain.TownCard", "TownCard")
+                        .WithMany()
+                        .HasForeignKey("TownCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TownCard");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Town", b =>
                 {
+                    b.Navigation("ApprovedCards");
+
                     b.Navigation("TownCards");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.TownApprovedCard", b =>
+                {
+                    b.Navigation("Card")
+                        .IsRequired();
+
+                    b.Navigation("SelectedDates");
                 });
 #pragma warning restore 612, 618
         }
