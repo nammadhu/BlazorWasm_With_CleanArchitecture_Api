@@ -33,8 +33,8 @@ namespace MyTown.RCL.Town
             _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
             _localStorage = localStorage;
             _baseUrl = ApiEndPoints.BaseUrl(ApiEndPoints.Town);
-            TownsAllUrl = _baseUrl + ApiEndPoints.GetAll;
-            TownByIdUrl = _baseUrl + ApiEndPoints.GetById;
+            TownsAllUrl = _baseUrl +"/"+ ApiEndPoints.GetAll;
+            TownByIdUrl = _baseUrl +"/"+ ApiEndPoints.GetById;
             }
 
         static string TownByIdKey(int id, Guid? userId = null)
@@ -94,7 +94,7 @@ namespace MyTown.RCL.Town
             else
                 {
                 var result = new List<TownDto>();
-                await _localStorage.Set(TownsAllKey, result, expiration: timeSpanLocalStorage);
+                //await _localStorage.Set(TownsAllKey, result, expiration: timeSpanLocalStorage);
                 return result;
                 }
             }
