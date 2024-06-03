@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Content Remove="AddUpdateTown.razor" />
+    <Content Remove="TownLandingPage.razor" />
   </ItemGroup>
 
   <ItemGroup>

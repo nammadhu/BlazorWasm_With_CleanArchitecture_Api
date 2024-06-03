@@ -1,5 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using BlazorWebApp.Shared.Services;
+using MyTown.Domain;
+using MyTown.RCL.CardType;
 using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.Towns.Commands;
 using MyTown.SharedModels.Features.Towns.Queries;
@@ -9,11 +11,19 @@ using System.Net.Http.Json;
 
 namespace MyTown.RCL.Town
     {
+    public class TownCardsGrouping
+        {
+        public int TypeId { get; set; }
+        public string TypeName { get; set; }
+
+        public List<TownApprovedCard> Cards { get; set; }
+        }
     public class TownService
         {
         private readonly HttpClient _httpClientAnonymous;
         private readonly HttpClient _httpClientAuth;
         private readonly ILocalStorageService _localStorage;
+        private readonly TownCardTypeService _townCardTypeService;
 
         readonly string _baseUrl; //= ApiEndPoints.BaseUrl(ApiEndPoints.Town);
         // private const string _baseUrl = "v1/Town";
@@ -21,14 +31,17 @@ namespace MyTown.RCL.Town
         readonly string TownByIdUrl;// = _baseUrl + ApiEndPoints.GetById;
         const string TownsAllKey = "Towns";
         const string TownKey = "Town";//storage format Town_id ex: Town_1 , Town_2
-        public TownService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)
+
+        List<TownCardTypeDto> CardTypes;
+        public TownService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage, TownCardTypeService townCardTypeService)
             {
             _httpClientAnonymous = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
             _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
             _localStorage = localStorage;
+            _townCardTypeService = townCardTypeService;
             _baseUrl = ApiEndPoints.BaseUrl(ApiEndPoints.Town);
-            TownsAllUrl = _baseUrl +"/"+ ApiEndPoints.GetAll;
-            TownByIdUrl = _baseUrl +"/"+ ApiEndPoints.GetById;
+            TownsAllUrl = _baseUrl + "/" + ApiEndPoints.GetAll;
+            TownByIdUrl = _baseUrl + "/" + ApiEndPoints.GetById;
             }
 
         static string TownByIdKey(int id, Guid? userId = null)
@@ -38,18 +51,14 @@ namespace MyTown.RCL.Town
             }
         readonly TimeSpan timeSpanLocalStorage = TimeSpan.FromMinutes(5);
 
-        //todo had to add pagination & search over api
-        private async Task<PagedResponse<TownDto>?> GetTownsPaginationAsyncNotCompletedPending(GetTownsPagedListQuery query)
+        async Task LoadCardTypes()
             {
-            //todo had to pass query object
-            //this fetches data for after 5 minute only,till then cache will be served for all with in browser
-            var response = await _localStorage.GetOrFetchAndSet<PagedResponse<TownDto>>(TownsAllUrl, _httpClientAnonymous, url: TownsAllUrl, expiration: timeSpanLocalStorage);
-            //var storageDataList = await _httpClientAnonymous.GetType<PagedResponse<TownDto>>(TownsAllUrl);
-            return response;
+            CardTypes = await _townCardTypeService.GetAllTownCardTypesAsync();
             }
 
         public async Task<TownDto> GetByIdAsync(GetTownByIdQuery query)
             {
+            await LoadCardTypes();
             //storage key format : Town_id ex: Town_1
             var townById = TownByIdKey(query.Id, query.UserId);
             //first check on local with expiration(internally)
@@ -70,6 +79,24 @@ namespace MyTown.RCL.Town
                 //await _localStorage.Set(townById, result, expiration: timeSpanLocalStorage);
                 }
             }
+        public List<TownCardsGrouping> GroupCardsByType(TownDto town)
+            {
+            if (town == null || town.ApprovedCards == null)
+                {
+                return [];
+                }
+
+            var res = town.ApprovedCards.GroupBy(card => card.TypeId)
+            //.ToDictionary(group => group.Key, group => group.ToList());
+            .Select(group => new TownCardsGrouping
+                {
+                TypeId = group.Key,
+                TypeName = CardTypes == null ? group.Key.ToString() : CardTypes.FirstOrDefault(x => x.Id == group.Key).ShortName,
+                Cards = [.. group]
+                }).ToList();
+            return res;
+            }
+
 
         public async Task<List<TownDto>> GetAllTownsAsync()
             {
@@ -205,6 +232,16 @@ namespace MyTown.RCL.Town
                 return deleteResult;
                 }
             return new BaseResult<TownDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
+            }
+
+        //todo had to add pagination & search over api
+        private async Task<PagedResponse<TownDto>?> GetTownsPaginationAsyncNotCompletedPending(GetTownsPagedListQuery query)
+            {
+            //todo had to pass query object
+            //this fetches data for after 5 minute only,till then cache will be served for all with in browser
+            var response = await _localStorage.GetOrFetchAndSet<PagedResponse<TownDto>>(TownsAllUrl, _httpClientAnonymous, url: TownsAllUrl, expiration: timeSpanLocalStorage);
+            //var storageDataList = await _httpClientAnonymous.GetType<PagedResponse<TownDto>>(TownsAllUrl);
+            return response;
             }
         }
 

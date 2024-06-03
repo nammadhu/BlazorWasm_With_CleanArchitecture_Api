@@ -16,6 +16,11 @@ namespace MyTown.Domain
             // The HashSet will handle uniqueness and performance efficiently
             SelectedDates.Add(date);
             }
+        [Required]
+        public int TypeId { get; set; }//doctor,event,business
+
+        [ForeignKey(nameof(TypeId))]
+        public TownCardType Type { get; set; }
 
         [Required]
         public int CardId { get; set; }//doctor,event,business

@@ -27,7 +27,7 @@ namespace MyTown.RCL.CardType
             TownCardTypesAllUrl = _baseUrl + "/" + ApiEndPoints.GetAll;
             }
 
-        readonly TimeSpan timeSpanLocalStorage = TimeSpan.FromMinutes(5);
+        readonly TimeSpan timeSpanLocalStorage = TimeSpan.FromMinutes(60);
 
         //todo had to add pagination & search over api
         private async Task<PagedResponse<TownCardTypeDto>?> GetTownCardTypesPaginationAsyncNotCompletedPending(GetTownCardTypesPagedListQuery query)
