@@ -1,3 +1,6 @@
+separate view of horizantal carousel inputs of cards
+
+
 Townid=> call extract town all fields with CardsApproved
 1-controller endpoint readyness(Anonymous)
 2-integrate with screen
