@@ -214,7 +214,9 @@ namespace MyTown.RCL.Town
                         }
                     else//already some data exists ,remove that & add new & sort
                         {
-                        ListExtensions.UpdateAndMoveToFront(storageDataList, storageDataList.FindIndex(t => t.Id == updatedResponse.Data.Id), _ => { });
+                        var index = storageDataList.FindIndex(t => t.Id == updatedResponse.Data.Id);
+                        storageDataList[index]=updatedResponse.Data;
+                        ListExtensions.UpdateAndMoveToFront(storageDataList, index, _ => { });
                         }
                     await _localStorage.SetCustom<List<TownDto>>(TownsAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return updatedResponse;
