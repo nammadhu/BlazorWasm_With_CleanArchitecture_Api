@@ -19,7 +19,7 @@ namespace BlazorWebApp.Shared.Services
 
         public static async Task<JwtSecurityToken?> GetApiTokenFromLocalStorage(this ILocalStorageService localStorage)
             {
-            var jwtTokenInString = await localStorage.Get<string>(ApiEndPoints.ApiIssuedJwt);
+            var jwtTokenInString = await localStorage.GetCustom<string>(ApiEndPoints.ApiIssuedJwt);
             //MyLogger.Log("local storage jwttoken is");
             if (string.IsNullOrEmpty(jwtTokenInString))
                 {
@@ -48,7 +48,7 @@ namespace BlazorWebApp.Shared.Services
             expiration ??= MaxDefaultTimespan;
             MyLogger.Log("checking if already exists:" + key);
             // Attempt to deserialize the value from localStorage
-            var localResult = await storage.Get<T>(key);
+            var localResult = await storage.GetCustom<T>(key);
             if (localResult != null)
                 {
                 return localResult;
@@ -69,14 +69,14 @@ namespace BlazorWebApp.Shared.Services
                 {
                 // Store the value with optional expiration (use built-in serialization)
                 MyLogger.Log("Good response storing on storage for url:" + url);
-                await storage.Set<T>(key, apiResult, expiration);
+                await storage.SetCustom<T>(key, apiResult, expiration);
 
                 MyLogger.Log("Good response stored & returning for url:" + url + " and key" + key);
                 return apiResult;
                 }
             }
 
-        public static async Task Set<T>(this ILocalStorageService storage, string key, T value, TimeSpan? expiration = null)
+        public static async Task SetCustom<T>(this ILocalStorageService storage, string key, T value, TimeSpan? expiration = null)
             {
             if (!IsValid(value)) // Implement your validation logic here
                 {
@@ -94,7 +94,7 @@ namespace BlazorWebApp.Shared.Services
                 }
             }
 
-        public static async Task<T?> Get<T>(this ILocalStorageService storage, string key)
+        public static async Task<T?> GetCustom<T>(this ILocalStorageService storage, string key)
             {
 
             string? expirationKey = Expiration(key);

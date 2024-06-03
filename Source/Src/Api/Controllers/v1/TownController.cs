@@ -48,8 +48,10 @@ namespace CleanArchitecture.WebApi.Controllers.v1
         [HttpGet]
         public async Task<BaseResult<TownDto>> GetById([FromQuery] GetTownByIdQuery model)
             {
-            Console.WriteLine($"{nameof(TownController)}/{nameof(ApiEndPoints.GetById)}");
-            return await Mediator.Send(model);
+            Console.WriteLine($"{nameof(TownController)}/{nameof(ApiEndPoints.GetById)}/{model.Id}");
+            var result= await Mediator.Send(model);
+            Console.WriteLine($"{(result.Success?result.Data.Name:"Failed")} for {nameof(TownController)}/{nameof(ApiEndPoints.GetById)}/{model.Id}");
+            return result;
             }
 
 

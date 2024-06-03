@@ -136,7 +136,7 @@ namespace BlazorWebApp.Shared.Services
                         else
                             {
                             MyLogger.Log("api issued jwt token is " + jwtToken);
-                            await localStorageService.Set<string>(ApiEndPoints.ApiIssuedJwt, jwtToken);
+                            await localStorageService.SetCustom<string>(ApiEndPoints.ApiIssuedJwt, jwtToken);
                             // UserTokenStore the JWT token and use it for subsequent API requests
                             }
 

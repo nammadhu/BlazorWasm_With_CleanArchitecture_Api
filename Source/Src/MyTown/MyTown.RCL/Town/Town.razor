@@ -11,12 +11,11 @@
 @inject ClientConfig clientConfig
 @inject AuthService authService
 
-<TownMainHeaderCardDisplay Model="@HeaderCard" />
-@if (HeaderCard != null)
+@if (HeaderCard != null && HeaderCard.Id>0)
     {
+    <TownMainHeaderCardDisplay Model="@HeaderCard" />
     @* <TownCardDisplay Model="@((TownItemDto)Model)" ImageHeight=350 /> *@
 
-    <MudText><i> <small>To Add Your Content Send details to <ContactEmail /></small></i></MudText>
     @if (Cards.Any())
         {
         @foreach (var group in Cards)
@@ -38,7 +37,9 @@
 else
     {
     <MudText>Sorry No Data exists @(Name ?? "".ToUpper()) </MudText>
+
     }
+<MudText><i> <small>To Add Your Content Send details to <ContactEmail /></small></i></MudText>
 
 @code {
     [Parameter]
@@ -75,7 +76,7 @@ else
     async Task LoadServerData()
         {
         var town = await TownService.GetByIdAsync(new GetTownByIdQuery() { Id = Id, UserId = clientConfig.UserId });
-        if (town != null)
+        if (town != null && town.Id > 0 && !string.IsNullOrEmpty(town.Name))
             {
             HeaderCard = town;//if offline then had to serve previous data itself
             if (town.ApprovedCards != null && town.ApprovedCards.Any())
@@ -95,82 +96,82 @@ else
     private bool FilterFunc1(TownDto element) => FilterFunc(element, searchStringTownName);
 
     private bool FilterFunc(TownDto element, string searchString)
+    {
+    if (string.IsNullOrWhiteSpace(searchString))
+    return true;
+    if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    return true;
+    // if (element.ShortName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //     return true;
+    //currently comparing only name & shortname, if anymore like description required then can be added here
+    //or one searchstring property & make changes
+    // if ($"{element.Number} {element.Position} {element.Molar}".Contains(searchString))
+    //     return true;
+    return false;
+    }
+
+
+
+    private async Task OpenViewDialog(TownDto Town)//good
         {
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        // if (element.ShortName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-        //     return true;
-        //currently comparing only name & shortname, if anymore like description required then can be added here
-        //or one searchstring property & make changes
-        // if ($"{element.Number} {element.Position} {element.Molar}".Contains(searchString))
-        //     return true;
-        return false;
-        }
+        var parameters = new DialogParameters { ["Town"] = Town };
+        var dialog = DialogService.Show<ViewDialogTown>("View Town", parameters);
+        await dialog.Result; // No need to check the result since it's read-only
+    }
 
+    private async Task OnCreate()
+        {
+        await authService.LoginUserMakingSure();
+        await OnEdit(new TownDto());
+    }
 
-        
-        private async Task OpenViewDialog(TownDto Town)//good
+    private async Task OnEdit(TownDto dto)
+        {
+        await authService.LoginUserMakingSure();
+        if (clientConfig.IsAdmin == false) return;//|| dto.Id == 0
+
+        var command = mapper.Map<CreateUpdateTownCommand>(dto);
+        var parameters = new DialogParameters<CreateUpdateTown>
             {
-            var parameters = new DialogParameters { ["Town"] = Town };
-            var dialog = DialogService.Show<ViewDialogTown>("View Town", parameters);
-            await dialog.Result; // No need to check the result since it's read-only
-        }
-
-        private async Task OnCreate()
+            { x => x.model, command }
+        };
+        var options = new DialogOptions { CloseButton = true };// MaxWidth = MaxWidth.Medium, FullWidth = true
+        var dialog = DialogService.Show<CreateUpdateTown>
+            (dto.Id > 0 ? L["Create 'Town'"] : L["Edit 'Town'"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Canceled)
             {
-            await authService.LoginUserMakingSure();
-            await OnEdit(new TownDto());
-        }
+            //this should be done if any changes happened only  otherwise not required on no change
+            //so dialog result should confirm any changes happened or not
+            await LoadServerData();
+            //make sure result should show the modifications on result page
+            //await LoadPage(pagedResponse.PageNumber);
+    }
 
-        private async Task OnEdit(TownDto dto)
+    }
+
+    private async Task DeleteWithConfirmationDialog(TownDto Town)
+        {
+        await authService.LoginUserMakingSure();
+        if (clientConfig.IsAdmin == false || Town.Id == 0) return;
+        var parameters = new DialogParameters { ["Name"] = Town.Name + "/" + Town.Id };
+        var dialog = DialogService.Show<DeleteConfirmationDialog>
+    ("Remove Master Data Town", parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
             {
-            await authService.LoginUserMakingSure();
-            if (clientConfig.IsAdmin == false) return;//|| dto.Id == 0
-
-            var command = mapper.Map<CreateUpdateTownCommand>(dto);
-            var parameters = new DialogParameters<CreateUpdateTown>
+            var res = await TownService.DeleteTownAsync(Town.Id);
+            if (res != null && res.Success)
                 {
-                { x => x.model, command }
-            };
-            var options = new DialogOptions { CloseButton = true };// MaxWidth = MaxWidth.Medium, FullWidth = true
-            var dialog = DialogService.Show<CreateUpdateTown>
-                (dto.Id > 0 ? L["Create 'Town'"] : L["Edit 'Town'"], parameters, options);
-            var state = await dialog.Result;
-            if (!state.Canceled)
-                {
-                //this should be done if any changes happened only  otherwise not required on no change
-                //so dialog result should confirm any changes happened or not
-                await LoadServerData();
-                //make sure result should show the modifications on result page
-                //await LoadPage(pagedResponse.PageNumber);
+                //await LoadServerData();
+                //insteaqd of reloading all(above), lets remove locally itself as like below
+                Elements.RemoveAll(x => x.Id == Town.Id);
+
+                Snackbar.Add($"Removed Town:({Town.Name})", Severity.Success);
             }
-
-        }
-
-        private async Task DeleteWithConfirmationDialog(TownDto Town)
-            {
-            await authService.LoginUserMakingSure();
-            if (clientConfig.IsAdmin == false || Town.Id == 0) return;
-            var parameters = new DialogParameters { ["Name"] = Town.Name + "/" + Town.Id };
-            var dialog = DialogService.Show<DeleteConfirmationDialog>
-        ("Remove Master Data Town", parameters);
-            var result = await dialog.Result;
-            if (!result.Canceled)
-                {
-                var res = await TownService.DeleteTownAsync(Town.Id);
-                if (res != null && res.Success)
-                    {
-                    //await LoadServerData();
-                    //insteaqd of reloading all(above), lets remove locally itself as like below
-                    Elements.RemoveAll(x => x.Id == Town.Id);
-
-                    Snackbar.Add($"Removed Town:({Town.Name})", Severity.Success);
-                }
-                else Snackbar.Add($"Issue in Removing Town ({Town.Name})", Severity.Error);
+            else Snackbar.Add($"Issue in Removing Town ({Town.Name})", Severity.Error);
 
             }
-            }
+    }
     */
 }

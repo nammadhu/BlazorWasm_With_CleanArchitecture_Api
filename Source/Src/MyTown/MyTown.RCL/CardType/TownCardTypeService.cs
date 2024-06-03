@@ -42,7 +42,7 @@ namespace MyTown.RCL.CardType
         public async Task<List<TownCardTypeDto>> GetAllTownCardTypesAsync()
             {
             //first check on local with expiration(internally)
-            var existingLocalData = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesAllKey);
+            var existingLocalData = await _localStorage.GetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey);
             if (existingLocalData != null) return existingLocalData;
 
             //not existing locally,so fetching fresh
@@ -50,7 +50,7 @@ namespace MyTown.RCL.CardType
             if (all != null && all.Count > 0)
                 {
                 var result = all.ToList();
-                await _localStorage.Set(TownCardTypesAllKey, result, expiration: timeSpanLocalStorage);
+                await _localStorage.SetCustom(TownCardTypesAllKey, result, expiration: timeSpanLocalStorage);
                 return result;
                 }
             else
@@ -84,7 +84,7 @@ namespace MyTown.RCL.CardType
         public async Task<BaseResult<TownCardTypeDto>> CreateTownCardTypeAsync(CreateUpdateTownCardTypeCommand command)
             {
             //do minimum check of duplicate name with local storage to avoid unnecessary api calls
-            var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesAllKey);
+            var storageDataList = await _localStorage.GetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey);
             if (storageDataList != null && storageDataList.Count > 0
                 && storageDataList.Any(x => x.Name == command.Name))
                 {
@@ -112,7 +112,7 @@ namespace MyTown.RCL.CardType
                         storageDataList.Add(addedResponse.Data);
                         //storageDataList.Sort();//not implemented yet,so dont try
                         }
-                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, expiration: timeSpanLocalStorage);
+                    await _localStorage.SetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return addedResponse;
                     }
                 }
@@ -122,7 +122,7 @@ namespace MyTown.RCL.CardType
         public async Task<BaseResult<TownCardTypeDto>> UpdateTownCardTypeAsync(CreateUpdateTownCardTypeCommand command)
             {
             //do minimum check of duplicate name with local storage to avoid unnecessary api calls
-            var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesAllKey);
+            var storageDataList = await _localStorage.GetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey);
             if (storageDataList != null && storageDataList.Count > 0
                 && storageDataList.Any(x => x.Id != command.Id && x.Name == command.Name))
                 {
@@ -150,7 +150,7 @@ namespace MyTown.RCL.CardType
                         storageDataList.RemoveAll(x => x.Id == updatedResponse.Data.Id);
                         storageDataList.Add(updatedResponse.Data);
                         }
-                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, expiration: timeSpanLocalStorage);
+                    await _localStorage.SetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return updatedResponse;
                     }
                 }
@@ -164,11 +164,11 @@ namespace MyTown.RCL.CardType
             var deleteResult = await _httpClientAuth.DeleteAsyncPathWithKey($"{_baseUrl}/Delete?id={id}");
             if (deleteResult != null && deleteResult.Success)
                 {
-                var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesAllKey);
+                var storageDataList = await _localStorage.GetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey);
                 if (storageDataList != null && storageDataList.Count > 0)
                     {
                     storageDataList.RemoveAll(x => x.Id == id);
-                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, timeSpanLocalStorage);
+                    await _localStorage.SetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, timeSpanLocalStorage);
                     }
                 return deleteResult;
                 }

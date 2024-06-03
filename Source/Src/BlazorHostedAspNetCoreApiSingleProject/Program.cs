@@ -127,7 +127,7 @@ public class Program
             app.UseRateLimiter();
             app.UseCustomLocalization();
             app.UseCors("Any");//need to check about it //todo
-            //app.UseEncryptionValidation();
+            //app.UseEncryptionValidation();//production must enable
 
             app.UseHttpsRedirection();
 
