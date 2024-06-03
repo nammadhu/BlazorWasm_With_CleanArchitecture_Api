@@ -4,13 +4,7 @@ using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.Towns.Commands;
 using MyTown.SharedModels.Features.Towns.Queries;
 using SharedResponse;
-
-
-
-
-//using Nextended.Core.Extensions;
 using SharedResponse.Wrappers;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace MyTown.RCL.Town

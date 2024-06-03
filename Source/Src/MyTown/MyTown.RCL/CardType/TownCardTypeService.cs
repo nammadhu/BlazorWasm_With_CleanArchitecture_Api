@@ -4,61 +4,59 @@ using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.CardTypes.Commands;
 using MyTown.SharedModels.Features.CardTypes.Queries;
 using SharedResponse;
-
-
-
-
-//using Nextended.Core.Extensions;
 using SharedResponse.Wrappers;
 using System.Net.Http.Json;
 
 namespace MyTown.RCL.CardType
     {
-    public class TownCardTypeService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)
+    public class TownCardTypeService
         {
-        private readonly HttpClient _httpClientAnonymous = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
-        private readonly HttpClient _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
-        private readonly ILocalStorageService _localStorage = localStorage;
-        private readonly string _baseUrl = "v1/TownCardType";
-        private const string TownCardTypesKey = "v1/TownCardType/GetAll";
-        //for paged query
-        // private const string TownCardTypesAllKey = "v1/CardType/GetAllPagedList";//for all paged query
+        private readonly HttpClient _httpClientAnonymous;
+        private readonly HttpClient _httpClientAuth;
+        private readonly ILocalStorageService _localStorage;
 
-        string Url(string endPoint)//like "v1/CardType/GetAll"
+        readonly string _baseUrl; 
+        readonly string TownCardTypesAllUrl;// = _baseUrl + ApiEndPoints.GetAll;
+        const string TownCardTypesAllKey = "TownCardTypes";
+        public TownCardTypeService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)
             {
-            return _baseUrl + "/" + endPoint;
+            _httpClientAnonymous = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
+            _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
+            _localStorage = localStorage;
+            _baseUrl = ApiEndPoints.BaseUrl(ApiEndPoints.TownCardType);
+            TownCardTypesAllUrl = _baseUrl + "/" + ApiEndPoints.GetAll;
             }
+
         readonly TimeSpan timeSpanLocalStorage = TimeSpan.FromMinutes(5);
 
         //todo had to add pagination & search over api
-        private async Task<PagedResponse<TownCardTypeDto>?> GetTownCardTypesPaginationAsyncNotCompletedPending(GetTownCardTypesAllQuery query)
+        private async Task<PagedResponse<TownCardTypeDto>?> GetTownCardTypesPaginationAsyncNotCompletedPending(GetTownCardTypesPagedListQuery query)
             {
             //todo had to pass query object
             //this fetches data for after 5 minute only,till then cache will be served for all with in browser
-            var response = await _localStorage.GetOrFetchAndSet<PagedResponse<TownCardTypeDto>>(TownCardTypesKey, _httpClientAnonymous, url: TownCardTypesKey, expiration: timeSpanLocalStorage);
-            //var storageDataList = await _httpClientAnonymous.GetType<PagedResponse<TownCardTypeDto>>(TownCardTypesKey);
+            var response = await _localStorage.GetOrFetchAndSet<PagedResponse<TownCardTypeDto>>(TownCardTypesAllUrl, _httpClientAnonymous, url: TownCardTypesAllUrl, expiration: timeSpanLocalStorage);
+            //var storageDataList = await _httpClientAnonymous.GetType<PagedResponse<TownCardTypeDto>>(TownCardTypesAllUrl);
             return response;
             }
-
 
         public async Task<List<TownCardTypeDto>> GetAllTownCardTypesAsync()
             {
             //first check on local with expiration(internally)
-            var existingLocalData = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesKey);
+            var existingLocalData = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesAllKey);
             if (existingLocalData != null) return existingLocalData;
 
             //not existing locally,so fetching fresh
-            IReadOnlyList<TownCardTypeDto>? all = await _httpClientAnonymous.GetType<IReadOnlyList<TownCardTypeDto>>(Url(ApiEndPoints.GetAll));
+            IReadOnlyList<TownCardTypeDto>? all = await _httpClientAnonymous.GetType<IReadOnlyList<TownCardTypeDto>>(TownCardTypesAllUrl);
             if (all != null && all.Count > 0)
                 {
                 var result = all.ToList();
-                await _localStorage.Set(TownCardTypesKey, result, expiration: timeSpanLocalStorage);
+                await _localStorage.Set(TownCardTypesAllKey, result, expiration: timeSpanLocalStorage);
                 return result;
                 }
             else
                 {
                 var result = new List<TownCardTypeDto>();
-                await _localStorage.Set(TownCardTypesKey, result, expiration: timeSpanLocalStorage);
+                //await _localStorage.Set(TownCardTypesAllKey, result, expiration: timeSpanLocalStorage);
                 return result;
                 }
             }
@@ -86,14 +84,14 @@ namespace MyTown.RCL.CardType
         public async Task<BaseResult<TownCardTypeDto>> CreateTownCardTypeAsync(CreateUpdateTownCardTypeCommand command)
             {
             //do minimum check of duplicate name with local storage to avoid unnecessary api calls
-            var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesKey);
+            var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesAllKey);
             if (storageDataList != null && storageDataList.Count > 0
                 && storageDataList.Any(x => x.Name == command.Name))
                 {
                 return new BaseResult<TownCardTypeDto>()
                     {
                     Success = false,
-                    Data = null,
+                    Data = new(),
                     Errors = [new(ErrorCode.DuplicateData)]
                     };
                 }
@@ -114,24 +112,24 @@ namespace MyTown.RCL.CardType
                         storageDataList.Add(addedResponse.Data);
                         //storageDataList.Sort();//not implemented yet,so dont try
                         }
-                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesKey, storageDataList, expiration: timeSpanLocalStorage);
+                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return addedResponse;
                     }
                 }
-            return new BaseResult<TownCardTypeDto>() { Success = false, Data = null };//Errors = responseMessage.StatusCode
+            return new BaseResult<TownCardTypeDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
             }
 
         public async Task<BaseResult<TownCardTypeDto>> UpdateTownCardTypeAsync(CreateUpdateTownCardTypeCommand command)
             {
             //do minimum check of duplicate name with local storage to avoid unnecessary api calls
-            var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesKey);
+            var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesAllKey);
             if (storageDataList != null && storageDataList.Count > 0
                 && storageDataList.Any(x => x.Id != command.Id && x.Name == command.Name))
                 {
                 return new BaseResult<TownCardTypeDto>()
                     {
                     Success = false,
-                    Data = null,
+                    Data = new(),
                     Errors = [new(ErrorCode.DuplicateData)]
                     };
                 }
@@ -152,11 +150,11 @@ namespace MyTown.RCL.CardType
                         storageDataList.RemoveAll(x => x.Id == updatedResponse.Data.Id);
                         storageDataList.Add(updatedResponse.Data);
                         }
-                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesKey, storageDataList, expiration: timeSpanLocalStorage);
+                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return updatedResponse;
                     }
                 }
-            return new BaseResult<TownCardTypeDto>() { Success = false, Data = null };//Errors = responseMessage.StatusCode
+            return new BaseResult<TownCardTypeDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
             }
 
         public async Task<BaseResult> DeleteTownCardTypeAsync(int id)
@@ -166,15 +164,15 @@ namespace MyTown.RCL.CardType
             var deleteResult = await _httpClientAuth.DeleteAsyncPathWithKey($"{_baseUrl}/Delete?id={id}");
             if (deleteResult != null && deleteResult.Success)
                 {
-                var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesKey);
+                var storageDataList = await _localStorage.Get<List<TownCardTypeDto>>(TownCardTypesAllKey);
                 if (storageDataList != null && storageDataList.Count > 0)
                     {
                     storageDataList.RemoveAll(x => x.Id == id);
-                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesKey, storageDataList, timeSpanLocalStorage);
+                    await _localStorage.Set<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, timeSpanLocalStorage);
                     }
                 return deleteResult;
                 }
-            return new BaseResult<TownCardTypeDto>() { Success = false, Data = null };//Errors = responseMessage.StatusCode
+            return new BaseResult<TownCardTypeDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
             }
         }
 
