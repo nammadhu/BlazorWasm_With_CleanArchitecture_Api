@@ -14,7 +14,7 @@ using System.Net.Http.Json;
 
 namespace MyTown.RCL.Card
     {
-    public class TownCardService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)
+    public class CardService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)
         {
         private readonly HttpClient _httpClientAnonymous = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
         private readonly HttpClient _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);

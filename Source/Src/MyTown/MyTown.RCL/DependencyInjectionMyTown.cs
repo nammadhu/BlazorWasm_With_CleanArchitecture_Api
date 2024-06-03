@@ -11,8 +11,8 @@ namespace MyTown.RCL
         public static IServiceCollection AddDependencyInjectionMyTown(this IServiceCollection services)
             {
             services.AddScoped<TownService>();
-            services.AddScoped<TownCardTypeService>();
-            services.AddScoped<TownCardService>();
+            services.AddScoped<CardTypeService>();
+            services.AddScoped<CardService>();
 
             services.AddAutoMapper(config =>
             { config.AddMaps(Assembly.GetExecutingAssembly(), typeof(MyTown.SharedModels.DTOs.TownCardTypeDto).Assembly); });

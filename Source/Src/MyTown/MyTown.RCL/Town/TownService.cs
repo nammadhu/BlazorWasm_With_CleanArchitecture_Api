@@ -16,16 +16,16 @@ namespace MyTown.RCL.Town
     public class TownCardsGrouping
         {
         public int TypeId { get; set; }
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
-        public List<TownApprovedCard> Cards { get; set; }
+        public List<TownApprovedCard> Cards { get; set; } = new();
         }
     public class TownService
         {
         private readonly HttpClient _httpClientAnonymous;
         private readonly HttpClient _httpClientAuth;
         private readonly ILocalStorageService _localStorage;
-        private readonly TownCardTypeService _townCardTypeService;
+        private readonly CardTypeService _townCardTypeService;
 
         readonly string _baseUrl; //= ApiEndPoints.BaseUrl(ApiEndPoints.Town);
         // private const string _baseUrl = "v1/Town";
@@ -34,8 +34,8 @@ namespace MyTown.RCL.Town
         const string TownsAllKey = "Towns";
         const string TownKey = "Town";//storage format Town_id ex: Town_1 , Town_2
 
-        List<TownCardTypeDto> CardTypes;
-        public TownService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage, TownCardTypeService townCardTypeService)
+        List<TownCardTypeDto>? CardTypes;
+        public TownService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage, CardTypeService townCardTypeService)
             {
             _httpClientAnonymous = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
             _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
@@ -100,7 +100,7 @@ namespace MyTown.RCL.Town
             .Select(group => new TownCardsGrouping
                 {
                 TypeId = group.Key,
-                TypeName = CardTypes == null ? group.Key.ToString() : CardTypes.FirstOrDefault(x => x.Id == group.Key).ShortName,
+                TypeName = CardTypes == null || CardTypes.Count==0 ? group.Key.ToString() : CardTypes.FirstOrDefault(x => x.Id == group.Key).ShortName,
                 Cards = [.. group]
                 }).ToList();
             return res;

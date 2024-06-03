@@ -3,13 +3,14 @@ using BlazorWebApp.Shared.Services;
 using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.CardTypes.Commands;
 using MyTown.SharedModels.Features.CardTypes.Queries;
+using PublicCommon;
 using SharedResponse;
 using SharedResponse.Wrappers;
 using System.Net.Http.Json;
 
 namespace MyTown.RCL.CardType
     {
-    public class TownCardTypeService
+    public class CardTypeService
         {
         private readonly HttpClient _httpClientAnonymous;
         private readonly HttpClient _httpClientAuth;
@@ -18,7 +19,7 @@ namespace MyTown.RCL.CardType
         readonly string _baseUrl; 
         readonly string TownCardTypesAllUrl;// = _baseUrl + ApiEndPoints.GetAll;
         const string TownCardTypesAllKey = "TownCardTypes";
-        public TownCardTypeService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)
+        public CardTypeService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)
             {
             _httpClientAnonymous = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
             _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
@@ -28,16 +29,6 @@ namespace MyTown.RCL.CardType
             }
 
         readonly TimeSpan timeSpanLocalStorage = TimeSpan.FromMinutes(60);
-
-        //todo had to add pagination & search over api
-        private async Task<PagedResponse<TownCardTypeDto>?> GetTownCardTypesPaginationAsyncNotCompletedPending(GetTownCardTypesPagedListQuery query)
-            {
-            //todo had to pass query object
-            //this fetches data for after 5 minute only,till then cache will be served for all with in browser
-            var response = await _localStorage.GetOrFetchAndSet<PagedResponse<TownCardTypeDto>>(TownCardTypesAllUrl, _httpClientAnonymous, url: TownCardTypesAllUrl, expiration: timeSpanLocalStorage);
-            //var storageDataList = await _httpClientAnonymous.GetType<PagedResponse<TownCardTypeDto>>(TownCardTypesAllUrl);
-            return response;
-            }
 
         public async Task<List<TownCardTypeDto>> GetAllTownCardTypesAsync()
             {
@@ -109,8 +100,7 @@ namespace MyTown.RCL.CardType
                         }
                     else//already some data exists 
                         {
-                        storageDataList.Add(addedResponse.Data);
-                        //storageDataList.Sort();//not implemented yet,so dont try
+                        storageDataList.Insert(0, addedResponse.Data);
                         }
                     await _localStorage.SetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return addedResponse;
@@ -147,8 +137,9 @@ namespace MyTown.RCL.CardType
                         }
                     else//already some data exists ,remove that & add new & sort
                         {
-                        storageDataList.RemoveAll(x => x.Id == updatedResponse.Data.Id);
-                        storageDataList.Add(updatedResponse.Data);
+                        var index = storageDataList.FindIndex(t => t.Id == updatedResponse.Data.Id);
+                        storageDataList[index] = updatedResponse.Data;
+                        ListExtensions.UpdateAndMoveToFront(storageDataList, index, _ => { });
                         }
                     await _localStorage.SetCustom<List<TownCardTypeDto>>(TownCardTypesAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return updatedResponse;
@@ -173,6 +164,16 @@ namespace MyTown.RCL.CardType
                 return deleteResult;
                 }
             return new BaseResult<TownCardTypeDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
+            }
+
+        //todo had to add pagination & search over api
+        private async Task<PagedResponse<TownCardTypeDto>?> GetTownCardTypesPaginationAsyncNotCompletedPending(GetTownCardTypesPagedListQuery query)
+            {
+            //todo had to pass query object
+            //this fetches data for after 5 minute only,till then cache will be served for all with in browser
+            var response = await _localStorage.GetOrFetchAndSet<PagedResponse<TownCardTypeDto>>(TownCardTypesAllUrl, _httpClientAnonymous, url: TownCardTypesAllUrl, expiration: timeSpanLocalStorage);
+            //var storageDataList = await _httpClientAnonymous.GetType<PagedResponse<TownCardTypeDto>>(TownCardTypesAllUrl);
+            return response;
             }
         }
 
