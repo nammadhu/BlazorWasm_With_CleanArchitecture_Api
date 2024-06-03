@@ -5,8 +5,10 @@ using MyTown.RCL.CardType;
 using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.Towns.Commands;
 using MyTown.SharedModels.Features.Towns.Queries;
+using PublicCommon;
 using SharedResponse;
 using SharedResponse.Wrappers;
+using System;
 using System.Net.Http.Json;
 
 namespace MyTown.RCL.Town
@@ -175,8 +177,7 @@ namespace MyTown.RCL.Town
                         }
                     else//already some data exists 
                         {
-                        storageDataList.Add(addedResponse.Data);
-                        //storageDataList.Sort();//not implemented yet,so dont try
+                        storageDataList.Insert(0, addedResponse.Data);
                         }
                     await _localStorage.SetCustom<List<TownDto>>(TownsAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return addedResponse;
@@ -213,8 +214,7 @@ namespace MyTown.RCL.Town
                         }
                     else//already some data exists ,remove that & add new & sort
                         {
-                        storageDataList.RemoveAll(x => x.Id == updatedResponse.Data.Id);
-                        storageDataList.Add(updatedResponse.Data);
+                        ListExtensions.UpdateAndMoveToFront(storageDataList, storageDataList.FindIndex(t => t.Id == updatedResponse.Data.Id), _ => { });
                         }
                     await _localStorage.SetCustom<List<TownDto>>(TownsAllKey, storageDataList, expiration: timeSpanLocalStorage);
                     return updatedResponse;
@@ -222,6 +222,7 @@ namespace MyTown.RCL.Town
                 }
             return new BaseResult<TownDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
             }
+
 
         public async Task<BaseResult> DeleteTownAsync(int id)
             {
