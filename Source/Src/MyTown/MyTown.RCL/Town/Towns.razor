@@ -35,7 +35,7 @@
        @*  <MudTd DataLabel="Price">@context.Price</MudTd>
         <MudTd DataLabel="Priority Order">@context.PriorityOrder</MudTd> *@
         <MudTd>
-            <MudIconButton Icon="@Icons.Material.Filled.ViewCompact" OnClick="@( () => OpenViewDialog(context))" />
+            <MudLink Href="@("Town/"+@context.Id)">Open</MudLink>
             @if (clientConfig.IsAdmin==true)
                 {
                 <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OnEdit(context))" />
