@@ -67,7 +67,8 @@ namespace MyTown.RCL.Card
             //todo local data is only for the sake of checking on offline case
             //will enable later,not direct all from api
 
-
+            //here we can take from TownByIdKey & extracting particular cardid
+            //if not exists then look in server can also be done
             await LoadCardTypes();
             /*
             //storage key format : Town_id ex: Town_1
