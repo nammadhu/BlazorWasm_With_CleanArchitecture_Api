@@ -1,8 +1,14 @@
 ﻿@using Microsoft.Extensions.Localization
+@using MyTown.RCL.Town
+@using MyTown.RCL.CardType
 @using MyTown.SharedModels.Features.Cards.Commands
 @using SharedResponse
 @inject IStringLocalizer<TownCardDto> L
 @inject CardService cardService
+
+@inject CardTypeService cardTypeService
+@inject TownService townService
+
 @inject AuthService authService
 @inject ClientConfig clientConfig
 @inherits MudComponentBase
@@ -48,20 +54,29 @@
 
     CreateUpdateTownCardCommandValidator _modelValidator = new CreateUpdateTownCardCommandValidator();//translator
 
-    protected override Task OnInitializedAsync()
+    List<TownCardTypeDto> cardTypes = [];
+    List<TownDto> towns = [];
+
+    protected override async Task OnInitializedAsync()
         {
         //before this show dialog as
         /*
-             Create Card, on click it doesnt need login,
+        Create Card, on click it doesnt need login,
         instead show a dialog of some 5 points
 
-        UpdateCard,
-            For draft show dialog as it needs approval,tiill then its not visible kind of message
-            For approved,drafts are draft only,untill approval it will not be visible
-            exclept phone number,email id
-             */
+       UpdateCard,
+       For draft show dialog as it needs approval,tiill then its not visible kind of message
+       For approved,drafts are draft only,untill approval it will not be visible
+       exclept phone number,email id
+        */
         //fetch town name & cardtypes ddl items
-        return base.OnInitializedAsync();
+
+        var townsResult = await townService.GetAllTownsAsync();
+        if (townsResult.HasData()) towns = townsResult;
+
+        var cardTypesResult = await cardTypeService.GetAllTownCardTypesAsync();
+        if (cardTypesResult.HasData()) cardTypes = cardTypesResult;
+        //return base.OnInitializedAsync();
         }
 
     async Task Submit()
