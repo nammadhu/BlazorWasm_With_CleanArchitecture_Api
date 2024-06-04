@@ -52,8 +52,10 @@
             public const string Role_Admin = "Admin";
             public const string Role_InternalAdmin = "InternalAdmin";
             public const string Role_InternalViewer = "InternalViewer";
-            public const string Role_CardCreator = "Creator";//any guy can create & transfer to owner
-            public const string Role_CardOwner = "Owner";//any other user might have created but now transferred to this owner
+            public const string Role_CardCreator = "CardCreator";//any guy can create & transfer to owner
+            public const string Role_CardOwner = "CardOwner";//any other user might have created but now transferred to this owner
+            public const string Role_CardReviewer = "CardReviewer";
+
             //Town main page,option works with Owner role only,if owner then only he can edit,not with creator
 
             //Any AuthenticatedUser //no separate role required

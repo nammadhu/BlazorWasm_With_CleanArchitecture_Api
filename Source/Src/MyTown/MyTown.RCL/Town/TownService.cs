@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using BlazorWebApp.Shared;
 using BlazorWebApp.Shared.Services;
 using MyTown.Domain;
 using MyTown.RCL.CardType;
@@ -8,7 +9,7 @@ using MyTown.SharedModels.Features.Towns.Queries;
 using PublicCommon;
 using SharedResponse;
 using SharedResponse.Wrappers;
-using System;
+using System.Data;
 using System.Net.Http.Json;
 
 namespace MyTown.RCL.Town
@@ -26,30 +27,44 @@ namespace MyTown.RCL.Town
         private readonly HttpClient _httpClientAuth;
         private readonly ILocalStorageService _localStorage;
         private readonly CardTypeService _townCardTypeService;
+        readonly AuthService _authService;
+        readonly ClientConfig _clientConfig;
+        //IHttpClientFactory _HttpClientFactory;
 
         readonly string _baseUrl; //= ApiEndPoints.BaseUrl(ApiEndPoints.Town);
         // private const string _baseUrl = "v1/Town";
         readonly string TownsAllUrl;// = _baseUrl + ApiEndPoints.GetAll;
         readonly string TownByIdUrl;// = _baseUrl + ApiEndPoints.GetById;
-        const string TownsAllKey = "Towns";
-        const string TownKey = "Town";//storage format Town_id ex: Town_1 , Town_2
+        public const string TownsAllKey = "Towns";
+        public const string TownKey = "Town";//storage format Town_id ex: Town_1 , Town_2
 
         List<TownCardTypeDto>? CardTypes;
-        public TownService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage, CardTypeService townCardTypeService)
+        public TownService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage, CardTypeService townCardTypeService
+            , AuthService authService, ClientConfig clientConfig)
             {
+            //_HttpClientFactory = HttpClientFactory;
             _httpClientAnonymous = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
             _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
             _localStorage = localStorage;
             _townCardTypeService = townCardTypeService;
+            _authService = authService;
+            _clientConfig = clientConfig;
             _baseUrl = ApiEndPoints.BaseUrl(ApiEndPoints.Town);
             TownsAllUrl = _baseUrl + "/" + ApiEndPoints.GetAll;
             TownByIdUrl = _baseUrl + "/" + ApiEndPoints.GetById + "?";
             }
 
-        static string TownByIdKey(int id, Guid? userId = null)
+        //public async Task ClientSetup()//lets not use this as of now
+        //    {
+        //    if (await _authService.IsAuthenticatedAsync())
+        //        {
+        //        _httpClientAnonymous = _HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
+        //        Console.WriteLine(_clientConfig.Email);
+        //        }
+        //    }
+        public static string TownByIdKey(int id, string email = "")
             {
-            var userIdKey = userId.HasValue ? ("_" + userId.ToString()) : "";
-            return $"{TownKey}_{id}{userIdKey}";
+            return $"{TownKey}_{id}{email}";
             }
         readonly TimeSpan timeSpanLocalStorage = TimeSpan.FromMinutes(1);
 
@@ -58,35 +73,50 @@ namespace MyTown.RCL.Town
             CardTypes = await _townCardTypeService.GetAllTownCardTypesAsync();
             }
 
-        public async Task<TownDto> GetByIdAsync(GetTownByIdQuery query)
+        public async Task<TownDto> GetByIdAsync(int townId, string email = "", bool reLoadByClearingLocal = false)//for public as approved only
             {
-            await LoadCardTypes();
-            //storage key format : Town_id ex: Town_1
-            var townByIdKey = TownByIdKey(query.Id, query.UserId);
-            //first check on local with expiration(internally)
-            var existingLocalData = await _localStorage.GetCustom<TownDto>(townByIdKey);
-            if (existingLocalData != null && existingLocalData != default)
+            //later logic,like if townid valid check from local store...but on direct access it will not be valid so think
+            if (townId > 0 && townId < int.MaxValue - 10000)
                 {
-                if (existingLocalData.Id == 0 || string.IsNullOrEmpty(existingLocalData.Name))
+                await LoadCardTypes();
+                //storage key format : Town_id ex: Town_1
+                var townByIdKey = TownByIdKey(townId, email);
+                if (reLoadByClearingLocal)
+                    {
                     await _localStorage.RemoveItemCustomAsync(townByIdKey);
-                else return existingLocalData;
+                    if (string.IsNullOrEmpty(email))//clearing both type
+                        await _localStorage.RemoveItemCustomAsync(TownByIdKey(townId));
+                    }
+                else
+                    {
+                    //first check on local with expiration(internally)
+                    var existingLocalData = await _localStorage.GetCustom<TownDto>(townByIdKey);
+                    if (existingLocalData != null && existingLocalData != default)
+                        {
+                        if (existingLocalData.Id == 0 || string.IsNullOrEmpty(existingLocalData.Name))
+                            await _localStorage.RemoveItemCustomAsync(townByIdKey);
+                        else return existingLocalData;
+                        }
+                    }
+                //await ClientSetup();//lets not do this
+                //not existing locally,so fetching fresh
+                TownDto? town = await _httpClientAnonymous.GetBaseResult<TownDto>($"{TownByIdUrl}Id={townId}");
+                //pattern $"{TownByIdUrl}Id={query.Id}{(query.UserId.HasValue ? "&UserId=" + query.UserId.Value : "")}");
+                //https://localhost:7195/api/v1/Town/GetById?Id=1
+                if (town != null && town.Id > 0 && !string.IsNullOrEmpty(town.Name))
+                    {
+                    Console.WriteLine(town.Name);
+                    await _localStorage.SetCustom(townByIdKey, town, expiration: timeSpanLocalStorage);
+                    return town;
+                    }
+                else
+                    {
+                    //if existing had data,new its not then had to think whether to update or not
+                    return new TownDto();
+                    //await _localStorage.Set(townById, result, expiration: timeSpanLocalStorage);
+                    }
                 }
-            //not existing locally,so fetching fresh
-            TownDto? town = await _httpClientAnonymous.GetBaseResult<TownDto>(
-                $"{TownByIdUrl}Id={query.Id}{(query.UserId.HasValue ? "&UserId=" + query.UserId.Value : "")}");
-            //https://localhost:7195/api/v1/Town/GetById?Id=1
-            if (town != null && town.Id > 0 && !string.IsNullOrEmpty(town.Name))
-                {
-                Console.WriteLine(town.Name);
-                await _localStorage.SetCustom(townByIdKey, town, expiration: timeSpanLocalStorage);
-                return town;
-                }
-            else
-                {
-                //if existing had data,new its not then had to think whether to update or not
-                return new TownDto();
-                //await _localStorage.Set(townById, result, expiration: timeSpanLocalStorage);
-                }
+            return default;
             }
         public List<TownCardsGrouping> GroupCardsByType(TownDto town)
             {
@@ -100,11 +130,12 @@ namespace MyTown.RCL.Town
             .Select(group => new TownCardsGrouping
                 {
                 TypeId = group.Key,
-                TypeName = CardTypes == null || CardTypes.Count==0 ? group.Key.ToString() : CardTypes.FirstOrDefault(x => x.Id == group.Key).ShortName,
+                TypeName = CardTypes == null || CardTypes.Count == 0 ? group.Key.ToString() : CardTypes.FirstOrDefault(x => x.Id == group.Key).ShortName,
                 Cards = [.. group]
                 }).ToList();
             return res;
             }
+
 
 
         public async Task<List<TownDto>> GetAllTownsAsync()
@@ -130,10 +161,19 @@ namespace MyTown.RCL.Town
             }
         public async Task<BaseResult<TownDto>> CreateUpdateTownAsync(CreateUpdateTownCommand command)
             {
-            if (command.Id == 0)
-                return await CreateTownAsync(command);
+            if (await _authService.IsAuthenticatedAsync())
+                {
+                if (string.IsNullOrEmpty(_clientConfig.Email))//this case never comes but still
+                    return new BaseResult<TownDto>() { Success = false, Errors = [new Error(ErrorCode.AccessDenied, "Email not validated")] };
+                //also check for admin
+                if (command.Id == 0)
+                    return await CreateTownAsync(command);
+                else
+                    return await UpdateTownAsync(command);
+                }
             else
-                return await UpdateTownAsync(command);
+                //loginmaking sure also works good
+                return new BaseResult<TownDto>() { Success = false, Errors = [new Error(ErrorCode.AccessDenied, "Modification needs Authenticated Permissions")] };
             }
         /*local storage on Craete/Update logic
         On Create,
@@ -215,7 +255,7 @@ namespace MyTown.RCL.Town
                     else//already some data exists ,remove that & add new & sort
                         {
                         var index = storageDataList.FindIndex(t => t.Id == updatedResponse.Data.Id);
-                        storageDataList[index]=updatedResponse.Data;
+                        storageDataList[index] = updatedResponse.Data;
                         ListExtensions.UpdateAndMoveToFront(storageDataList, index, _ => { });
                         }
                     await _localStorage.SetCustom<List<TownDto>>(TownsAllKey, storageDataList, expiration: timeSpanLocalStorage);
@@ -228,20 +268,29 @@ namespace MyTown.RCL.Town
 
         public async Task<BaseResult> DeleteTownAsync(int id)
             {
-            //updatedResponse parsing required as true or false
-            //await _httpClientAnonymous.DeleteAsync($"{_baseUrl}/Delete?id={id}");
-            var deleteResult = await _httpClientAuth.DeleteAsyncPathWithKey($"{_baseUrl}/Delete?id={id}");
-            if (deleteResult != null && deleteResult.Success)
+            if (await _authService.IsAuthenticatedAsync())
                 {
-                var storageDataList = await _localStorage.GetCustom<List<TownDto>>(TownsAllKey);
-                if (storageDataList != null && storageDataList.Count > 0)
+                if (string.IsNullOrEmpty(_clientConfig.Email))//this case never comes but still
+                    return new BaseResult<TownDto>() { Success = false, Errors = [new Error(ErrorCode.AccessDenied, "Email not validated")] };
+                //also check for admin
+                //updatedResponse parsing required as true or false
+                //await _httpClientAnonymous.DeleteAsync($"{_baseUrl}/Delete?id={id}");
+                var deleteResult = await _httpClientAuth.DeleteAsyncPathWithKey($"{_baseUrl}/Delete?id={id}");
+                if (deleteResult != null && deleteResult.Success)
                     {
-                    storageDataList.RemoveAll(x => x.Id == id);
-                    await _localStorage.SetCustom<List<TownDto>>(TownsAllKey, storageDataList, timeSpanLocalStorage);
+                    var storageDataList = await _localStorage.GetCustom<List<TownDto>>(TownsAllKey);
+                    if (storageDataList != null && storageDataList.Count > 0)
+                        {
+                        storageDataList.RemoveAll(x => x.Id == id);
+                        await _localStorage.SetCustom<List<TownDto>>(TownsAllKey, storageDataList, timeSpanLocalStorage);
+                        }
+                    return deleteResult;
                     }
-                return deleteResult;
+                return new BaseResult<TownDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
                 }
-            return new BaseResult<TownDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
+            else
+                //loginmaking sure also works good
+                return new BaseResult() { Success = false, Errors = [new Error(ErrorCode.AccessDenied, "Modification needs Authenticated Permissions")] };
             }
 
         //todo had to add pagination & search over api

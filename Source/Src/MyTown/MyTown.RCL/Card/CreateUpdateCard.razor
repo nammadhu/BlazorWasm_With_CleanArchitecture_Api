@@ -3,6 +3,8 @@
 @using SharedResponse
 @inject IStringLocalizer<TownCardDto> L
 @inject CardService townCardService
+@inject AuthService authService
+@inject ClientConfig clientConfig
 @inherits MudComponentBase
 @* @inject ITranslator translator *@
 <MudDialog>
@@ -26,8 +28,8 @@
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" tabindex="11">@ConstantString.Cancel</MudButton>
-        <MudButton Loading="@_saving" OnClick="Submit" tabindex="10">@ConstantString.Save</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@Cancel" tabindex="11">@ConstantString.Cancel</MudButton>
+        <MudButton Loading="@_saving" OnClick="Submit" tabindex="10" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" IconColor="Color.Secondary" Color="Color.Tertiary">@ConstantString.Save</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -48,6 +50,7 @@
 
     async Task Submit()
         {
+        await authService.LoginUserMakingSure();
         try
             {
             _saving = true;

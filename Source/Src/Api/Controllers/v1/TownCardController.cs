@@ -53,9 +53,10 @@ namespace CleanArchitecture.WebApi.Controllers.v1
             }
 
 
-        [HttpPost, Authorize(Roles = CONSTANTS.Auth.Role_Admin)]
+        [HttpPost, Authorize]//lets allow everyone to create,later will block Blocked users
         public async Task<BaseResult<TownCardDto>> Create(CreateUpdateTownCardCommand model)
             {
+            //once user created had to mark him with role of Creator
             Console.WriteLine($"{nameof(TownCardController)}/{nameof(ApiEndPoints.Create)}");
             //model.CreatedBy = UserIdExtract();
             //above is separately not required bcz ApplicationDBcontext amking default changes onCreate Authuser id & onUpdate LastModifedBy userid
@@ -63,7 +64,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
             }
 
 
-        [HttpPut, Authorize(Roles = CONSTANTS.Auth.Role_Admin)]
+        [HttpPut, Authorize]//lets allow everyone to create,later will block Blocked users
         public async Task<BaseResult<TownCardDto>> Update(CreateUpdateTownCardCommand model)
             {
             Console.WriteLine($"{nameof(TownCardController)}/{nameof(ApiEndPoints.Update)}");
@@ -71,7 +72,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
             return await Mediator.Send(model);
             }
 
-        [HttpDelete, Authorize(Roles = CONSTANTS.Auth.Role_Admin)]
+        [HttpDelete, Authorize]//lets allow everyone to create,later will block Blocked users
         public async Task<BaseResult> Delete([FromQuery] DeleteTownCardCommand model)
             {
             Console.WriteLine($"{nameof(TownCardController)}/{nameof(ApiEndPoints.Delete)}");

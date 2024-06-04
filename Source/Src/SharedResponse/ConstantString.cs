@@ -18,6 +18,7 @@ public static class ConstantString
     public static string Edit => Localize("Edit");
     public static string Submit => Localize("Submit");
     public static string Delete => Localize("Delete");
+    public static string Remove => Localize("Remove");
     public static string Add => Localize("Add");
     public static string Clone => Localize("Clone");
     public static string New => Localize("New");

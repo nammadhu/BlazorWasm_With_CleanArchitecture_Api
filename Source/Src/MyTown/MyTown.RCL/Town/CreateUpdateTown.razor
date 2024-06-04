@@ -3,6 +3,8 @@
 @using SharedResponse
 @inject IStringLocalizer<TownDto> L
 @inject TownService townService
+@inject AuthService authService
+@inject ClientConfig clientConfig
 @inherits MudComponentBase
 @* @inject ITranslator translator *@
 <MudDialog>
@@ -20,13 +22,13 @@
             <MudTextField Label="@L[model.GetMemberDescription(x => x.State)]" @bind-Value="model.State" For="@(() => model.State)" tabindex="4" />
             @* <MudTextField Label="@L[model.GetMemberDescription(x => x.Price)]" @bind-Value="model.Price" For="@(() => model.Price)" Required="true" RequiredError="@L["Price is required!"]"></MudTextField>
             <MudTextField Label="@L[model.GetMemberDescription(x => x.PriorityOrder)]" For="@(() => model.PriorityOrder)" @bind-Value="model.PriorityOrder"></MudTextField>
- *@
+            *@
             @*  </MudGrid> *@
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" tabindex="6">@ConstantString.Cancel</MudButton>
-        <MudButton Loading="@_saving" OnClick="Submit" tabindex="5">@ConstantString.Save</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@Cancel" tabindex="11">@ConstantString.Cancel</MudButton>
+        <MudButton Loading="@_saving" OnClick="Submit" tabindex="10" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" IconColor="Color.Secondary" Color="Color.Tertiary">@ConstantString.Save</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -47,6 +49,9 @@
 
     async Task Submit()
         {
+        await authService.LoginUserMakingSure();
+        if (clientConfig.IsAdmin == false) return;//as not admin
+                                                  //also admin
         try
             {
             _saving = true;

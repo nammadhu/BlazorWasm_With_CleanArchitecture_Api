@@ -67,7 +67,7 @@ namespace BlazorWebApp.Shared.Services
                         //lets avoid exposing userid to clients easily
                         }
                     }
-                clientConfig.IsAdminSet(response?.Claims?.Any(c => c.Type == ClaimTypes.Role && c.Value == CONSTANTS.Auth.Role_Admin) ?? false);
+                clientConfig.RolesSet(response?.Claims);
                 return true;
                 }
             return false;

@@ -1,3 +1,43 @@
+1.For admin login, send with another call to fetch all details including email,phone & all
+2.make sure normal call should not reveal any of those informations
+
+
+ALl anonymous page,
+1.OnInitialized() do anonymous call
+2.On parameterset do userspecific calls
+
+Card clone feature,for other town
+
+
+Clientside only expose emailid,not userid anywhere....
+even card owner also same logic ,may be like in dto add email & clientside check for that & attach
+
+
+IAuthenticatedUserService authenticatedUser
+--lets not to send userid from screen anytime
+--once user created Card had to mark him with role of Creator
+--userid passing not necessary from client,instead api only handles based on token
+--but for storing locally,had to get userid
+
+--its better,not to maintain individual card adding to town object modification locally.
+Just,add or update then clear cache of town particualr id with userid  thats it
+
+--TownController side handle userid basis cards fetching logic,of both approved & draft cards
+
+-when creator adds, it will be shown to him only untill approval logic on his local,so add to local list data
+
+-so one every request,with town,if he sends userid, then had to look on his id if role is creator then search in Cards table other than ApprovedCards
+
+
+
+-When card added,its added to Cards table but not on to Town directly,so dont add to Town
+-Create individual send to server as usual,on success add to his localitself card_id storage
+-So on click of edit, 
+ A.(from town page):if ApprovedCard has cardid then check that locally if exists then show
+ B.From his own draft then just show as it is
+
+Card checking locally,also can be with userid & without userid both it can be...so had //todo
+
 separate view of horizantal carousel inputs of cards
 
 

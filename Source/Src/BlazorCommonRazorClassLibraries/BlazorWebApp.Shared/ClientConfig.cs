@@ -1,4 +1,6 @@
-﻿using PublicCommon;
+﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
+using PublicCommon;
+using System.Security.Claims;
 
 namespace BlazorWebApp.Shared
     {
@@ -13,7 +15,6 @@ namespace BlazorWebApp.Shared
         public Guid? UserId { get; private set; }
         public string? GToken { get; private set; }
         public string? AToken { get; private set; }
-        public bool? IsAdmin { get; private set; }
 
         public void LogOut()
             {
@@ -29,7 +30,34 @@ namespace BlazorWebApp.Shared
         public void ApiTokenFetchingUpdate(bool value = true) => ApiTokenFetching = value;
 
         public void EmailSet(string email) => Email = email;
-        public void IsAdminSet(bool isAdmin) => IsAdmin = isAdmin;
+
+        public bool? IsAdmin { get; private set; }
+        public bool? IsInternalAdmin { get; private set; }
+        public bool? IsInternalViewer { get; private set; }
+        public bool? IsCardCreator { get; private set; }
+        public bool? IsCardOwner { get; private set; }
+        public bool? IsCardReviewer { get; private set; }
+        public bool? IsBlocked { get; private set; }
+
+        public void RolesSet(IEnumerable<Claim>? claims)
+            {
+            if (claims.HasData<Claim>())
+                {
+                var roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(x => x.Value).ToList();
+                IsAdmin = roles.Contains(CONSTANTS.Auth.Role_Admin);
+                IsInternalAdmin = roles.Contains(CONSTANTS.Auth.Role_InternalAdmin);
+                IsInternalViewer = roles.Contains(CONSTANTS.Auth.Role_InternalViewer);
+                IsCardCreator = roles.Contains(CONSTANTS.Auth.Role_CardCreator);
+                IsCardOwner = roles.Contains(CONSTANTS.Auth.Role_CardOwner);
+                IsCardReviewer = roles.Contains(CONSTANTS.Auth.Role_CardReviewer);
+                IsBlocked = roles.Contains(CONSTANTS.Auth.Role_Blocked);
+                }
+            else
+                {
+                //not logged in so dont set,let it be be null as it is
+                }
+            }
+
         public void UserIdSet(string userId) => UserId = Guid.TryParse(userId, out Guid result) ? result : Guid.Empty;
         public void UserIdSet(Guid userId) => UserId = userId;
         public void ApiTokenFetchedUpdate(bool value = true)

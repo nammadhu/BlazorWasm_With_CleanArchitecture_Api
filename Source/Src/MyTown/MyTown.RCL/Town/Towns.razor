@@ -14,7 +14,7 @@
     <ToolBarContent>
         <MudText Typo="Typo.h6">Towns</MudText>
         <MudTextField @bind-Value="searchStringTownName" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        @if (clientConfig.IsAdmin==true)
+        @if (clientConfig.IsAdmin == true)
             {
             <MudIconButton Icon="@Icons.Material.Filled.Create" OnClick="OnCreate" />
             }
@@ -24,7 +24,7 @@
         <MudTh>SubTitle</MudTh>
         <MudTh>Description</MudTh>
         <MudTh>State</MudTh>
-      @*   <MudTh>Priority Order</MudTh>
+        @*   <MudTh>Priority Order</MudTh>
         <MudTh>Actions</MudTh> *@
     </HeaderContent>
     <RowTemplate>
@@ -32,11 +32,11 @@
         <MudTd DataLabel="Short Name">@context.SubTitle</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>
         <MudTd DataLabel="Description">@context.State</MudTd>
-       @*  <MudTd DataLabel="Price">@context.Price</MudTd>
+        @*  <MudTd DataLabel="Price">@context.Price</MudTd>
         <MudTd DataLabel="Priority Order">@context.PriorityOrder</MudTd> *@
         <MudTd>
             <MudLink Href="@("Town/"+@context.Id)">Open</MudLink>
-            @if (clientConfig.IsAdmin==true)
+            @if (clientConfig.IsAdmin == true)
                 {
                 <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OnEdit(context))" />
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteWithConfirmationDialog(context))" />
@@ -61,24 +61,15 @@
 
     private List<TownDto> Elements = new List<TownDto>();
 
-    private bool IsAuthenticated;
-    private async Task CheckAuthenticationStateAsync()
-        {
-        IsAuthenticated = await authService.IsAuthenticatedAsync();
-        }
+    /*
+     ALl anonymous page,
+    1.OnInitialized() do anonymous call
+    2.On parameterset do userspecific calls then set create/edit/delete button handling & all
+     */
 
     protected override async Task OnInitializedAsync()
         {
         await LoadServerData();
-        await CheckAuthenticationStateAsync();
-        }
-    protected override async Task OnParametersSetAsync()
-        {
-        await CheckAuthenticationStateAsync();
-        if (IsAuthenticated)
-            {
-            await authService.AuthorizeRoles();
-            }
         }
 
     async Task LoadServerData()
@@ -86,6 +77,12 @@
         var fetchAll = await TownService.GetAllTownsAsync();
         if (fetchAll != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
             Elements = fetchAll;
+        }
+
+    protected override async Task OnParametersSetAsync()
+        {
+        if (await authService.IsAuthenticatedAsync())
+            await authService.AuthorizeRoles();
         }
 
     private bool FilterFunc1(TownDto element) => FilterFunc(element, searchStringTownName);
@@ -123,7 +120,7 @@
     private async Task OnEdit(TownDto dto)
         {
         await authService.LoginUserMakingSure();
-        if (clientConfig.IsAdmin==false) return;//|| dto.Id == 0
+        if (clientConfig.IsAdmin == false) return;//|| dto.Id == 0
 
         var command = mapper.Map<CreateUpdateTownCommand>(dto);
         var parameters = new DialogParameters<CreateUpdateTown>
@@ -148,7 +145,7 @@
     private async Task DeleteWithConfirmationDialog(TownDto Town)
         {
         await authService.LoginUserMakingSure();
-        if (clientConfig.IsAdmin==false || Town.Id == 0) return;
+        if (clientConfig.IsAdmin == false || Town.Id == 0) return;
         var parameters = new DialogParameters { ["Name"] = Town.Name + "/" + Town.Id };
         var dialog = DialogService.Show<DeleteConfirmationDialog>
     ("Remove Master Data Town", parameters);

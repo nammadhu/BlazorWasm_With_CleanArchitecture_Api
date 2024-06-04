@@ -48,11 +48,15 @@ else
     [Parameter]
     public string? Name { get; set; }//townname
 
-    [Inject] ILocalStorageService localStorageService { get; set; }
+    // [Inject] ILocalStorageService localStorageService { get; set; }
 
     private TownDto HeaderCard = new TownDto();//make offline
     private List<TownCardsGrouping> Cards = new List<TownCardsGrouping>();//make offline
-
+    /*
+    ALl anonymous page,
+       1.OnInitialized() do anonymous call
+       2.On parameterset do userspecific calls then set create/edit/delete button handling & all
+    */
     protected override async Task OnInitializedAsync()
         {
         await LoadServerData();
@@ -60,7 +64,7 @@ else
         }
     async Task LoadServerData()
         {
-        var town = await TownService.GetByIdAsync(new GetTownByIdQuery() { Id = Id, UserId = clientConfig.UserId });
+        var town = await TownService.GetByIdAsync(townId: Id);
         if (town != null && town.Id > 0 && !string.IsNullOrEmpty(town.Name))
             {
             HeaderCard = town;//if offline then had to serve previous data itself
@@ -70,18 +74,37 @@ else
         }
     protected override async Task OnParametersSetAsync()
         {
-        await CheckAuthenticationStateAsync();
-        if (IsAuthenticated)
+        if (await authService.IsAuthenticatedAsync())
             {
             await authService.AuthorizeRoles();
+
+            //all authenticated can add new unless he is blocked
+            if (clientConfig.IsBlocked == true)
+                {
+                //then dont allow him for anything to do
+                }
+
+            //for admin all can edit
+            //for others should have  only his own edit option
+            if (clientConfig.IsAdmin == true || clientConfig.IsInternalAdmin == true || clientConfig.IsInternalViewer == true)
+                {
+                //todo later
+                //let them can see card owner emailid,phone all
+                //as one more call to fetch with all details
+                }
+
+            if (clientConfig.IsCardCreator == true || clientConfig.IsCardOwner == true || clientConfig.IsCardReviewer == true)//owner or creator then only edit/delete check call had to be done
+                {
+                //do one more call to api to check & store locally list of cardid
+                //input is townid
+                //fetchmycards(townid,creator:bool,owner:bool,reviewer:bool),
+                // returns List<cardid of Approved>
+                // ,also if any draft cards,
+                //also any pending for my approval
+                //tuple(List<int> approvedCardsId,List<Card> myDraftCards,List<Card> myApprovalPendingcards)
+                }
             }
         }
-    private bool IsAuthenticated;
-    private async Task CheckAuthenticationStateAsync()
-        {
-        IsAuthenticated = await authService.IsAuthenticatedAsync();
-        }
-
 
 
         /*
@@ -162,12 +185,12 @@ else
     {
     var res = await TownService.DeleteTownAsync(Town.Id);
     if (res != null && res.Success)
-        {
-        //await LoadServerData();
-        //insteaqd of reloading all(above), lets remove locally itself as like below
-        Elements.RemoveAll(x => x.Id == Town.Id);
+    {
+    //await LoadServerData();
+    //insteaqd of reloading all(above), lets remove locally itself as like below
+    Elements.RemoveAll(x => x.Id == Town.Id);
 
-        Snackbar.Add($"Removed Town:({Town.Name})", Severity.Success);
+    Snackbar.Add($"Removed Town:({Town.Name})", Severity.Success);
     }
     else Snackbar.Add($"Issue in Removing Town ({Town.Name})", Severity.Error);
 

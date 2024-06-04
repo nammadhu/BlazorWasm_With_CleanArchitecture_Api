@@ -32,10 +32,17 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
                 pageSize);
 
             }
-        public override async Task<Town> GetByIdIntAsync(int id, Guid? userId=null)
+        public override async Task<Town> GetByIdIntAsync(int id, Guid? userId = null)
         //public async Task<Town> GetTownByIdAsync(int id, Guid? userId)
             {
             var today = DateOnly.FromDateTime(DateTime.Today);
+            if (!userId.HasValue)
+                {
+
+                }
+            //mostly here userid logic not required,instead only returning cardid & later doing role specific matching
+
+
             var townQuery = db.Where(t => t.Id == id)
          .Select(t => new
              {

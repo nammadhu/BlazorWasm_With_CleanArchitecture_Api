@@ -1,10 +1,11 @@
-﻿<MudDialog Class="center-dialog">
+﻿@using SharedResponse
+<MudDialog Class="center-dialog">
     <DialogContent>
         <MudText>Are you sure you want to Remove : @Name?</MudText>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" OnClick="@ConfirmDelete">Remove</MudButton>
-        <MudButton Color="Color.Secondary" OnClick="@Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@ConfirmDelete">@ConstantString.Remove</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@Cancel" tabindex="11">@ConstantString.Cancel</MudButton>
     </DialogActions>
 </MudDialog>
 <style>

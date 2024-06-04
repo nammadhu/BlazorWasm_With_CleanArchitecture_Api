@@ -84,9 +84,9 @@
 
     async Task LoadServerData()
         {
-        var fetchAll = await townCardService.GetAllTownCardsAsync();
-        if (fetchAll != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
-            Elements = fetchAll;
+        // var fetchAll = await townCardService.GetAllTownCardsAsync();
+        // if (fetchAll != null)// && fetchAll.Data.Count > 0)//this should bot be bcz should show zero results also as Success
+        //     Elements = fetchAll;
         }
 
     private bool FilterFunc1(TownCardDto element) => FilterFunc(element, searchStringTownCardName);

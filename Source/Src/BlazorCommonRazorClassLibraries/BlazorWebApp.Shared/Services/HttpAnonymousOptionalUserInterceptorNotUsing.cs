@@ -1,16 +1,17 @@
 ﻿using Blazored.LocalStorage;
 using PublicCommon;
 using SharedResponse;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 
 namespace BlazorWebApp.Shared.Services
     {
-    public class HttpBearerTokenInterceptor(AuthService authService, ILocalStorageService localStorageService) : DelegatingHandler
+    //Notusing 
+    public class HttpAnonymousOptionalUserInterceptorNotUsing(AuthService authService, ILocalStorageService localStorageService) : DelegatingHandler
         {
-        //this gets intercepted in calling auth endpoints & includes ApiIssuedJwt
-        //must be httpclient of name "AuthClient" then it gets auto intercepted
+
+        //this gets intercepted in calling Anonymous endpoints 
+        //must be httpclient of name "AnonymousClient" then it gets auto intercepted
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
@@ -18,20 +19,15 @@ namespace BlazorWebApp.Shared.Services
             if (!string.IsNullOrEmpty(jwtTokenApiIssued))
                 {
                 request.Headers.Authorization = new AuthenticationHeaderValue(CONSTANTS.Bearer, jwtTokenApiIssued);
-                //request.Headers.Add("Authorization", "Bearer " + jwtTokenApiIssued);
-
-                // Encrypt the content
-                //string encryptedContent = Encryption.EncryptString("your-shared-key", "madhu here kanri");
-                if (!request.Headers.Contains(CONSTANTS.AppKeyName))
-                    {
-                    request.Headers.Add(CONSTANTS.AppKeyName, CONSTANTS.MyTownAppKeyAuth);
-                    }
-                return await base.SendAsync(request, cancellationToken);
                 }
-            return new HttpResponseMessage(HttpStatusCode.Unauthorized) // Return Unauthorized
+            // Encrypt the content
+            //string encryptedContent = Encryption.EncryptString("your-shared-key", "madhu here kanri");
+            if (!request.Headers.Contains(AnonymousHeader.Key))
                 {
-                ReasonPhrase = $"No token available for request {request.RequestUri?.ToString()}" // SettingsUpdate custom reason phrase (optional)
-                };
+                request.Headers.Add(AnonymousHeader.Key, AnonymousHeader.Value);
+                }
+
+            return await base.SendAsync(request, cancellationToken);
 
             }
         private async Task<string> GetIdToken()

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\HttpAnonymousOptionalUserInterceptorNotUsing.cs" />
     <Compile Remove="Services\LocalStorageExtensions - backup.cs" />
   </ItemGroup>
 

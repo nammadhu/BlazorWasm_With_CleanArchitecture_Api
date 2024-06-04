@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using BlazorWebApp.Shared;
 using BlazorWebApp.Shared.Services;
 using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.CardTypes.Commands;
@@ -6,6 +7,7 @@ using MyTown.SharedModels.Features.CardTypes.Queries;
 using PublicCommon;
 using SharedResponse;
 using SharedResponse.Wrappers;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace MyTown.RCL.CardType
@@ -15,21 +17,24 @@ namespace MyTown.RCL.CardType
         private readonly HttpClient _httpClientAnonymous;
         private readonly HttpClient _httpClientAuth;
         private readonly ILocalStorageService _localStorage;
-
+        //IHttpClientFactory _HttpClientFactory;
+        //readonly AuthService _authService;
         readonly string _baseUrl; 
         readonly string TownCardTypesAllUrl;// = _baseUrl + ApiEndPoints.GetAll;
         const string TownCardTypesAllKey = "TownCardTypes";
-        public CardTypeService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)
+        public CardTypeService(IHttpClientFactory HttpClientFactory, ILocalStorageService localStorage)//, AuthService authService)
             {
+      //      _HttpClientFactory = HttpClientFactory;
             _httpClientAnonymous = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAnonymous);
             _httpClientAuth = HttpClientFactory.CreateClient(PublicCommon.CONSTANTS.ClientAuthorized);
             _localStorage = localStorage;
+    //        _authService = authService;
             _baseUrl = ApiEndPoints.BaseUrl(ApiEndPoints.TownCardType);
             TownCardTypesAllUrl = _baseUrl + "/" + ApiEndPoints.GetAll;
             }
 
         readonly TimeSpan timeSpanLocalStorage = TimeSpan.FromMinutes(60);
-
+    
         public async Task<List<TownCardTypeDto>> GetAllTownCardTypesAsync()
             {
             //first check on local with expiration(internally)

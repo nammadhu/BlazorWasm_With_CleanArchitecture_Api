@@ -6,9 +6,6 @@
 
         //this gets intercepted in calling Anonymous endpoints 
         //must be httpclient of name "AnonymousClient" then it gets auto intercepted
-        public HttpAnonymousInterceptor()
-            {
-            }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
