@@ -9,7 +9,7 @@ namespace MyTown.Domain
         {
         public TownApprovedCard()
             {
-            SelectedDates = new HashSet<TownApprovedCardSelectedDate>();
+            SelectedDates = [];//new HashSet<TownApprovedCardSelectedDate>();
             }
         public void AddDate(TownApprovedCardSelectedDate date)
             {
@@ -20,14 +20,15 @@ namespace MyTown.Domain
         public int TypeId { get; set; }//doctor,event,business
 
         [ForeignKey(nameof(TypeId))]
-        public TownCardType Type { get; set; }
+        public TownCardType? Type { get; set; }
 
         [Required]
         public int CardId { get; set; }//doctor,event,business
 
         [ForeignKey(nameof(CardId))]
-        public TownCard Card { get; set; }
+        public TownCard? Card { get; set; }
 
+        public Guid? OwnerId { get; set; }
         public virtual ICollection<TownApprovedCardSelectedDate> SelectedDates { get; set; }
 
         [Required]
@@ -42,13 +43,15 @@ namespace MyTown.Domain
         public int LikeCount { get; set; }//by public anyone
         public int DisLikeCount { get; set; }//by public anyone
         }
-    public class TownApprovedCardSelectedDate
+    public class TownApprovedCardSelectedDate : BaseAuditableEntityMultiUser
         {
-        public int Id { get; set; }
-        public int CardId { get; set; }
+        //public int Id { get; set; }
+        public int ApprovedCardId { get; set; }
         public DateOnly Date { get; set; }
+
         // Navigation property to the ApprovedCard
-        public TownApprovedCard ApprovedCard { get; set; }
+        [ForeignKey(nameof(ApprovedCardId))]
+        public TownApprovedCard? ApprovedCard { get; set; }
         }
 
     //each called iCard , internet card of any user or business entity
@@ -82,7 +85,7 @@ namespace MyTown.Domain
         public int TypeId { get; set; }//doctor,event,business
 
         [ForeignKey(nameof(TypeId))]
-        public TownCardType Type { get; set; }
+        public TownCardType? Type { get; set; }
 
 
         [Required]
