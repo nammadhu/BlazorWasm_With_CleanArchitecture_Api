@@ -1,8 +1,3 @@
-Replace all TownCard with Card
-TownCardType with CardType
-except class domain may be
-
-
 Create Card, on click it doesnt need login,
 instead show a dialog of some 5 points
 
