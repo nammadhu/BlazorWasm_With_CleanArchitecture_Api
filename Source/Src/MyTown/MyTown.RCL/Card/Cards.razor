@@ -16,7 +16,7 @@
     <ToolBarContent>
         <MudText Typo="Typo.h6">Town Cards</MudText>
         <MudTextField @bind-Value="searchStringTownCardName" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        @if (clientConfig.IsAdmin==true)
+        @if (clientConfig.IsAdmin == true)
             {
             <MudIconButton Icon="@Icons.Material.Filled.Create" OnClick="OnCreate" />
             }
@@ -31,13 +31,13 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
-       @*  <MudTd DataLabel="Short Name">@context.ShortName</MudTd> *@
+        @*  <MudTd DataLabel="Short Name">@context.ShortName</MudTd> *@
         <MudTd DataLabel="Description">@context.Description</MudTd>
-       @*  <MudTd DataLabel="Price">@context.Price</MudTd>
+        @*  <MudTd DataLabel="Price">@context.Price</MudTd>
         <MudTd DataLabel="Priority Order">@context.PriorityOrder</MudTd> *@
         <MudTd>
             <MudIconButton Icon="@Icons.Material.Filled.ViewCompact" OnClick="@( () => OpenViewDialog(context))" />
-            @if (clientConfig.IsAdmin==true)
+            @if (clientConfig.IsAdmin == true)
                 {
                 <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OnEdit(context))" />
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteWithConfirmationDialog(context))" />
@@ -124,7 +124,7 @@
     private async Task OnEdit(TownCardDto dto)
         {
         await authService.LoginUserMakingSure();
-        if (clientConfig.IsAdmin==false) return;//|| dto.Id == 0
+        if (clientConfig.IsAdmin == false) return;//|| dto.Id == 0
 
         var command = mapper.Map<CreateUpdateTownCardCommand>(dto);
         var parameters = new DialogParameters<CreateUpdateCard>
@@ -149,7 +149,7 @@
     private async Task DeleteWithConfirmationDialog(TownCardDto TownCard)
         {
         await authService.LoginUserMakingSure();
-        if (clientConfig.IsAdmin==false || TownCard.Id == 0) return;
+        if (clientConfig.IsAdmin == false || TownCard.Id == 0) return;
         var parameters = new DialogParameters { ["Name"] = TownCard.Name + "/" + TownCard.Id };
         var dialog = DialogService.Show<DeleteConfirmationDialog>
     ("Remove Card Of Town", parameters);

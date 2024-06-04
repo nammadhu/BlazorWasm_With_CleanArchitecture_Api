@@ -1,3 +1,12 @@
+Create Card, on click it doesnt need login,
+instead show a dialog of some 5 points
+
+UpdateCard,
+	For draft show dialog as it needs approval,tiill then its not visible kind of message
+	For approved,drafts are draft only,untill approval it will not be visible 
+	exclept phone number,email id
+	
+	
 1.For admin login, send with another call to fetch all details including email,phone & all
 2.make sure normal call should not reveal any of those informations
 
