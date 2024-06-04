@@ -28,7 +28,7 @@ namespace MyTown.RCL.Card
         private readonly CardTypeService _townCardTypeService;
         private readonly TownService _townService;
         readonly AuthService _authService;
-        ClientConfig _clientConfig;
+        readonly ClientConfig _clientConfig;
 
         readonly string _baseUrl; //= ApiEndPoints.BaseUrl(ApiEndPoints.Town);
         // private const string _baseUrl = "v1/Town";
@@ -107,10 +107,13 @@ namespace MyTown.RCL.Card
         //after success modification,call town fetch with userid by reLoadByClearing=true,so it gets updated from api response
         public async Task<BaseResult<TownCardDto>> CreateUpdateTownCardAsync(CreateUpdateTownCardCommand command)
             {
+            Console.WriteLine("Call cameserv1");
             if (await _authService.IsAuthenticatedAsync())
                 {
+                Console.WriteLine("Call cameserv2");
                 if (string.IsNullOrEmpty(_clientConfig.Email))//this case never comes but still
                     return new BaseResult<TownCardDto>() { Success = false, Errors = [new Error(ErrorCode.AccessDenied, "Email not validated")] };
+                Console.WriteLine("Call cameserv3");
                 if (command.Id == 0)
                     return await CreateTownCardAsync(command, _clientConfig.Email);
                 else
@@ -121,19 +124,28 @@ namespace MyTown.RCL.Card
 
         public async Task<BaseResult<TownCardDto>> CreateTownCardAsync(CreateUpdateTownCardCommand command, string email)
             {
+            Console.WriteLine("Call cameserv6");
             if (string.IsNullOrEmpty(email)) return null;//this case never comes but still
+            Console.WriteLine("Call cameserv7");
             var cardByIdKey = CardByIdKey(command.Id, email);
+            Console.WriteLine("Call cameserv8");
             var responseMessage = await _httpClientAuth.PostAsJsonAsync($"{_baseUrl}/Create", command);
+            Console.WriteLine("Call cameserv9");
             if (responseMessage != null)
                 {
+                Console.WriteLine("Call cameserv10");
                 var addedResponse = await responseMessage.DeserializeResponse<BaseResult<TownCardDto>>();
+                Console.WriteLine("Call cameserv11");
                 if (addedResponse != null && addedResponse.Success && addedResponse.Data != null)
                     {//offline create handling 
+                    Console.WriteLine("Call cameserv12");
                     await _localStorage.SetCustom<TownCardDto>(cardByIdKey, addedResponse.Data, expiration: timeSpanLocalStorage);
                     await _townService.GetByIdAsync(command.TownId, email, reLoadByClearingLocal: true);
+                    Console.WriteLine("Call cameserv13");
                     return addedResponse;
                     }
                 }
+            Console.WriteLine("Call cameserv91");
             return new BaseResult<TownCardDto>() { Success = false, Data = new() };//Errors = responseMessage.StatusCode
             }
 

@@ -74,9 +74,6 @@ namespace MyTown.Domain
             Id = id;
             }
 
-
-
-        [Required]
         public int? ApprovedCardId { get; set; }//if approved then that will be linked here
 
         //[ForeignKey(nameof(ApprovedCardId))]

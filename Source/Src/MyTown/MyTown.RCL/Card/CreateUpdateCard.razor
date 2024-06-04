@@ -22,6 +22,20 @@
                 {
                 <small>@model.Id</small>
                 }
+            <MudSelect @bind-Value="model.TownId" Label="Select Town" HelperText="Town" OpenIcon="@Icons.Material.Filled.Place" AdornmentColor="Color.Secondary">
+                @foreach (TownDto town in towns)
+                    {
+                    <MudSelectItem Value="@town.Id">@town.Name</MudSelectItem>
+                    }
+            </MudSelect>
+
+            <MudSelect @bind-Value="model.TypeId" Label="Select Type" HelperText="iCard Type" OpenIcon="@Icons.Material.Filled.TypeSpecimen" AdornmentColor="Color.Secondary">
+                @foreach (TownCardTypeDto cardType in cardTypes)
+                    {
+                    <MudSelectItem Value="@cardType.Id">@cardType.Name</MudSelectItem>
+                    }
+            </MudSelect>
+
             <MudTextField Label="@L[model.GetMemberDescription(x => x.Name)]" @bind-Value="model.Name" For="@(() => model.Name)" Required="true" RequiredError="@L["Name is required!"]" tabindex="1" />
             @*    <MudTextField Label="@L[model.GetMemberDescription(x => x.ShortName)]" @bind-Value="model.ShortName" For="@(() => model.ShortName)" Required="true" RequiredError="@L["ShortName is required!"]"></MudTextField> *@
             <MudTextField Label="@L[model.GetMemberDescription(x => x.Description)]" Lines="1" For="@(() => model.Description)" @bind-Value="model.Description" tabindex="2" />
@@ -84,13 +98,14 @@
         await authService.LoginUserMakingSure();
         try
             {
+            Console.WriteLine("Call came0");
             _saving = true;
             await _form!.Validate().ConfigureAwait(false);
             if (!_form!.IsValid)
                 return;
-
+                Console.WriteLine("Call came1");
             var res = await cardService.CreateUpdateTownCardAsync(model);
-
+            Console.WriteLine("Call came2");
             if (res != null && res.Success)
                 {
                 MudDialog.Close(DialogResult.Ok(true));
@@ -98,6 +113,7 @@
                 }
             else
                 {
+                Console.WriteLine("Call came4 error");
                 Snackbar.Add(res == null || res.Errors == null ? "UnKnown Error" : res.Errors.FirstOrDefault().Description, Severity.Error);
                 }
             }

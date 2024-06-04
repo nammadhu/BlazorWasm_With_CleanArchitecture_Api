@@ -1,5 +1,13 @@
+Replace all TownCard with Card
+TownCardType with CardType
+except class domain may be
+
+
 Create Card, on click it doesnt need login,
 instead show a dialog of some 5 points
+
+Each card can have multiple owners,so Add SharedOwner
+
 
 UpdateCard,
 	For draft show dialog as it needs approval,tiill then its not visible kind of message

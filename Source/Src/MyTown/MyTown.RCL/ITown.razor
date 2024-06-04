@@ -1,10 +1,15 @@
 ﻿@page "/Town/{Id:int}"
 @using Blazored.LocalStorage
 @using MyTown.Domain
+@using MyTown.RCL.Town
+@using MyTown.RCL.Card
+@using MyTown.RCL.CardType
 @using MyTown.SharedModels.Features.Towns.Commands
 @using MyTown.SharedModels.Features.Towns.Queries
+@using MyTown.SharedModels.Features.Cards.Commands
 @using System.Security.Claims
-@inject TownService TownService
+@inject TownService townService
+@inject CardService cardService
 @inject IStringLocalizer<TownDto> L
 
 @* @inject AuthenticationStateProvider authenticationStateProvider *@
@@ -37,8 +42,9 @@
 else
     {
     <MudText>Sorry No Data exists @(Name ?? "".ToUpper()) </MudText>
-
     }
+<MudButton Icon="@Icons.Material.Filled.AddCard" OnClick="OnCreate"> Add iCard</MudButton>
+
 <MudText><i> <small>To Add Your Content Send details to <ContactEmail /></small></i></MudText>
 
 @code {
@@ -64,12 +70,12 @@ else
         }
     async Task LoadServerData()
         {
-        var town = await TownService.GetByIdAsync(townId: Id);
+        var town = await townService.GetByIdAsync(townId: Id);
         if (town != null && town.Id > 0 && !string.IsNullOrEmpty(town.Name))
             {
             HeaderCard = town;//if offline then had to serve previous data itself
             if (town.ApprovedCards != null && town.ApprovedCards.Any())
-                Cards = TownService.GroupCardsByType(town);
+                Cards = townService.GroupCardsByType(town);
             }
         }
     protected override async Task OnParametersSetAsync()
@@ -106,7 +112,67 @@ else
             }
         }
 
+    private async Task OnCreate()
+        {
+        //await authService.LoginUserMakingSure();
+        await OnEdit(new TownCardDto());//pass townid,typeid if selected
+        }
+    private async Task OnEdit(TownCardDto dto)
+        {
+        await authService.LoginUserMakingSure();
+        //eithert  admin or owner/creator only can edit
+        //user should own the card otherwise not allowed
+        if (clientConfig.IsAdmin == false) return;//|| dto.Id == 0
 
+        var command = mapper.Map<CreateUpdateTownCardCommand>(dto);
+        var parameters = new DialogParameters<CreateUpdateCard>{
+                { x => x.model, command }
+        };
+        var options = new DialogOptions { CloseButton = true };// MaxWidth = MaxWidth.Medium, FullWidth = true
+        var dialog = DialogService.Show<CreateUpdateCard>
+        (dto.Id > 0 ? L["Create 'iCard'"] : L["Edit 'iCard'"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Canceled)
+            {
+            //this should be done if any changes happened only  otherwise not required on no change
+            //so dialog result should confirm any changes happened or not
+            await LoadServerData();
+            //make sure result should show the modifications on result page
+            //await LoadPage(pagedResponse.PageNumber);
+            }
+        }
+
+    private async Task OpenViewDialog(TownCardDto card)//good
+        {
+        var parameters = new DialogParameters { ["TownCard"] = card };
+        var dialog = DialogService.Show<ViewDialogCard>("View iCard", parameters);
+        await dialog.Result; // No need to check the result since it's read-only
+        }
+
+    private async Task DeleteWithConfirmationDialog(TownCardDto card)
+        {
+        await authService.LoginUserMakingSure();
+        // Delete Only owner or creator can do this
+        //if (clientConfig.IsAdmin == false || card.Id == 0) return;
+        var parameters = new DialogParameters { ["Name"] = card.Name + "/" + card.Id };
+        var dialog = DialogService.Show<DeleteConfirmationDialog>
+        ("Remove iCard", parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+            {
+            var res = await cardService.DeleteTownCardAsync(card.Id);
+            if (res != null && res.Success)
+                {
+                //await LoadServerData();
+                //insteaqd of reloading all(above), lets remove locally itself as like below
+                //  Elements.RemoveAll(x => x.Id == card.Id);
+
+                Snackbar.Add($"Removed iCard:({card.Name})", Severity.Success);
+                }
+            else Snackbar.Add($"Issue in Removing iCard ({card.Name})", Severity.Error);
+
+            }
+        }
         /*
     private bool dense = false;
     private bool hover = true;
@@ -133,68 +199,5 @@ else
     return false;
     }
 
-
-
-    private async Task OpenViewDialog(TownDto Town)//good
-    {
-    var parameters = new DialogParameters { ["Town"] = Town };
-    var dialog = DialogService.Show<ViewDialogTown>("View Town", parameters);
-    await dialog.Result; // No need to check the result since it's read-only
-    }
-
-    private async Task OnCreate()
-    {
-    await authService.LoginUserMakingSure();
-    await OnEdit(new TownDto());
-    }
-
-    private async Task OnEdit(TownDto dto)
-    {
-    await authService.LoginUserMakingSure();
-    if (clientConfig.IsAdmin == false) return;//|| dto.Id == 0
-
-    var command = mapper.Map<CreateUpdateTownCommand>(dto);
-    var parameters = new DialogParameters<CreateUpdateTown>
-    {
-    { x => x.model, command }
-    };
-    var options = new DialogOptions { CloseButton = true };// MaxWidth = MaxWidth.Medium, FullWidth = true
-    var dialog = DialogService.Show<CreateUpdateTown>
-    (dto.Id > 0 ? L["Create 'Town'"] : L["Edit 'Town'"], parameters, options);
-    var state = await dialog.Result;
-    if (!state.Canceled)
-    {
-    //this should be done if any changes happened only  otherwise not required on no change
-    //so dialog result should confirm any changes happened or not
-    await LoadServerData();
-    //make sure result should show the modifications on result page
-    //await LoadPage(pagedResponse.PageNumber);
-    }
-
-    }
-
-    private async Task DeleteWithConfirmationDialog(TownDto Town)
-    {
-    await authService.LoginUserMakingSure();
-    if (clientConfig.IsAdmin == false || Town.Id == 0) return;
-    var parameters = new DialogParameters { ["Name"] = Town.Name + "/" + Town.Id };
-    var dialog = DialogService.Show<DeleteConfirmationDialog>
-    ("Remove Town", parameters);
-    var result = await dialog.Result;
-    if (!result.Canceled)
-    {
-    var res = await TownService.DeleteTownAsync(Town.Id);
-    if (res != null && res.Success)
-    {
-    //await LoadServerData();
-    //insteaqd of reloading all(above), lets remove locally itself as like below
-    Elements.RemoveAll(x => x.Id == Town.Id);
-
-    Snackbar.Add($"Removed Town:({Town.Name})", Severity.Success);
-    }
-    else Snackbar.Add($"Issue in Removing Town ({Town.Name})", Severity.Error);
-
-            }
-    }
     */
 }

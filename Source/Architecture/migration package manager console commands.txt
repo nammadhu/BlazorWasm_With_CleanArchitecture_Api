@@ -1,0 +1,6 @@
+add-migration baseEntityChanges -Context ApplicationDbContext -project CleanArchitecture.Infrastructure.Persistence
+update-database -Context ApplicationDbContext
+add-migration baseEntityChanges -Context FileManagerDbContext -project CleanArchitecture.Infrastructure.FileManager
+update-database -Context FileManagerDbContext
+add-migration baseEntityChanges -Context IdentityContext -project CleanArchitecture.Infrastructure.Identity
+update-database -Context IdentityContext

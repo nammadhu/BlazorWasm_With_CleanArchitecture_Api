@@ -8,12 +8,19 @@
 
   <ItemGroup>
     <Compile Remove="AddUpdateTown.razor.cs" />
+    <Compile Remove="APIMyTownNotUsing.cs" />
+    <Compile Remove="TestData\AddUpdateTown.razor.cs" />
+    <Compile Remove="TestData\APIMyTownNotUsing.cs" />
     <Compile Remove="TestData\Bhadravathi.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="AddUpdateTown.razor" />
+    <Content Remove="TestData\AddUpdateTown.razor" />
+    <Content Remove="TestData\TownLandingPage.razor" />
+    <Content Remove="TestData\TownsNotUsing.razor" />
     <Content Remove="TownLandingPage.razor" />
+    <Content Remove="TownsNotUsing.razor" />
   </ItemGroup>
 
   <ItemGroup>
