@@ -2,7 +2,7 @@
 @using MyTown.SharedModels.Features.Cards.Commands
 @using SharedResponse
 @inject IStringLocalizer<TownCardDto> L
-@inject CardService townCardService
+@inject CardService cardService
 @inject AuthService authService
 @inject ClientConfig clientConfig
 @inherits MudComponentBase
@@ -16,12 +16,12 @@
                 {
                 <small>@model.Id</small>
                 }
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.Name)]" @bind-Value="model.Name" For="@(() => model.Name)" Required="true" RequiredError="@L["Name is required!"]" tabindex="1"/>
-         @*    <MudTextField Label="@L[model.GetMemberDescription(x => x.ShortName)]" @bind-Value="model.ShortName" For="@(() => model.ShortName)" Required="true" RequiredError="@L["ShortName is required!"]"></MudTextField> *@
-            <MudTextField Label="@L[model.GetMemberDescription(x => x.Description)]" Lines="1" For="@(() => model.Description)" @bind-Value="model.Description" tabindex="2"/>
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Name)]" @bind-Value="model.Name" For="@(() => model.Name)" Required="true" RequiredError="@L["Name is required!"]" tabindex="1" />
+            @*    <MudTextField Label="@L[model.GetMemberDescription(x => x.ShortName)]" @bind-Value="model.ShortName" For="@(() => model.ShortName)" Required="true" RequiredError="@L["ShortName is required!"]"></MudTextField> *@
+            <MudTextField Label="@L[model.GetMemberDescription(x => x.Description)]" Lines="1" For="@(() => model.Description)" @bind-Value="model.Description" tabindex="2" />
 
 
-          @*   <MudTextField Label="@L[model.GetMemberDescription(x => x.Price)]" @bind-Value="model.Price" For="@(() => model.Price)" Required="true" RequiredError="@L["Price is required!"]"></MudTextField>
+            @*   <MudTextField Label="@L[model.GetMemberDescription(x => x.Price)]" @bind-Value="model.Price" For="@(() => model.Price)" Required="true" RequiredError="@L["Price is required!"]"></MudTextField>
             <MudTextField Label="@L[model.GetMemberDescription(x => x.PriorityOrder)]" For="@(() => model.PriorityOrder)" @bind-Value="model.PriorityOrder"></MudTextField> *@
 
             @*  </MudGrid> *@
@@ -47,6 +47,11 @@
 
     CreateUpdateTownCardCommandValidator _modelValidator = new CreateUpdateTownCardCommandValidator();//translator
 
+    protected override Task OnInitializedAsync()
+        {
+            //fetch town name & cardtypes ddl items
+        return base.OnInitializedAsync();
+        }
 
     async Task Submit()
         {
@@ -58,7 +63,7 @@
             if (!_form!.IsValid)
                 return;
 
-            var res = await townCardService.CreateUpdateTownCardAsync(model);
+            var res = await cardService.CreateUpdateTownCardAsync(model);
 
             if (res != null && res.Success)
                 {

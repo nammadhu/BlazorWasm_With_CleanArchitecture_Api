@@ -43,7 +43,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
                     new Town(){Name="Arsikere",UrlName1="Arsikere.in",Id=5 },
                     new Town(){Name="Honnavara",UrlName1="Honnavar.in",Id=6 },
                     ];
-            Console.WriteLine($"existingTowns count {existingTowns.Count},townsMasterdata count {townsMasterdata.Count} Starting");
+            Console.WriteLine($"existingTowns count {existingTowns.Count},towns count {townsMasterdata.Count} Starting");
 
             if (existingTowns != null)
                 {
@@ -65,7 +65,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
             Console.WriteLine("Town seeds update exists:" + changedExists);
 
             var existingCardTypes = await applicationDbContext.CardTypes.ToListAsync();
-            List<TownCardType> cardTypesMasterData = [
+            List<TownCardType> cardTypes = [
             new (1,"Town"),
             new (2,"Priority Message"),//flash message
             new (3,"Event"),
@@ -92,10 +92,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
             //user complaints
             ];
 
-            Console.WriteLine($"existingCardTypes count {existingCardTypes.Count},cardTypesMasterData count {cardTypesMasterData.Count}");
+            Console.WriteLine($"existingCardTypes count {existingCardTypes.Count},cardTypes count {cardTypes.Count}");
             if (existingCardTypes != null)
                 {
-                cardTypesMasterData.ForEach(cardType =>
+                cardTypes.ForEach(cardType =>
                 {
                     if (!existingCardTypes.Exists(e => e.Id == cardType.Id))
                         {
@@ -107,7 +107,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
                 }
             else
                 {
-                await applicationDbContext.CardTypes.AddRangeAsync(cardTypesMasterData);
+                await applicationDbContext.CardTypes.AddRangeAsync(cardTypes);
                 changedExists = true;
                 }
 

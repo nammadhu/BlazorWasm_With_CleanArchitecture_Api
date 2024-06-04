@@ -151,7 +151,7 @@
         if (clientConfig.IsAdmin == false || townCardType.Id == 0) return;
         var parameters = new DialogParameters { ["Name"] = townCardType.Name + "/" + townCardType.Id };
         var dialog = DialogService.Show<DeleteConfirmationDialog>
-    ("Remove Master Data Town Card Type", parameters);
+    ("Remove Card TYPE of Town", parameters);
         var result = await dialog.Result;
         if (!result.Canceled)
             {

@@ -179,7 +179,7 @@ else
     if (clientConfig.IsAdmin == false || Town.Id == 0) return;
     var parameters = new DialogParameters { ["Name"] = Town.Name + "/" + Town.Id };
     var dialog = DialogService.Show<DeleteConfirmationDialog>
-    ("Remove Master Data Town", parameters);
+    ("Remove Town", parameters);
     var result = await dialog.Result;
     if (!result.Canceled)
     {
