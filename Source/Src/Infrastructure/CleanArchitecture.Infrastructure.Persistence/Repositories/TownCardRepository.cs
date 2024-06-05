@@ -19,8 +19,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
         private readonly DbSet<TownCard> dbCard = dbContext.Set<TownCard>();
         private readonly DbSet<TownApprovedCard> dbApprovedCard = dbContext.Set<TownApprovedCard>();
 
-
-        public async Task<(List<int> approvedCardIds, List<TownCard> draftCards)> GetMy(Guid userId, bool isCreator, bool isOwner, bool isApprovedCardOwner, bool isApprovedReviewer, int townId = 0)
+        public async Task<(List<int> approvedCardIds, List<TownCard> draftCards)> GetUserCardsMoreDetails(Guid userId, bool isCreator, bool isOwner, bool isApprovedCardOwner, bool isApprovedReviewer, int townId = 0)
             {
             //if creator or owner , then fetch only on Card table
             //if ApprovedCardOwnerowner, then fetch on ApprovedCard with ownerid column
@@ -35,18 +34,12 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
             if (isCreator || isOwner)
                 draftCards = await dbCard.Where(x => isCreator ? x.CreatedBy == userId : true
                 && isOwner ? x.OwnerId == userId : false || townId <= 0 || x.TownId == townId)
-                    .Take(ResultLimit).ToListAsync();
-           
-
+                    .Take(ResultLimit)//not sure but better
+                    .ToListAsync();
 
             //if(isApprovedReviewer)//later
+
             return (approvedCardIds, draftCards);
-
-
-            //dbCard.Where(x=>x.CreatedBy==userId)
-
-
-
             }
         public async Task<PagenationResponseDto<TownCardDto>> GetPagedListAsync(int pageNumber, int pageSize, string? name)
             {

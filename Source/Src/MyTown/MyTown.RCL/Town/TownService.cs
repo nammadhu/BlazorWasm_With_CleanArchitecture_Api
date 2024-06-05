@@ -1,9 +1,11 @@
 ﻿using Blazored.LocalStorage;
 using BlazorWebApp.Shared;
 using BlazorWebApp.Shared.Services;
+using MudBlazor;
 using MyTown.Domain;
 using MyTown.RCL.CardType;
 using MyTown.SharedModels.DTOs;
+using MyTown.SharedModels.Features.Cards.Queries;
 using MyTown.SharedModels.Features.Towns.Commands;
 using MyTown.SharedModels.Features.Towns.Queries;
 using PublicCommon;
@@ -35,6 +37,7 @@ namespace MyTown.RCL.Town
         // private const string _baseUrl = "v1/Town";
         readonly string TownsAllUrl;// = _baseUrl + ApiEndPoints.GetAll;
         readonly string TownByIdUrl;// = _baseUrl + ApiEndPoints.GetById;
+        readonly string GetUserCardsMoreDetails = "GetUserCardsMoreDetails";
         public const string TownsAllKey = "Towns";
         public const string TownKey = "Town";//storage format Town_id ex: Town_1 , Town_2
 
@@ -52,6 +55,7 @@ namespace MyTown.RCL.Town
             _baseUrl = ApiEndPoints.BaseUrl(ApiEndPoints.Town);
             TownsAllUrl = _baseUrl + "/" + ApiEndPoints.GetAll;
             TownByIdUrl = _baseUrl + "/" + ApiEndPoints.GetById + "?";
+            GetUserCardsMoreDetails = _baseUrl + "/" + GetUserCardsMoreDetails + "?";
             }
 
         //public async Task ClientSetup()//lets not use this as of now
@@ -134,6 +138,24 @@ namespace MyTown.RCL.Town
                 Cards = [.. group]
                 }).ToList();
             return res;
+            }
+
+        public async Task<(List<int> approvedCardIds, List<TownCard> draftCards)> FetchUserCardsMoreDetails(int townId)
+            {
+            if (await _authService.IsAuthenticatedAsync() &&
+                (_clientConfig.IsCardCreator == true || _clientConfig.IsCardOwner == true || _clientConfig.IsCardApprovedOwner == true || _clientConfig.IsCardApprovedReviewer == true))
+                {
+                var url = $"{GetUserCardsMoreDetails}Id={townId}";
+                if (_clientConfig.IsCardCreator == true) url += $"&IsCardCreator=true";
+                if (_clientConfig.IsCardOwner == true) url += $"&IsCardOwner=true";
+                if (_clientConfig.IsCardApprovedOwner == true) url += $"&IsCardApprovedOwner=true";
+                if (_clientConfig.IsCardApprovedReviewer == true) url += $"&IsCardApprovedReviewer=true";
+
+                var result = await _httpClientAnonymous.GetBaseResult<(List<int> approvedCardIds, List<TownCard> draftCards)>(url);
+
+                return result;
+                }
+            return new();
             }
 
 

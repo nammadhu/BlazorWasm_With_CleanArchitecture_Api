@@ -60,6 +60,9 @@ else
 
     private TownDto HeaderCard = new TownDto();//make offline
     private List<TownCardsGrouping> Cards = new List<TownCardsGrouping>();//make offline
+
+    List<int> MyApprovedCardIds = [];
+    List<TownCard> MyDraftCards = [];
     /*
     ALl anonymous page,
        1.OnInitialized() do anonymous call
@@ -100,17 +103,11 @@ else
                 //let them can see card owner emailid,phone all
                 //as one more call to fetch with all details
                 }
-
-            if (clientConfig.IsCardCreator == true || clientConfig.IsCardOwner == true || clientConfig.IsCardReviewer == true)//owner or creator then only edit/delete check call had to be done
+            var userMoreCardDetails = await townService.FetchUserCardsMoreDetails(Id);
+            if (userMoreCardDetails != default)
                 {
-                
-                //do one more call to api to check & store locally list of cardid
-                //input is townid
-                //fetchmycards(townid,creator:bool,owner:bool,reviewer:bool),
-                // returns List<cardid of Approved>
-                // ,also if any draft cards,
-                //also any pending for my approval
-                //tuple(List<int> approvedCardsId,List<Card> myDraftCards,List<Card> myApprovalPendingcards)
+                MyApprovedCardIds = userMoreCardDetails.approvedCardIds;
+                MyDraftCards = userMoreCardDetails.draftCards;
                 }
             }
         }

@@ -1,6 +1,9 @@
-﻿using CleanArchitecture.Application.Interfaces.UserInterfaces;
+﻿using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.Interfaces.UserInterfaces;
 using CleanArchitecture.Domain;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using MyTown.Domain;
 using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.Cards.Commands;
 using MyTown.SharedModels.Features.Cards.Queries;
@@ -12,29 +15,24 @@ namespace CleanArchitecture.WebApi.Controllers.v1
     {
     [ApiVersion("1")]
     //format is [("api/v{version:apiVersion}/[controller]/[action]")]
-    public class TownCardController(IAccountServices accountServices) : BaseApiController
+    public class TownCardController(IAccountServices accountServices, IAuthenticatedUserService authenticationUserService) : BaseApiController
         {
         //TODO had to make role wise allowed
         //This Update only by SuperAdmins not anyone else
 
-
-        void GetMy(bool isCreator,bool isOwner,bool isReviewer)
+        [HttpGet]
+        public async Task<BaseResult<(List<int> approvedCardIds, List<TownCard> draftCards)>> GetUserCardsMoreDetails(GetUserCardsMoreDetails request)
             {
-
-
-
-
-            //Tuple(List{ approvedId},List{ draftcards}, List{ approvalsWaiting@})
-            }
-
-        //[HttpGet]//dont call this
-        private async Task<IReadOnlyList<TownCardDto>> GetAll()
-            {
-            Console.WriteLine($"{nameof(TownCardController)}/{nameof(ApiEndPoints.GetAll)}");
+            Console.WriteLine($"{nameof(TownCardController)}/{nameof(ApiEndPoints.GetUserCardsMoreDetails)}");
             try
                 {
-                var res = await Mediator.Send(new GetTownCardsAllQuery());
-                return res;
+                if (Guid.TryParse(authenticationUserService.UserId, out Guid userId))
+                    {
+                    request.UserId = userId;
+                    var res = await Mediator.Send(request);
+                    return new BaseResult<(List<int> approvedCardIds, List<TownCard> draftCards)>(res);
+                    }
+                else throw new Exception("UserID Validation failed");
                 }
             catch (Exception e)
                 {

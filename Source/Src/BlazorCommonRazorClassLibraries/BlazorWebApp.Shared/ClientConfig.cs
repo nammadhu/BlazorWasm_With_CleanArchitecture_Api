@@ -37,7 +37,7 @@ namespace BlazorWebApp.Shared
         public bool? IsCardCreator { get; private set; }
         public bool? IsCardOwner { get; private set; }
         public bool? IsCardApprovedOwner { get; private set; }
-        public bool? IsCardReviewer { get; private set; }
+        public bool? IsCardApprovedReviewer { get; private set; }
         public bool? IsBlocked { get; private set; }
 
         public void RolesSet(IEnumerable<Claim>? claims)
@@ -51,7 +51,7 @@ namespace BlazorWebApp.Shared
                     IsInternalViewer = roles?.Contains(CONSTANTS.Auth.Role_InternalViewer) ?? false;
                     IsCardCreator = roles?.Contains(CONSTANTS.Auth.Role_CardCreator) ?? false;
                     IsCardOwner = roles?.Contains(CONSTANTS.Auth.Role_CardOwner) ?? false;
-                    IsCardReviewer = roles?.Contains(CONSTANTS.Auth.Role_CardApprovedReviewer) ?? false;
+                    IsCardApprovedReviewer = roles?.Contains(CONSTANTS.Auth.Role_CardApprovedReviewer) ?? false;
                     IsCardApprovedOwner = roles?.Contains(CONSTANTS.Auth.Role_CardApprovedOwner) ?? false;
                     IsBlocked = roles?.Contains(CONSTANTS.Auth.Role_Blocked) ?? false;
                 }
