@@ -1,4 +1,7 @@
-﻿using MyTown.SharedModels.DTOs;
+﻿using CleanArchitecture.Application.Interfaces.UserInterfaces;
+using CleanArchitecture.Domain;
+using Microsoft.AspNetCore.Identity;
+using MyTown.SharedModels.DTOs;
 using MyTown.SharedModels.Features.Cards.Commands;
 using MyTown.SharedModels.Features.Cards.Queries;
 using PublicCommon;
@@ -8,7 +11,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
     {
     [ApiVersion("1")]
     //format is [("api/v{version:apiVersion}/[controller]/[action]")]
-    public class TownCardController : BaseApiController
+    public class TownCardController(IAccountServices accountServices) : BaseApiController
         {
         //TODO had to make role wise allowed
         //This Update only by SuperAdmins not anyone else
@@ -60,7 +63,14 @@ namespace CleanArchitecture.WebApi.Controllers.v1
             Console.WriteLine($"{nameof(TownCardController)}/{nameof(ApiEndPoints.Create)}");
             //model.CreatedBy = UserIdExtract();
             //above is separately not required bcz ApplicationDBcontext amking default changes onCreate Authuser id & onUpdate LastModifedBy userid
-            return await Mediator.Send(model);
+            var result = await Mediator.Send(model);
+            if (result.Success)
+                {
+                //add role of CardCreator
+                await accountServices.AddCurrentUserToRole(CONSTANTS.Auth.Role_CardCreator);
+                //todo CreatedCardCount+1... target also ApprovedCardCount not here
+                }
+            return result;
             }
 
 

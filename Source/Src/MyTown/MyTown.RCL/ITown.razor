@@ -43,7 +43,9 @@ else
     {
     <MudText>Sorry No Data exists @(Name ?? "".ToUpper()) </MudText>
     }
-<MudButton Icon="@Icons.Material.Filled.AddCard" OnClick="OnCreate"> Add iCard</MudButton>
+<MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddCard" Style="background-color: yellowgreen; color: white; width: 200px; height: 60px;" OnClick="OnCreate">
+    Add iCard
+</MudButton>
 
 <MudText><i> <small>To Add Your Content Send details to <ContactEmail /></small></i></MudText>
 

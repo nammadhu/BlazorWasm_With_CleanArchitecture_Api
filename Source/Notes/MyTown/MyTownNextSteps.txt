@@ -1,3 +1,10 @@
+done-Create card button style
+When card created ,add role of creator & cardCount
+After adding ,if user has role of Creator or Owner
+fetch created draft profiles on main page itself
+store it over offline & edit & post(Put only)
+
+
 Create Card, on click it doesnt need login,
 instead show a dialog of some 5 points
 

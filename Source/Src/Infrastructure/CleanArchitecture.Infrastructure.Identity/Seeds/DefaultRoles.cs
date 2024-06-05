@@ -14,12 +14,16 @@ namespace CleanArchitecture.Infrastructure.Identity.Seeds
             await AddRole(roleManager, CONSTANTS.Auth.Role_InternalAdmin);
             await AddRole(roleManager, CONSTANTS.Auth.Role_InternalViewer);
             await AddRole(roleManager, CONSTANTS.Auth.Role_CardCreator);
+
+            await AddRole(roleManager, CONSTANTS.Auth.Role_CardOwner);
+            await AddRole(roleManager, CONSTANTS.Auth.Role_CardReviewer);
+            await AddRole(roleManager, CONSTANTS.Auth.Role_Blocked);
             //Creator
             //Any AuthenticatedUser
             //Anonymous
             static async Task AddRole(RoleManager<ApplicationRole> roleManager, string roleName)
                 {
-                if (!await roleManager.Roles.AnyAsync() && !await roleManager.RoleExistsAsync(roleName))
+                if (!await roleManager.RoleExistsAsync(roleName))
                     await roleManager.CreateAsync(new ApplicationRole(roleName));
                 }
             }
