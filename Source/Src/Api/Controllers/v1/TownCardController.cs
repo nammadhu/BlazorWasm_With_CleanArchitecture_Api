@@ -21,7 +21,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
         //This Update only by SuperAdmins not anyone else
 
         [HttpGet]
-        public async Task<BaseResult<(List<int> approvedCardIds, List<TownCard> draftCards)>> GetUserCardsMoreDetails(GetUserCardsMoreDetails request)
+        public async Task<BaseResult<(List<int> approvedCardIds, List<TownCardDto> draftCards)>> GetUserCardsMoreDetails([FromQuery] GetUserCardsMoreDetails request)
             {
             Console.WriteLine($"{nameof(TownCardController)}/{nameof(ApiEndPoints.GetUserCardsMoreDetails)}");
             try
@@ -30,7 +30,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
                     {
                     request.UserId = userId;
                     var res = await Mediator.Send(request);
-                    return new BaseResult<(List<int> approvedCardIds, List<TownCard> draftCards)>(res);
+                    return new BaseResult<(List<int> approvedCardIds, List<TownCardDto> draftCards)>(res);
                     }
                 else throw new Exception("UserID Validation failed");
                 }

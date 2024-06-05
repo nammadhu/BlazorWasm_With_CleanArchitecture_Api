@@ -4,7 +4,7 @@ using SharedResponse;
 
 namespace MyTown.SharedModels.Features.Cards.Queries
     {
-    public class GetUserCardsMoreDetails : IRequest<(List<int> approvedCardIds, List<TownCard> draftCards)>
+    public class GetUserCardsMoreDetails : IRequest<(List<int> approvedCardIds, List<TownCardDto> draftCards)>
         {
         public int TownId { get; set; }
 

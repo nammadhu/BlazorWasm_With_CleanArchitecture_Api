@@ -12,6 +12,8 @@ namespace MyTown.SharedModels.DTOs
             public Mapping()
                 {
                 CreateMap<TownApprovedCard, TownApprovedCardDto>().ReverseMap();
+                CreateMap<TownApprovedCard, TownCardDto>().ReverseMap();
+                CreateMap<TownApprovedCard, TownCard>().ReverseMap();
                 }
             }
         }

@@ -172,7 +172,7 @@ namespace BlazorWebApp.Shared.Services
             if (user != null && user.Identity != null && user.Identity.IsAuthenticated)
                 {
                 var userDataString = await GetUserIdTokenFromBrowserSession();
-                MyLogger.Log("val:" + userDataString);
+                //MyLogger.Log("val:" + userDataString);
                 if (userDataString != null)
                     {
                     try

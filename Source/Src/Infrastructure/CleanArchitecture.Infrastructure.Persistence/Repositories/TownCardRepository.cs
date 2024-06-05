@@ -19,7 +19,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
         private readonly DbSet<TownCard> dbCard = dbContext.Set<TownCard>();
         private readonly DbSet<TownApprovedCard> dbApprovedCard = dbContext.Set<TownApprovedCard>();
 
-        public async Task<(List<int> approvedCardIds, List<TownCard> draftCards)> GetUserCardsMoreDetails(Guid userId, bool isCreator, bool isOwner, bool isApprovedCardOwner, bool isApprovedReviewer, int townId = 0)
+        public async Task<(List<int> approvedCardIds, List<TownCardDto> draftCards)> GetUserCardsMoreDetails(Guid userId, bool isCreator, bool isOwner, bool isApprovedCardOwner, bool isApprovedReviewer, int townId = 0)
             {
             //if creator or owner , then fetch only on Card table
             //if ApprovedCardOwnerowner, then fetch on ApprovedCard with ownerid column
@@ -30,12 +30,12 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
                 approvedCardIds = await dbApprovedCard.Where(x => x.OwnerId == userId && (townId <= 0 || x.TownId == townId))
                     .Select(x => x.Id).ToListAsync();
 
-            List<TownCard> draftCards = [];
+            List<TownCardDto> draftCards = [];
             if (isCreator || isOwner)
                 draftCards = await dbCard.Where(x => isCreator ? x.CreatedBy == userId : true
                 && isOwner ? x.OwnerId == userId : false || townId <= 0 || x.TownId == townId)
                     .Take(ResultLimit)//not sure but better
-                    .ToListAsync();
+                    .Select(p => p.To<TownCard, TownCardDto>()).ToListAsync();
 
             //if(isApprovedReviewer)//later
 

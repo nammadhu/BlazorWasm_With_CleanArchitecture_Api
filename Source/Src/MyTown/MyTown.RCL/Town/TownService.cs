@@ -21,6 +21,9 @@ namespace MyTown.RCL.Town
         public int TypeId { get; set; }
         public string? TypeName { get; set; }
 
+        /// <summary>
+        ///TODO had to change to dto
+        /// </summary>
         public List<TownApprovedCard> Cards { get; set; } = new();
         }
     public class TownService
@@ -55,7 +58,7 @@ namespace MyTown.RCL.Town
             _baseUrl = ApiEndPoints.BaseUrl(ApiEndPoints.Town);
             TownsAllUrl = _baseUrl + "/" + ApiEndPoints.GetAll;
             TownByIdUrl = _baseUrl + "/" + ApiEndPoints.GetById + "?";
-            GetUserCardsMoreDetails = _baseUrl + "/" + GetUserCardsMoreDetails + "?";
+            GetUserCardsMoreDetails = ApiEndPoints.BaseUrl(ApiEndPoints.TownCard) + "/" + GetUserCardsMoreDetails + "?";
             }
 
         //public async Task ClientSetup()//lets not use this as of now
@@ -140,7 +143,7 @@ namespace MyTown.RCL.Town
             return res;
             }
 
-        public async Task<(List<int> approvedCardIds, List<TownCard> draftCards)> FetchUserCardsMoreDetails(int townId)
+        public async Task<(List<int> approvedCardIds, List<TownCardDto> draftCards)> FetchUserCardsMoreDetails(int townId)
             {
             if (await _authService.IsAuthenticatedAsync() &&
                 (_clientConfig.IsCardCreator == true || _clientConfig.IsCardOwner == true || _clientConfig.IsCardApprovedOwner == true || _clientConfig.IsCardApprovedReviewer == true))
@@ -151,7 +154,7 @@ namespace MyTown.RCL.Town
                 if (_clientConfig.IsCardApprovedOwner == true) url += $"&IsCardApprovedOwner=true";
                 if (_clientConfig.IsCardApprovedReviewer == true) url += $"&IsCardApprovedReviewer=true";
 
-                var result = await _httpClientAnonymous.GetBaseResult<(List<int> approvedCardIds, List<TownCard> draftCards)>(url);
+                var result = await _httpClientAuth.GetBaseResult<(List<int> approvedCardIds, List<TownCardDto> draftCards)>(url);
 
                 return result;
                 }

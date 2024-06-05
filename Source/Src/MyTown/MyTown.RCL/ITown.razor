@@ -15,6 +15,7 @@
 @* @inject AuthenticationStateProvider authenticationStateProvider *@
 @inject ClientConfig clientConfig
 @inject AuthService authService
+@inject IMapper mapper
 
 @if (HeaderCard != null && HeaderCard.Id > 0)
     {
@@ -36,6 +37,16 @@
                     }
             </MudCarousel>
             <MudSpacer />
+            }
+        }
+    @if (MyDraftCards.HasData())
+        {
+        <MudText> yes few</MudText>
+        @foreach (var card in MyDraftCards)
+            {
+            <MudCarouselItem Transition="Transition.Slide">
+                <TownCardDisplay Model="@card" />  @* Style="height:200px;" *@
+            </MudCarouselItem>
             }
         }
     }
@@ -62,7 +73,10 @@ else
     private List<TownCardsGrouping> Cards = new List<TownCardsGrouping>();//make offline
 
     List<int> MyApprovedCardIds = [];
-    List<TownCard> MyDraftCards = [];
+    List<TownCardDto> MyDraftCards1 = [];
+
+    List<TownApprovedCard> MyDraftCards = [];
+
     /*
     ALl anonymous page,
        1.OnInitialized() do anonymous call
@@ -106,8 +120,10 @@ else
             var userMoreCardDetails = await townService.FetchUserCardsMoreDetails(Id);
             if (userMoreCardDetails != default)
                 {
+                Console.WriteLine("yessss few");
                 MyApprovedCardIds = userMoreCardDetails.approvedCardIds;
-                MyDraftCards = userMoreCardDetails.draftCards;
+                MyDraftCards1 = userMoreCardDetails.draftCards;
+                MyDraftCards = MyDraftCards1.Select(c => mapper.Map<TownCardDto, TownApprovedCard>(c)).ToList();
                 }
             }
         }
