@@ -5,6 +5,9 @@ fetch created draft profiles on main page itself
 store it over offline & edit & post(Put only)
 
 
+
+Once card approved, the user becomes owner role
+
 Create Card, on click it doesnt need login,
 instead show a dialog of some 5 points
 

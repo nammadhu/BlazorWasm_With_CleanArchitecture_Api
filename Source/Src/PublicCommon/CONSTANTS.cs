@@ -52,10 +52,27 @@
             public const string Role_Admin = "Admin";
             public const string Role_InternalAdmin = "InternalAdmin";
             public const string Role_InternalViewer = "InternalViewer";
-            public const string Role_CardCreator = "CardCreator";//any guy can create & transfer to owner
-            public const string Role_CardOwner = "CardOwner";//any other user might have created but now transferred to this owner
-            public const string Role_CardReviewer = "CardReviewer";
+            /// <summary>
+            /// once card created then he becomes Creator 
+            /// </summary>
+            public const string Role_CardCreator = "CardCreator";
 
+            /// <summary>
+            /// CardOwner by default when he created, otherwise on transferring of card
+            /// </summary>
+            public const string Role_CardOwner = "CardOwner";
+
+            /// <summary>
+            /// when any card approved he gets this (ApprovedCard table has Ownerid)
+            /// </summary>
+            public const string Role_CardApprovedOwner = "CardApprovedOwner";
+
+            /// <summary>
+            /// when someone added as reviewer or reviewed by himself
+            /// </summary>
+            public const string Role_CardApprovedReviewer = "CardReviewer";
+            
+            
             //Town main page,option works with Owner role only,if owner then only he can edit,not with creator
 
             //Any AuthenticatedUser //no separate role required

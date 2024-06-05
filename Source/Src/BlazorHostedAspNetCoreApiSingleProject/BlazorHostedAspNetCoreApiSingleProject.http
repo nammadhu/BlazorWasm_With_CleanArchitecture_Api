@@ -1,6 +1,0 @@
-@BlazorHostedAspNetCoreApiSingleProject_HostAddress = http://localhost:5212
-
-GET {{BlazorHostedAspNetCoreApiSingleProject_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

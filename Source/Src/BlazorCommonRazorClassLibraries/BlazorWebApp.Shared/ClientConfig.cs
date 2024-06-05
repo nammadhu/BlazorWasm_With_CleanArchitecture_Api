@@ -36,6 +36,7 @@ namespace BlazorWebApp.Shared
         public bool? IsInternalViewer { get; private set; }
         public bool? IsCardCreator { get; private set; }
         public bool? IsCardOwner { get; private set; }
+        public bool? IsCardApprovedOwner { get; private set; }
         public bool? IsCardReviewer { get; private set; }
         public bool? IsBlocked { get; private set; }
 
@@ -44,13 +45,15 @@ namespace BlazorWebApp.Shared
             if (claims.HasData<Claim>())
                 {
                 var roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(x => x.Value).ToList();
-                IsAdmin = roles.Contains(CONSTANTS.Auth.Role_Admin);
-                IsInternalAdmin = roles.Contains(CONSTANTS.Auth.Role_InternalAdmin);
-                IsInternalViewer = roles.Contains(CONSTANTS.Auth.Role_InternalViewer);
-                IsCardCreator = roles.Contains(CONSTANTS.Auth.Role_CardCreator);
-                IsCardOwner = roles.Contains(CONSTANTS.Auth.Role_CardOwner);
-                IsCardReviewer = roles.Contains(CONSTANTS.Auth.Role_CardReviewer);
-                IsBlocked = roles.Contains(CONSTANTS.Auth.Role_Blocked);
+               
+                    IsAdmin = roles?.Contains(CONSTANTS.Auth.Role_Admin)??false;
+                    IsInternalAdmin = roles?.Contains(CONSTANTS.Auth.Role_InternalAdmin) ?? false;
+                    IsInternalViewer = roles?.Contains(CONSTANTS.Auth.Role_InternalViewer) ?? false;
+                    IsCardCreator = roles?.Contains(CONSTANTS.Auth.Role_CardCreator) ?? false;
+                    IsCardOwner = roles?.Contains(CONSTANTS.Auth.Role_CardOwner) ?? false;
+                    IsCardReviewer = roles?.Contains(CONSTANTS.Auth.Role_CardApprovedReviewer) ?? false;
+                    IsCardApprovedOwner = roles?.Contains(CONSTANTS.Auth.Role_CardApprovedOwner) ?? false;
+                    IsBlocked = roles?.Contains(CONSTANTS.Auth.Role_Blocked) ?? false;
                 }
             else
                 {

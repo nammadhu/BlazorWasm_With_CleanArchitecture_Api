@@ -6,6 +6,7 @@ using MyTown.SharedModels.Features.Cards.Commands;
 using MyTown.SharedModels.Features.Cards.Queries;
 using PublicCommon;
 using SharedResponse;
+using System.Collections.Generic;
 
 namespace CleanArchitecture.WebApi.Controllers.v1
     {
@@ -16,8 +17,18 @@ namespace CleanArchitecture.WebApi.Controllers.v1
         //TODO had to make role wise allowed
         //This Update only by SuperAdmins not anyone else
 
-        [HttpGet]
-        public async Task<IReadOnlyList<TownCardDto>> GetAll()
+
+        void GetMy(bool isCreator,bool isOwner,bool isReviewer)
+            {
+
+
+
+
+            //Tuple(List{ approvedId},List{ draftcards}, List{ approvalsWaiting@})
+            }
+
+        //[HttpGet]//dont call this
+        private async Task<IReadOnlyList<TownCardDto>> GetAll()
             {
             Console.WriteLine($"{nameof(TownCardController)}/{nameof(ApiEndPoints.GetAll)}");
             try

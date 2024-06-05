@@ -16,7 +16,8 @@ namespace CleanArchitecture.Infrastructure.Identity.Seeds
             await AddRole(roleManager, CONSTANTS.Auth.Role_CardCreator);
 
             await AddRole(roleManager, CONSTANTS.Auth.Role_CardOwner);
-            await AddRole(roleManager, CONSTANTS.Auth.Role_CardReviewer);
+            await AddRole(roleManager, CONSTANTS.Auth.Role_CardApprovedReviewer);
+            await AddRole(roleManager, CONSTANTS.Auth.Role_CardApprovedOwner);
             await AddRole(roleManager, CONSTANTS.Auth.Role_Blocked);
             //Creator
             //Any AuthenticatedUser
