@@ -12,6 +12,8 @@ public static class ServiceRegistration
         services.AddAutoMapper(config => { config.AddMaps(Assembly.GetExecutingAssembly()); });
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));//https://github.com/jbogard/MediatR
+        //or like below also ok
+        // services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly));
 
         }
     }
