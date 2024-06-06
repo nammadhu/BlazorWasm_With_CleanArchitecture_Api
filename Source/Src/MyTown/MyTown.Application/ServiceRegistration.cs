@@ -14,7 +14,7 @@ namespace MyTown.Application
             { config.AddMaps(Assembly.GetExecutingAssembly(), typeof(MyTown.SharedModels.DTOs.TownDto).Assembly); });
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly(), typeof(MyTown.SharedModels.Features.Towns.Commands.CreateTownCommand).Assembly));//https://github.com/jbogard/MediatR
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));//https://github.com/jbogard/MediatR
             }
         }
     }
