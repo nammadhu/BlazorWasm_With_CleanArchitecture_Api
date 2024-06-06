@@ -2,7 +2,7 @@
 using CleanArchitecture.Application.DTOs.Account.Requests;
 using CleanArchitecture.Application.DTOs.Account.Responses;
 using CleanArchitecture.Application.Interfaces.UserInterfaces;
-using CleanArchitecture.Application.Wrappers;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -31,3 +31,4 @@ public class AccountController(IAccountServices accountServices) : BaseApiContro
         return await accountServices.AuthenticateByUserName(gostUsername.Data);
     }
 }
+

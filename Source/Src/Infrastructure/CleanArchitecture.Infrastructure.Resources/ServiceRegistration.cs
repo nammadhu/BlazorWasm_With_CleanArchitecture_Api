@@ -1,6 +1,7 @@
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Infrastructure.Resources.Services;
 using Microsoft.Extensions.DependencyInjection;
+using SharedResponse;
 
 namespace CleanArchitecture.Infrastructure.Resources;
 

@@ -46,5 +46,7 @@ public static class ServiceRegistration
             var implementation = implementations.FirstOrDefault(p => p.GetInterface(item.Name) != null);
             services.AddTransient(item, implementation);
         }
-    }
+
+        services.AddTransient<ITownRepository, TownRepository>();
+        }
 }

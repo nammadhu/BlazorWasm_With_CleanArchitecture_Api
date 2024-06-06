@@ -48,10 +48,11 @@ public class Program
             builder.Services.AddSingleton(config);
             // Pass the built configuration
             // var configuration = ConfigurationProvider.Configurations;
+            bool useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
 
-            builder.Services.AddPersistenceInfrastructure(builder.Configuration);
-            builder.Services.AddFileManagerInfrastructure(builder.Configuration);
-            builder.Services.AddIdentityInfrastructure(builder.Configuration);
+            builder.Services.AddPersistenceInfrastructure(builder.Configuration, useInMemoryDatabase);
+            builder.Services.AddFileManagerInfrastructure(builder.Configuration, useInMemoryDatabase);
+            builder.Services.AddIdentityInfrastructure(builder.Configuration, useInMemoryDatabase);
             builder.Services.AddResourcesInfrastructure();
             builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             builder.Services.AddJwt(builder.Configuration);
@@ -115,7 +116,7 @@ public class Program
 
             app.UseCustomLocalization();
             app.UseCors("Any");
-            app.UseEncryptionValidation();//This works good for client & server but not for aspnet core hosted.
+            //app.UseEncryptionValidation();//This works good for client & server but not for aspnet core hosted.
 
             app.UseRouting();
             app.UseAuthentication();

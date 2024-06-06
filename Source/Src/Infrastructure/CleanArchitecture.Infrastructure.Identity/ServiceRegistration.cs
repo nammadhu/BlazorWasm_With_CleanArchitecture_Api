@@ -1,6 +1,7 @@
 using CleanArchitecture.Application.Interfaces.UserInterfaces;
 using CleanArchitecture.Domain.Settings;
 using CleanArchitecture.Infrastructure.Identity.Contexts;
+using CleanArchitecture.Infrastructure.Identity.Models;
 using CleanArchitecture.Infrastructure.Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -9,23 +10,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using PublicCommon;
 
 //using Newtonsoft.Json;
 //using Newtonsoft.Json.Serialization;
 using SharedResponse.Wrappers;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-
 namespace CleanArchitecture.Infrastructure.Identity;
 
 public static class ServiceRegistration
-{
+    {
 
     public static IServiceCollection AddIdentityCookie(this IServiceCollection services, IConfiguration configuration)
-    {
+        {
         var identitySettings = configuration.GetSection(nameof(IdentitySettings)).Get<IdentitySettings>();
         services.AddSingleton(identitySettings);
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
@@ -45,27 +45,28 @@ public static class ServiceRegistration
             .AddDefaultTokenProviders();
 
         return services;
-    }
+        }
     public static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration, bool UseInMemoryDatabase)
-    {
-        if (UseInMemoryDatabase)
         {
-            services.AddDbContext<IdentityContext>(options =>
-                options.UseInMemoryDatabase(nameof(IdentityContext)));
-        }
-        else
-        {
-            services.AddDbContext<IdentityContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
-        }
+        //todo
+        //if (UseInMemoryDatabase)
+        //{
+        //    services.AddDbContext<IdentityContext>(options =>
+        //        options.UseInMemoryDatabase(nameof(IdentityContext)));
+        //}
+        //else
+
+        services.AddDbContext<IdentityContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+
 
         services.AddTransient<IGetUserServices, GetUserServices>();
         services.AddTransient<IAccountServices, AccountServices>();
 
         return services;
-    }
+        }
     public static IServiceCollection AddJwt(this IServiceCollection services, IConfiguration configuration)
-    {
+        {
         services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
         var jwtSettings = configuration.GetSection(nameof(JWTSettings)).Get<JWTSettings>();
@@ -81,7 +82,7 @@ public static class ServiceRegistration
                 o.RequireHttpsMetadata = false;
                 o.SaveToken = false;
                 o.TokenValidationParameters = new TokenValidationParameters
-                {
+                    {
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -90,9 +91,9 @@ public static class ServiceRegistration
                     ValidIssuer = jwtSettings.Issuer,
                     ValidAudience = jwtSettings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
-                };
+                    };
                 o.Events = new JwtBearerEvents()
-                {
+                    {
                     OnChallenge = async context =>
                     {
                         context.HandleResponse();
@@ -120,9 +121,9 @@ public static class ServiceRegistration
                             context.Fail("Token secuirty stamp is not valid.");
                     },
 
-                };
+                    };
             });
 
         return services;
+        }
     }
-}

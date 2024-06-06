@@ -1,9 +1,9 @@
-
-using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Builder;
+using Asp.Versioning.ApiExplorer;
+using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 
@@ -36,9 +36,7 @@ public static class SwaggerExtentions
             setup.DefaultApiVersion = new ApiVersion(1, 0);
             setup.AssumeDefaultVersionWhenUnspecified = true;
             setup.ReportApiVersions = true;
-        });
-
-        services.AddVersionedApiExplorer(setup =>
+        }).AddApiExplorer(setup =>
         {
             setup.GroupNameFormat = "'v'VVV";
             setup.SubstituteApiVersionInUrl = true;

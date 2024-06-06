@@ -48,10 +48,11 @@ public class Program
             builder.Services.AddSingleton(config);
             // Pass the built configuration
             // var configuration = ConfigurationProvider.Configurations;
+            bool useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
 
-            builder.Services.AddPersistenceInfrastructure(builder.Configuration);
-            builder.Services.AddFileManagerInfrastructure(builder.Configuration);
-            builder.Services.AddIdentityInfrastructure(builder.Configuration);
+            builder.Services.AddPersistenceInfrastructure(builder.Configuration, useInMemoryDatabase);
+            builder.Services.AddFileManagerInfrastructure(builder.Configuration, useInMemoryDatabase);
+            builder.Services.AddIdentityInfrastructure(builder.Configuration, useInMemoryDatabase);
             builder.Services.AddResourcesInfrastructure();
             builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             builder.Services.AddJwt(builder.Configuration);
@@ -101,7 +102,7 @@ public class Program
                 app.UseMigrationsEndPoint();
                 app.UseWebAssemblyDebugging();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CleanArchitecture.WebApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "bApi v1"));
                 using (var scope = app.Services.CreateScope())
                     {
                     var services = scope.ServiceProvider;
