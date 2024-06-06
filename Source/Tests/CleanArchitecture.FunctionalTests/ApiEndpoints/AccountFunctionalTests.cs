@@ -1,8 +1,9 @@
 using CleanArchitecture.Application.DTOs.Account.Requests;
 using CleanArchitecture.Application.DTOs.Account.Responses;
-using CleanArchitecture.Application.Wrappers;
+using SharedResponse.Wrappers;
 using CleanArchitecture.FunctionalTests.Common;
 using Shouldly;
+using CleanArchitecture.WebApi;
 
 namespace CleanArchitecture.FunctionalTests.ApiEndpoints;
 

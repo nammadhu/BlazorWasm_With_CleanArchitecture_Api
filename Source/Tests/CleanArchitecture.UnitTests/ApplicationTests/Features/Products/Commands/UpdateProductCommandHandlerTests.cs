@@ -1,7 +1,8 @@
 using CleanArchitecture.Application.Features.Products.Commands.UpdateProduct;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Interfaces.Repositories;
-using CleanArchitecture.Application.Wrappers;
+using SharedResponse;
+using SharedResponse.Wrappers;
 using CleanArchitecture.Domain.Products.Entities;
 using Moq;
 using Shouldly;

@@ -3,6 +3,7 @@ using CleanArchitecture.Application.Features.Products.Queries.GetPagedListProduc
 using CleanArchitecture.Application.Interfaces.Repositories;
 using CleanArchitecture.Domain.Products.Dtos;
 using Moq;
+using SharedResponse.DTOs;
 using Shouldly;
 
 namespace CleanArchitecture.UnitTests.ApplicationTests.Features.Products.Queries;

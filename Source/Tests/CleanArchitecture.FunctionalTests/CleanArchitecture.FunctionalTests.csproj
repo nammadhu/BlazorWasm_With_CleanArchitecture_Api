@@ -22,7 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Src\Presentation\CleanArchitecture.WebApi\CleanArchitecture.WebApi.csproj" />
+	  <ProjectReference Include="..\..\Src\Api\Api.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,5 +1,5 @@
 using CleanArchitecture.Application.DTOs.Account.Responses;
-using CleanArchitecture.Application.Wrappers;
+using SharedResponse.Wrappers;
 
 namespace CleanArchitecture.FunctionalTests.Common;
 
