@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Interfaces.Repositories;
+using CleanArchitecture.Application.Interfaces.Repositories;
 using CleanArchitecture.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using SharedResponse.DTOs;
@@ -6,16 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Infrastructure.Persistence.Repositories
-    {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
-        {
-        private readonly ApplicationDbContext _dbContext;
+namespace CleanArchitecture.Infrastructure.Persistence.Repositories;
 
-        public GenericRepository(ApplicationDbContext dbContext)
-            {
-            _dbContext = dbContext;
-            }
+public class GenericRepository<T> : IGenericRepository<T> where T : class
+{
+    private readonly ApplicationDbContext _dbContext;
+
+    public GenericRepository(ApplicationDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
 
         public virtual async Task<T> GetByIdIntAsync(int id)
             {
@@ -75,4 +75,3 @@ namespace CleanArchitecture.Infrastructure.Persistence.Repositories
             return new(pagedResult, count, pageNumber, pageSize);
             }
         }
-    }

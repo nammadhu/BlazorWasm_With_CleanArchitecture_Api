@@ -1,44 +1,44 @@
-﻿using CleanArchitecture.Domain.Products.Entities;
+using CleanArchitecture.Domain.Products.Entities;
 using CleanArchitecture.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using MyTown.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Infrastructure.Persistence.Seeds
+namespace CleanArchitecture.Infrastructure.Persistence.Seeds;
+
+public static class DefaultData
     {
-    public static class DefaultData
+    public static async Task SeedAsync(ApplicationDbContext applicationDbContext)
         {
-        public static async Task SeedAsync(ApplicationDbContext applicationDbContext)
+        bool exists = false;
+        if (!await applicationDbContext.Products.AnyAsync())
             {
-            bool exists = false;
-            if (!await applicationDbContext.Products.AnyAsync())
-                {
-                List<Product> defaultProducts = [
-                    new Product("Product 1",100000,"111111111111"),
-                    new Product("Product 2",150000,"222222222222"),
-                    new Product("Product 3",200000,"333333333333"),
-                    new Product("Product 4",105000,"444444444444"),
-                    new Product("Product 5",200000,"555555555555")
-                    ];
+            List<Product> defaultProducts = [
+                new Product("Product 1",100000,"111111111111"),
+                new Product("Product 2",150000,"222222222222"),
+                new Product("Product 3",200000,"333333333333"),
+                new Product("Product 4",105000,"444444444444"),
+                new Product("Product 5",200000,"555555555555")
+            ];
 
-                await applicationDbContext.Products.AddRangeAsync(defaultProducts);
-                exists = true;
-                }
-
-            if (!(await applicationDbContext.Towns.AnyAsync())) //.CountAsync()>10))
-                {
-                List<Town> dd = [
-                  new Town("MainProfile","Main"),
-                    new Town("SubProfile","Sub"),
-                    new Town("AssistentProfile","Assistent"),
-                    ];
-
-                await applicationDbContext.Towns.AddRangeAsync(dd);
-                exists = true;
-                }
-            if (exists)
-                await applicationDbContext.SaveChangesAsync();
+            await applicationDbContext.Products.AddRangeAsync(defaultProducts);
+            exists = true;
             }
+
+        if (!(await applicationDbContext.Towns.AnyAsync())) //.CountAsync()>10))
+            {
+            List<Town> dd = [
+              new Town("MainProfile","Main"),
+                new Town("SubProfile","Sub"),
+                new Town("AssistentProfile","Assistent"),
+                ];
+
+            await applicationDbContext.Towns.AddRangeAsync(dd);
+            exists = true;
+            }
+        if (exists)
+            await applicationDbContext.SaveChangesAsync();
         }
     }
+

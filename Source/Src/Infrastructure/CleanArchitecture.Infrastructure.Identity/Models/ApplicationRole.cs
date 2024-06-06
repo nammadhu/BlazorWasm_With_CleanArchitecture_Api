@@ -1,12 +1,11 @@
-﻿namespace CleanArchitecture.Infrastructure.Identity.Models
-    {
-    //Please refer from Domain layer as this is required their also
+using Microsoft.AspNetCore.Identity;
+using System;
 
-
-    //public class ApplicationRole : IdentityRole<Guid>
-    //{
-    //    public ApplicationRole(string name) : base(name)
-    //    {
-    //    }
-    //}
-    }
+namespace CleanArchitecture.Infrastructure.Identity.Models;
+//Please refer from Domain layer as this is required their also
+//public class ApplicationRole : IdentityRole<Guid>
+//{
+//    public ApplicationRole(string name) : base(name)
+//    {
+//    }
+//}

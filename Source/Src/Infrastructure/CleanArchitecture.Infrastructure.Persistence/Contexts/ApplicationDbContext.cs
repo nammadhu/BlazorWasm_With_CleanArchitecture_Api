@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Domain.Products.Entities;
 using Microsoft.EntityFrameworkCore;
 using MyTown.Domain;
@@ -8,26 +8,25 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Infrastructure.Persistence.Contexts
+namespace CleanArchitecture.Infrastructure.Persistence.Contexts;
+
+public class ApplicationDbContext : DbContext
+{
+    private readonly IAuthenticatedUserService authenticatedUser;
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IAuthenticatedUserService authenticatedUser) : base(options)
     {
-    public class ApplicationDbContext : DbContext
-        {
-        private readonly IAuthenticatedUserService authenticatedUser;
+        this.authenticatedUser = authenticatedUser;
+    }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IAuthenticatedUserService authenticatedUser) : base(options)
-            {
-            this.authenticatedUser = authenticatedUser;
-            }
-        public DbSet<Town> Towns { get; set; }
+    public DbSet<Town> Towns { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var userId = string.IsNullOrEmpty(authenticatedUser.UserId)
+            ? Guid.Empty : Guid.Parse(authenticatedUser.UserId);
 
-        public DbSet<Product> Products { get; set; }
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-            {
-            var userId = string.IsNullOrEmpty(authenticatedUser.UserId)
-                ? Guid.Empty : Guid.TryParse(authenticatedUser.UserId, out Guid id) ? id : Guid.Empty;
-            //todo had to change this
-
-            var currentTime = DateTime.Now;
+        var currentTime = DateTime.Now;
 
             foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
                 {
@@ -64,4 +63,3 @@ namespace CleanArchitecture.Infrastructure.Persistence.Contexts
             base.OnModelCreating(builder);
             }
         }
-    }

@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.DTOs.Account.Requests;
+using CleanArchitecture.Application.DTOs.Account.Requests;
 using CleanArchitecture.Application.Helpers;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Interfaces.UserInterfaces;
@@ -17,135 +17,136 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Infrastructure.Identity.Services
+namespace CleanArchitecture.Infrastructure.Identity.Services;
+
+public class AccountServices(UserManager<ApplicationUser> userManager, IAuthenticatedUserService authenticatedUser, SignInManager<ApplicationUser> signInManager, JWTSettings jwtSettings, ITranslator translator) : IAccountServices
+{
+    public async Task<BaseResult> ChangePassword(ChangePasswordRequest model)
     {
-    public class AccountServices(UserManager<ApplicationUser> userManager, IAuthenticatedUserService authenticatedUser, SignInManager<ApplicationUser> signInManager, JWTSettings jwtSettings, ITranslator translator, IConfiguration configuration, AppConfigurations appConfigurations) : IAccountServices
+        var user = await userManager.FindByIdAsync(authenticatedUser.UserId);
+
+        var token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+        var identityResult = await userManager.ResetPasswordAsync(user, token, model.Password);
+
+        if (identityResult.Succeeded)
+            return new BaseResult();
+
+        return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
+    }
+
+    public async Task<BaseResult> ChangeUserName(ChangeUserNameRequest model)
+    {
+        var user = await userManager.FindByIdAsync(authenticatedUser.UserId);
+
+        user.UserName = model.UserName;
+
+        var identityResult = await userManager.UpdateAsync(user);
+
+        if (identityResult.Succeeded)
+            return new BaseResult();
+
+        return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
+    }
+
+    public async Task<BaseResult<AuthenticationResponse>> Authenticate(AuthenticationRequest request)
+    {
+        var user = await userManager.FindByNameAsync(request.UserName);
+        if (user == null)
         {
-        //dont use
-        public async Task<BaseResult> ChangePassword(ChangePasswordRequest model)
-            {
-            var user = await userManager.FindByIdAsync(authenticatedUser.UserId);
+            return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(request.UserName)), nameof(request.UserName)));
+        }
+        var result = await signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
+        if (!result.Succeeded)
+        {
+            return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.AccountMessages.Invalid_password()), nameof(request.Password)));
+        }
 
-            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+        var rolesList = await userManager.GetRolesAsync(user);
 
-            var identityResult = await userManager.ResetPasswordAsync(user, token, model.Password);
+        var jwToken = await GenerateJwtToken(user);
 
-            if (identityResult.Succeeded)
-                return new BaseResult();
+        AuthenticationResponse response = new AuthenticationResponse()
+        {
+            Id = user.Id.ToString(),
+            JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
+            Email = user.Email,
+            UserName = user.UserName,
+            Roles = rolesList.ToList(),
+            IsVerified = user.EmailConfirmed,
+        };
 
-            return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
-            }
+        return new BaseResult<AuthenticationResponse>(response);
+    }
 
-        //dont use
-        public async Task<BaseResult> ChangeUserName(ChangeUserNameRequest model)
-            {
-            var user = await userManager.FindByIdAsync(authenticatedUser.UserId);
+    public async Task<BaseResult<AuthenticationResponse>> AuthenticateByUserName(string username)
+    {
+        var user = await userManager.FindByNameAsync(username);
+        if (user == null)
+        {
+            return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(username)), nameof(username)));
+        }
 
-            user.UserName = model.UserName;
+        var rolesList = await userManager.GetRolesAsync(user);
 
-            var identityResult = await userManager.UpdateAsync(user);
+        var jwToken = await GenerateJwtToken(user);
 
-            if (identityResult.Succeeded)
-                return new BaseResult();
+        AuthenticationResponse response = new AuthenticationResponse()
+        {
+            Id = user.Id.ToString(),
+            JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
+            Email = user.Email,
+            UserName = user.UserName,
+            Roles = rolesList.ToList(),
+            IsVerified = user.EmailConfirmed,
+        };
 
-            return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
-            }
+        return new BaseResult<AuthenticationResponse>(response);
+    }
 
-        //dont use
-        private async Task<BaseResult<AuthenticationResponse>> AuthenticateDontUseOnlyReference(AuthenticationRequest request)
-            {
-            var user = await userManager.FindByNameAsync(request.UserName);
-            if (user == null)
-                {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(request.UserName)), nameof(request.UserName)));
-                }
-            var result = await signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-            if (!result.Succeeded)
-                {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.AccountMessages.Invalid_password()), nameof(request.Password)));
-                }
+    public async Task<BaseResult<string>> RegisterGostAccount()
+    {
+        var user = new ApplicationUser()
+        {
+            UserName = GenerateRandomString(7)
+        };
 
-            var rolesList = await userManager.GetRolesAsync(user);
+        var identityResult = await userManager.CreateAsync(user);
 
-            var jwToken = await GenerateJwtToken(user);
+        if (identityResult.Succeeded)
+            return new BaseResult<string>(user.UserName);
 
-            AuthenticationResponse response = new AuthenticationResponse()
-                {
-                Id = user.Id.ToString(),
-                JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
-                Email = user.Email,
-                UserName = user.UserName,
-                Roles = [.. rolesList],
-                IsVerified = user.EmailConfirmed,
-                };
+        return new BaseResult<string>(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
 
-            return new BaseResult<AuthenticationResponse>(response);
-            }
+        string GenerateRandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            Random random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                    .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+    }
+    private async Task<JwtSecurityToken> GenerateJwtToken(ApplicationUser user)
+    {
+        await userManager.UpdateSecurityStampAsync(user);
 
-        //dont use
-        public async Task<BaseResult<AuthenticationResponse>> AuthenticateByUserName(string username)
-            {
-            var user = await userManager.FindByNameAsync(username);
-            if (user == null)
-                {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(username)), nameof(username)));
-                }
+        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
+        var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
-            var rolesList = await userManager.GetRolesAsync(user);
+        var jwtSecurityToken = new JwtSecurityToken(
+            issuer: jwtSettings.Issuer,
+            audience: jwtSettings.Audience,
+            claims: await GetClaimsAsync(),
+            expires: DateTime.UtcNow.AddMinutes(jwtSettings.DurationInMinutes),
+            signingCredentials: signingCredentials);
+        return jwtSecurityToken;
 
-            var jwToken = await GenerateJwtToken(user);
-
-            AuthenticationResponse response = new AuthenticationResponse()
-                {
-                Id = user.Id.ToString(),
-                JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
-                Email = user.Email,
-                UserName = user.UserName,
-                Roles = rolesList.ToList(),
-                IsVerified = user.EmailConfirmed,
-                };
-
-            return new BaseResult<AuthenticationResponse>(response);
-            }
-
-        //dont use
-        public async Task<BaseResult<string>> RegisterGostAccount()
-            {
-            var user = new ApplicationUser()
-                {
-                UserName = GenerateRandomString(7)
-                };
-
-            var identityResult = await userManager.CreateAsync(user);
-
-            if (identityResult.Succeeded)
-                return new BaseResult<string>(user.UserName);
-
-            return new BaseResult<string>(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
-
-            string GenerateRandomString(int length)
-                {
-                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                Random random = new Random();
-                return new string(Enumerable.Repeat(chars, length)
-                        .Select(s => s[random.Next(s.Length)]).ToArray());
-                }
-            }
-        private async Task<JwtSecurityToken> GenerateJwtToken(ApplicationUser user)
-            {
-            await userManager.UpdateSecurityStampAsync(user);
-
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: jwtSettings.Issuer,
-                 audience: jwtSettings.Audience,
-                claims: await GetClaimsAsync(),
-                expires: DateTime.Now.AddMinutes(60),
-                signingCredentials: signingCredentials);
-            return jwtSecurityToken;
-
+        async Task<IList<Claim>> GetClaimsAsync()
+        {
+            var result = await signInManager.ClaimsFactory.CreateAsync(user);
+            return result.Claims.ToList();
+        }
+    }
             async Task<IList<Claim>> GetClaimsAsync()
                 {
                 var userClaims = await signInManager.ClaimsFactory.CreateAsync(user);
@@ -288,5 +289,4 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
             return null;
             }
 
-        }
-    }
+}

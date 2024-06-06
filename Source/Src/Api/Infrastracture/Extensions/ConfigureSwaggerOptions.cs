@@ -1,32 +1,31 @@
-﻿using Asp.Versioning.ApiExplorer;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-namespace CleanArchitecture.WebApi.Infrastracture.Extensions
+namespace CleanArchitecture.WebApi.Infrastracture.Extensions;
+
+public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : IConfigureNamedOptions<SwaggerGenOptions>
+{
+    public void Configure(SwaggerGenOptions options)
     {
-    public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : IConfigureNamedOptions<SwaggerGenOptions>
+        foreach (var description in provider.ApiVersionDescriptions)
         {
-        public void Configure(SwaggerGenOptions options)
+            var info = new OpenApiInfo()
             {
-            foreach (var description in provider.ApiVersionDescriptions)
-                {
-                var info = new OpenApiInfo()
-                    {
-                    Title = Assembly.GetCallingAssembly().GetName().Name,
-                    Version = description.ApiVersion.ToString()
-                    };
+                Title = Assembly.GetCallingAssembly().GetName().Name,
+                Version = description.ApiVersion.ToString()
+            };
 
-                if (description.IsDeprecated) info.Description += "This API version has been deprecated.";
+            if (description.IsDeprecated) info.Description += "This API version has been deprecated.";
 
-                options.SwaggerDoc(description.GroupName, info);
-                }
-            }
-
-        public void Configure(string name, SwaggerGenOptions options)
-            {
-            Configure(options);
-            }
+            options.SwaggerDoc(description.GroupName, info);
         }
     }
+
+    public void Configure(string name, SwaggerGenOptions options)
+    {
+        Configure(options);
+    }
+}

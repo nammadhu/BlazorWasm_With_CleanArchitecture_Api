@@ -1,15 +1,14 @@
-﻿using SharedResponse.DTOs;
+using SharedResponse.DTOs;
 
-namespace SharedResponse
+namespace SharedResponse;
+
+public interface ITranslator
+{
+    string this[string name]
     {
-    public interface ITranslator
-        {
-        string this[string name]
-            {
-            get;
-            }
-
-        string GetString(string name);
-        string GetString(TranslatorMessageDto input);
-        }
+        get;
     }
+
+    string GetString(string name);
+    string GetString(TranslatorMessageDto input);
+}

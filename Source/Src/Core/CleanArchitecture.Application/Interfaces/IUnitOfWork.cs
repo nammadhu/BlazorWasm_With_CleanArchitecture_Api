@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.Interfaces
-    {
-    public interface IUnitOfWork
-        {
-        Task<bool> SaveChangesAsync();
-        }
-    }
+namespace CleanArchitecture.Application.Interfaces;
+
+public interface IUnitOfWork
+{
+    Task<bool> SaveChangesAsync();
+}

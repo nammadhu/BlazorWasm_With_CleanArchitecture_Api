@@ -1,9 +1,8 @@
-﻿using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.Interfaces;
 using System;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Infrastructure.Persistence.Contexts
-    {
+namespace CleanArchitecture.Infrastructure.Persistence.Contexts;
     public class UnitOfWork(ApplicationDbContext dbContext) : IUnitOfWork
         {
         public async Task<bool> SaveChangesAsync()
@@ -33,4 +32,3 @@ namespace CleanArchitecture.Infrastructure.Persistence.Contexts
 
             }
         }
-    }
