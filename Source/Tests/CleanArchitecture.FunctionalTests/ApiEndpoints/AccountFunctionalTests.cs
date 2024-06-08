@@ -16,7 +16,7 @@ public class AccountFunctionalTests(CustomWebApplicationFactory<Program> factory
     public async Task Authenticate_WithInvalidCredentials_ShouldReturnBadRequest()
     {
         // Arrange
-        var url = "/api/v1/Account/Authenticate";
+        var url = ApiRoutes.V1.Account.Authenticate;
         var model = new AuthenticationRequest()
         {
             UserName = "abcdefg",
@@ -36,7 +36,7 @@ public class AccountFunctionalTests(CustomWebApplicationFactory<Program> factory
     public async Task Authenticate_WithInvalidCredentials_ShouldReturnAccountNotFound()
     {
         // Arrange
-        var url = "/api/v1/Account/Authenticate";
+        var url = ApiRoutes.V1.Account.Authenticate;
         var model = new AuthenticationRequest()
         {
             UserName = "Sam_i_x",
@@ -56,7 +56,7 @@ public class AccountFunctionalTests(CustomWebApplicationFactory<Program> factory
     public async Task Authenticate_WithValidCredentials_ShouldReturnAccountInformation()
     {
         // Arrange
-        var url = "/api/v1/Account/Authenticate";
+        var url = ApiRoutes.V1.Account.Authenticate;
         var model = new AuthenticationRequest()
         {
             UserName = "Admin",
@@ -79,7 +79,7 @@ public class AccountFunctionalTests(CustomWebApplicationFactory<Program> factory
     {
         // Arrange
 
-        var url = "/api/v1/Account/Start";
+        var url = ApiRoutes.V1.Account.Start;
 
         // Act
         var result = await client.PostAndDeserializeAsync<BaseResult<AuthenticationResponse>>(url);
@@ -97,7 +97,7 @@ public class AccountFunctionalTests(CustomWebApplicationFactory<Program> factory
         // Arrange
         var ghostAccount = await client.GetGhostAccount();
 
-        var url = "/api/v1/Account/ChangePassword";
+        var url = ApiRoutes.V1.Account.ChangePassword;
         var model = new ChangePasswordRequest()
         {
             Password = "Sam@7654321",
@@ -118,7 +118,7 @@ public class AccountFunctionalTests(CustomWebApplicationFactory<Program> factory
         // Arrange
         var ghostAccount = await client.GetGhostAccount();
 
-        var url = "/api/v1/Account/ChangeUserName";
+        var url = ApiRoutes.V1.Account.ChangeUserName;
         var model = new ChangeUserNameRequest()
         {
             UserName = "TestUserName" + ghostAccount.UserName
