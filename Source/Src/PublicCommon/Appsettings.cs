@@ -136,6 +136,8 @@ namespace PublicCommon
 
         }
 
+
+#pragma warning disable
     public class JWTSettings
         {
         /* "JWTSettings": {
@@ -147,8 +149,9 @@ namespace PublicCommon
         public string Key { get; set; }
         public string Issuer { get; set; }
         public string Audience { get; set; }
-        public int DurationInMinutes { get; set; } = 60;
+        public double DurationInMinutes { get; set; }
         }
+#pragma warning disable 
     public class ConnectionStrings
         {
         public string DatabaseConnection { get; set; }

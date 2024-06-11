@@ -32,19 +32,10 @@ builder.Services.AddFileManagerInfrastructure(builder.Configuration, useInMemory
 builder.Services.AddIdentityInfrastructure(builder.Configuration, useInMemoryDatabase);
 builder.Services.AddResourcesInfrastructure();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
-builder.Services.AddJwt(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddSwaggerWithVersioning();
-builder.Services.AddCors(x =>
-{
-    x.AddPolicy("Any", b =>
-    {
-        b.AllowAnyOrigin();
-        b.AllowAnyHeader();
-        b.AllowAnyMethod();
-    });
-});
+builder.Services.AddAnyCors();
 builder.Services.AddCustomLocalization(builder.Configuration);
 builder.Services.AddHealthChecks();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
@@ -69,7 +60,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseCustomLocalization();
-app.UseCors("Any");
+app.UseAnyCors();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
