@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace CleanArchitecture.Domain
-    {
-    public class ApplicationRole : IdentityRole<Guid>
+namespace CleanArchitecture.Domain;
+    public class ApplicationRole(string name) : IdentityRole<Guid>(name)
         {
-        public ApplicationRole(string name) : base(name)
-            {
-            }
         }
-    }
