@@ -1,5 +1,4 @@
 using CleanArchitecture.Application.Interfaces.Repositories;
-using CleanArchitecture.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using SharedResponse.DTOs;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Persistence.Repositories;
 
-public class GenericRepository<T>(ApplicationDbContext dbContext) : IGenericRepository<T> where T : class
+public class GenericRepository<T>(DbContext dbContext) : IGenericRepository<T> where T : class
 {
     public virtual async Task<T> GetByIdIntAsync(int id)
         {
