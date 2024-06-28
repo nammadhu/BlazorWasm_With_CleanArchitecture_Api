@@ -361,10 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Source/Src/BlazorHostedAspNetCoreApiSingleProject/serilogs/log20240612.txt
-/Source/Src/AllInOneBlazorAspHosting/Serilogs/log20240612.txt
-/Source/Src/AllInOneBlazorAspHosting/Serilogs/log20240617.txt
-/Source/Src/AllInOneBlazorAspHosting/Serilogs/log20240618.txt
-/Source/Src/AllInOneBlazorAspHosting/Serilogs/log20240619.txt
-/Source/Src/AllInOneBlazorAspHosting/Serilogs/log20240620.txt
-/Source/Src/AllInOneBlazorAspHosting/Serilogs/log20240621.txt
+/Source/Src/AllInOneBlazorAspHosting/Serilogs/*
